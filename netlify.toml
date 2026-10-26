@@ -1,2 +1,12 @@
 [build]
-  publish = "."
+  publish = "site"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# El panel no debe aparecer en buscadores
+[[headers]]
+  for = "/panel/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel de Arcoloria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,100&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #FBF4EC; --muted: #D9C6B6; --line: rgba(255, 222, 200, .22); --line2: rgba(255, 222, 200, .12);
+  --glass: rgba(34, 22, 22, .74); --field: rgba(0, 0, 0, .28);
+  --accent: #F4C9A2; --btn: linear-gradient(180deg, #FCE6C8 0%, #F6CB9B 55%, #EEB37C 100%); --btn-ink: #3A2418;
+  --ok: #A9DB8C; --bad: #F2A0A0;
+  --font-display: "Fraunces", Georgia, serif; --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: #1E1411; }
+body { margin: 0; min-height: 100vh; color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5; background: linear-gradient(180deg, rgba(20, 12, 12, .55), rgba(20, 12, 12, .8)), url(../img/fondo-blur.jpg) center / cover fixed; }
+h1, h2, h3 { font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-weight: 600; margin: 0; line-height: 1.2; }
+button, input, select, textarea { font: inherit; color: inherit; }
+.icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 16px max(16px, env(safe-area-inset-right)) 120px max(16px, env(safe-area-inset-left)); }
+.card { background: var(--glass); border: 1px solid var(--line); border-radius: 20px; padding: 18px; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 12px 30px rgba(0, 0, 0, .3); }
+.muted { color: var(--muted); }
+.small { font-size: .88rem; }
+
+/* Acceso */
+#login { max-width: 420px; margin: 12vh auto 0; text-align: center; }
+#login h1 { font-size: 2rem; }
+#login p { margin: 6px 0 18px; }
+.lotus { width: 52px; height: 42px; fill: var(--accent); margin-bottom: 8px; }
+
+/* Campos */
+label.f, span.f { display: grid; gap: 6px; font-size: .85rem; font-weight: 800; color: var(--muted); }
+input[type=text], input[type=password], input[type=date], select, textarea {
+  width: 100%; min-height: 46px; padding: 10px 14px; border-radius: 12px;
+  border: 1px solid var(--line); background: var(--field); font-size: 16px; font-weight: 600; color: var(--ink);
+  outline: none; transition: border-color .2s, box-shadow .2s;
+}
+textarea { min-height: 96px; resize: vertical; line-height: 1.5; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(244, 201, 162, .2); }
+select option { background: #2A1D19; }
+.grid { display: grid; gap: 12px; }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 640px) {
+  .g2, .g3 { grid-template-columns: 1fr; }
+  .top h1 { font-size: 1.15rem; }
+  .top .btn.sm span { display: none; }
+  .item { padding: 12px; }
+  .img-field { grid-template-columns: 96px minmax(0, 1fr); }
+  .img-prev { width: 96px; }
+}
+
+/* Botones */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255, 236, 220, .08); font-weight: 800; cursor: pointer; text-decoration: none; color: var(--ink); }
+.btn:hover { background: rgba(255, 236, 220, .14); }
+.btn.primary { background: var(--btn); color: var(--btn-ink); border: 0; box-shadow: 0 0 18px rgba(242, 188, 134, .3); }
+.btn.danger { color: var(--bad); border-color: rgba(242, 160, 160, .35); }
+.btn.sm { min-height: 36px; padding: 0 12px; font-size: .86rem; }
+.btn:disabled { opacity: .5; cursor: default; }
+.icon-btn { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--line2); background: rgba(255, 255, 255, .05); cursor: pointer; color: var(--ink); }
+.icon-btn:disabled { opacity: .3; cursor: default; }
+
+/* Cabecera */
+.top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left)); background: rgba(26, 16, 16, .82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line2); }
+.top h1 { font-size: 1.35rem; display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.top h1 svg { width: 32px; height: 26px; fill: var(--accent); }
+.tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: none; padding: 9px 16px; border-radius: 999px; border: 1px solid transparent; background: none; color: var(--muted); font-weight: 800; cursor: pointer; }
+.tab.on { background: rgba(244, 186, 128, .22); border-color: rgba(250, 205, 160, .45); color: var(--ink); }
+
+/* Secciones */
+.sec-title { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 18px 0 12px; }
+.sec-title h2 { font-size: 1.6rem; }
+.sec-title p { margin: 4px 0 0; }
+.sub { display: flex; gap: 8px; margin: 4px 0 14px; }
+.list { display: grid; gap: 12px; }
+.item { position: relative; display: grid; gap: 12px; padding: 16px; border-radius: 18px; background: rgba(0, 0, 0, .22); border: 1px solid var(--line2); }
+.item-head { display: flex; align-items: center; gap: 8px; }
+.item, .item > *, .f, .grid > * { min-width: 0; }
+.item-head b { min-width: 0; flex: 1; margin-right: auto; font-size: 1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pill { padding: 3px 10px; border-radius: 999px; font-size: .76rem; font-weight: 800; background: rgba(255, 255, 255, .08); }
+.pill.ok { background: rgba(169, 219, 140, .18); color: var(--ok); }
+.pill.soon { background: rgba(244, 201, 162, .18); color: var(--accent); }
+.pill.old { background: rgba(242, 160, 160, .16); color: var(--bad); }
+.add { width: 100%; border-style: dashed; }
+.group { margin-top: 20px; }
+.group h3 { font-size: 1.15rem; margin-bottom: 4px; }
+.group > p { margin: 0 0 10px; }
+.note { padding: 12px 14px; border-radius: 14px; background: rgba(244, 201, 162, .1); border: 1px dashed rgba(244, 201, 162, .4); font-size: .9rem; }
+
+/* Imagen */
+.img-field { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: center; }
+.img-prev { width: 120px; aspect-ratio: 16 / 10; border-radius: 12px; background: var(--field) center / cover no-repeat; border: 1px solid var(--line2); display: grid; place-items: center; color: var(--muted); font-size: .78rem; text-align: center; }
+.img-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.img-actions input[type=file] { display: none; }
+
+/* Iconos de sistemas */
+.icons { display: flex; flex-wrap: wrap; gap: 6px; }
+.icons button { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px; border: 2px solid transparent; background: var(--c); color: #fff; cursor: pointer; opacity: .55; }
+.icons button.on { opacity: 1; border-color: #fff; }
+.icons svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Barra de guardar */
+.savebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: rgba(26, 16, 16, .9); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-top: 1px solid var(--line); transform: translateY(110%); transition: transform .3s ease; }
+.savebar.show { transform: none; }
+.toast { position: fixed; left: 50%; top: 80px; z-index: 30; transform: translateX(-50%); max-width: calc(100% - 32px); padding: 12px 18px; border-radius: 14px; background: var(--btn); color: var(--btn-ink); font-weight: 800; box-shadow: 0 10px 30px rgba(0, 0, 0, .35); }
+.toast.err { background: #F2B8B8; color: #4A1717; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="lotus" viewBox="0 0 40 32"><path d="M20 3C25 9 25.5 17 20 24C14.5 17 15 9 20 3Z"/><path d="M20 24C12 23 6.5 17 5.5 9C13 10 18.5 15 20 24Z" opacity=".85"/><path d="M20 24C28 23 33.5 17 34.5 9C27 10 21.5 15 20 24Z" opacity=".85"/><path d="M7 27C13 24.5 27 24.5 33 27C27 29.5 13 29.5 7 27Z" opacity=".7"/></symbol>
+  <symbol id="up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+  <symbol id="down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="trash" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 12.5h9l1-12.5"/></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="out" viewBox="0 0 24 24"><path d="M14 4.5h4.5v15H14M10 8l-4 4 4 4M6 12h10"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="img" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="9.5" r="1.6"/><path d="M4 17l5-4.5 3.5 3 3-2.5 4.5 4"/></symbol>
+</svg>
+
+<!-- Acceso -->
+<section id="login" class="wrap" hidden>
+  <div class="card">
+    <svg class="lotus"><use href="#lotus"/></svg>
+    <h1>Panel de Arcoloria</h1>
+    <p class="muted">Solo para administradores.</p>
+    <form id="login-form" class="grid">
+      <input type="password" id="pass" placeholder="Contraseña" autocomplete="current-password" required>
+      <button class="btn primary" type="submit">Entrar</button>
+      <p id="login-msg" class="small" style="margin:0;color:var(--bad)"></p>
+    </form>
+  </div>
+</section>
+
+<!-- Panel -->
+<div id="app" hidden>
+  <header class="top">
+    <h1><svg><use href="#lotus"/></svg>Panel de Arcoloria</h1>
+    <a class="btn sm" href="../index.html" target="_blank" rel="noopener"><svg class="icon"><use href="#eye"/></svg>Ver página</a>
+    <button class="btn sm" id="logout" type="button"><svg class="icon"><use href="#out"/></svg>Salir</button>
+    <nav class="tabs" id="tabs">
+      <button class="tab on" data-tab="servers">Servidores</button>
+      <button class="tab" data-tab="events">Eventos</button>
+      <button class="tab" data-tab="news">Novedades</button>
+      <button class="tab" data-tab="team">Equipo</button>
+    </nav>
+  </header>
+  <main class="wrap" id="main"></main>
+</div>
+
+<div class="savebar" id="savebar">
+  <span class="small">Tienes cambios sin publicar.</span>
+  <button class="btn" id="discard" type="button">Descartar</button>
+  <button class="btn primary" id="save" type="button">Publicar cambios</button>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var KEY = 'arc-admin';
+  var pass = '';
+  try { pass = sessionStorage.getItem(KEY) || ''; } catch (e) {}
+  var data = null, saved = null, tab = 'servers', srv = 'nubelia', dirty = {};
+
+  var ICONS = {
+    escudo: ['#5E8A4A', '<path d="M12 3.5l7 2.6v5.4c0 4.4-3 7.7-7 9-4-1.3-7-4.6-7-9V6.1z"/><path d="M9 12l2.2 2.2L15.5 10"/>'],
+    moneda: ['#B48A3C', '<circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2c-.6-.9-1.6-1.4-2.8-1.4-1.6 0-2.8.9-2.8 2.1 0 2.8 5.6 1.4 5.6 4.2 0 1.2-1.2 2.1-2.8 2.1-1.2 0-2.3-.5-2.9-1.4M12 6v1.8M12 16.2V18"/>'],
+    cofre: ['#6B7C9C', '<path d="M4 8l8-4 8 4-8 4z"/><path d="M4 8v8l8 4 8-4V8M12 12v8"/>'],
+    portal: ['#4F8E8A', '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.6 5.4 3.6 8.5s-1.1 5.9-3.6 8.5c-2.5-2.6-3.6-5.4-3.6-8.5S9.5 6.1 12 3.5z"/>'],
+    grupo: ['#9A6A9E', '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c0-3.2 2.4-5.5 5.5-5.5s5.5 2.3 5.5 5.5"/><circle cx="17" cy="9.5" r="2.4"/><path d="M15.5 14.2c.5-.2 1-.2 1.5-.2 2.2 0 3.8 1.8 3.8 4.4"/>'],
+    estrella: ['#B86C6C', '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9l-5.2 2.8 1-5.9-4.3-4.1 5.9-.8z"/>'],
+    corazon: ['#C46A8E', '<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.3 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>'],
+    herramienta: ['#7E6A4A', '<path d="M5 8.5C8.8 4.4 15 3.5 20 6l-1.3 1.6C14.9 6.2 10.6 6.6 7.2 9.6"/><path d="M13.4 6.6L4.5 19.5"/>'],
+    hoja: ['#5E8A4A', '<path d="M4 20C5 11 10.5 4.5 20 4c0 9.5-6.5 15-16 16z"/><path d="M5.5 18.5C9.5 14 13 10.5 17 7"/>'],
+    chat: ['#5F6FB4', '<path d="M5 18.5V6.5A2 2 0 0 1 7 4.5h10a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2H9z"/><path d="M8.5 9h7M8.5 12h4.5"/>'],
+    espada: ['#8A6A5A', '<path d="M14.5 4.5h5v5L10 19l-2.5.5-.5-2.5z"/><path d="M5 14l5 5M4 20l2.5-2.5"/>'],
+    casa: ['#6E8A9E', '<path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5M10 20v-5.5h4V20"/>']
+  };
+  var GUIDES = [['', 'Sin guía'], ['guias/guia-crops-farms.html', 'Guía de Crops & Farms'], ['guias/guia-actions-and-stuff.html', 'Guía de Actions & Stuff']];
+  var SERVER_OPTS = [['ambos', 'Ambos servidores'], ['nubelia', 'Solo Nubelia'], ['solune', 'Solo Solune']];
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function today() { var n = new Date(); return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'); }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  var toastT;
+  function toast(msg, bad) { var t = $('#toast'); t.textContent = msg; t.className = 'toast' + (bad ? ' err' : ''); t.hidden = false; clearTimeout(toastT); toastT = setTimeout(function () { t.hidden = true; }, 3200); }
+
+  function api(path, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign({ authorization: 'Bearer ' + pass }, opts.headers || {});
+    return fetch('/api/' + path, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok) { var e = new Error(j.error || 'Error ' + r.status); e.status = r.status; throw e; }
+        return j;
+      });
+    });
+  }
+
+  /* ---------- acceso ---------- */
+  function showLogin(msg) { $('#app').hidden = true; $('#login').hidden = false; $('#login-msg').textContent = msg || ''; $('#pass').focus(); }
+  function start() {
+    api('admin/data').then(function (d) {
+      data = d; saved = clone(d); dirty = {};
+      $('#login').hidden = true; $('#app').hidden = false; render(); updateBar();
+    }, function (e) {
+      if (e.status === 401 || e.status === 503) { try { sessionStorage.removeItem(KEY); } catch (x) {} pass = ''; showLogin(e.message); }
+      else showLogin('No se pudo conectar. ' + e.message);
+    });
+  }
+  $('#login-form').addEventListener('submit', function (e) {
+    e.preventDefault(); pass = $('#pass').value;
+    try { sessionStorage.setItem(KEY, pass); } catch (x) {}
+    start();
+  });
+  $('#logout').addEventListener('click', function () {
+    if (Object.keys(dirty).length && !confirmLeave()) return;
+    try { sessionStorage.removeItem(KEY); } catch (x) {}
+    pass = ''; data = null; dirty = {}; updateBar(); showLogin();
+  });
+  function confirmLeave() { return window.confirm('Tienes cambios sin publicar. ¿Salir de todos modos?'); }
+  window.addEventListener('beforeunload', function (e) { if (Object.keys(dirty).length) { e.preventDefault(); e.returnValue = ''; } });
+
+  /* ---------- pestañas ---------- */
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('.tab'); if (!b) return;
+    tab = b.dataset.tab;
+    document.querySelectorAll('.tab').forEach(function (x) { x.classList.toggle('on', x === b); });
+    render(); window.scrollTo(0, 0);
+  });
+
+  /* ---------- editor de listas ---------- */
+  // cada campo: [clave, etiqueta, tipo, extra]
+  var SCHEMAS = {
+    addons: { title: 'Addon', fields: [['name', 'Nombre', 'text'], ['desc', 'Descripción corta', 'text'], ['img', 'Imagen', 'image'], ['link', 'Guía', 'guide']], empty: { name: '', desc: '', img: '', link: '' } },
+    systems: { title: 'Sistema', fields: [['name', 'Nombre', 'text'], ['desc', 'Descripción', 'text'], ['icon', 'Ícono', 'icon']], empty: { name: '', desc: '', icon: 'estrella' } },
+    kits: { title: 'Kit', fields: [['name', 'Nombre del kit', 'text', 'Ej.: Kit inicial'], ['note', 'Aviso corto (opcional)', 'text', 'Ej.: Una sola vez por jugador'], ['code', 'Código', 'text', 'Ej.: NUBE-INICIO'], ['items', 'Qué trae', 'textarea']], empty: { name: 'Kit inicial', note: '', code: '', items: '' } },
+    events: { title: 'Evento', fields: [['title', 'Título', 'text'], ['img', 'Foto', 'image'], ['desc', 'Descripción', 'textarea'], ['start', 'Fecha de inicio', 'date'], ['end', 'Fecha de fin (se oculta después)', 'date'], ['server', 'Servidor', 'server']], empty: function () { return { title: '', img: '', desc: '', start: today(), end: '', server: 'ambos' }; } },
+    news: { title: 'Novedad', fields: [['title', 'Título', 'text'], ['img', 'Foto (opcional)', 'image'], ['text', 'Texto', 'textarea'], ['date', 'Fecha', 'date'], ['server', 'Servidor', 'server']], empty: function () { return { title: '', img: '', text: '', date: today(), server: 'ambos' }; } },
+    team: { title: 'Integrante', fields: [['gamertag', 'Nombre en el juego', 'text'], ['role', 'Rol', 'role'], ['discord', 'Discord (opcional)', 'text', 'Usuario de Discord'], ['whatsapp', 'WhatsApp (opcional)', 'text', 'Nombre en el grupo, no el número'], ['server', 'Servidor', 'server']], empty: { gamertag: '', role: 'Ayudante', discord: '', whatsapp: '', server: 'ambos' } }
+  };
+
+  function fieldHtml(f, v, path) {
+    var k = f[0], label = f[1], type = f[2], ph = f[3] ? ' placeholder="' + esc(f[3]) + '"' : '';
+    var d = ' data-path="' + path + '" data-k="' + k + '"';
+    if (type === 'textarea') return '<label class="f">' + label + '<textarea' + d + ph + '>' + esc(v) + '</textarea></label>';
+    if (type === 'date') return '<label class="f">' + label + '<input type="date"' + d + ' value="' + esc(v) + '"></label>';
+    if (type === 'server') return '<label class="f">' + label + '<select' + d + '>' + SERVER_OPTS.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === v ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></label>';
+    if (type === 'guide') {
+      var opts = GUIDES.slice(); if (v && !GUIDES.some(function (g) { return g[0] === v; })) opts.push([v, v]);
+      return '<label class="f">' + label + '<select' + d + '>' + opts.map(function (o) { return '<option value="' + esc(o[0]) + '"' + (o[0] === v ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></label>';
+    }
+    if (type === 'role') return '<label class="f">' + label + '<input type="text" list="roles"' + d + ' value="' + esc(v) + '"></label>';
+    if (type === 'icon') return '<div class="f"><label class="f">' + label + '</label><div class="icons">' + Object.keys(ICONS).map(function (ic) { return '<button type="button" title="' + ic + '" data-icon="' + ic + '"' + d + ' style="--c:' + ICONS[ic][0] + '" class="' + (ic === v ? 'on' : '') + '"><svg viewBox="0 0 24 24">' + ICONS[ic][1] + '</svg></button>'; }).join('') + '</div></div>';
+    if (type === 'image') {
+      var src = v ? (v.charAt(0) === '/' || /^https:/.test(v) ? v : '../' + v) : '';
+      return '<div class="f"><span class="f">' + label + '</span><div class="img-field"><div class="img-prev" style="' + (src ? 'background-image:url(\'' + esc(src) + '\')' : '') + '">' + (src ? '' : 'Sin imagen') + '</div><div class="img-actions"><label class="btn sm"><svg class="icon"><use href="#img"/></svg>' + (v ? 'Cambiar' : 'Subir') + ' imagen<input type="file" accept="image/*"' + d + '></label>' + (v ? '<button type="button" class="btn sm danger" data-clear-img' + d + '>Quitar</button>' : '') + '<span class="small muted" data-up-msg></span></div></div></div>';
+    }
+    return '<label class="f">' + label + '<input type="text"' + d + ph + ' value="' + esc(v) + '"></label>';
+  }
+  function eventPill(e) {
+    var t = today();
+    if (e.end && e.end < t) return '<span class="pill old">Vencido · ya no se muestra</span>';
+    if (e.start && e.start > t) return '<span class="pill soon">Próximo</span>';
+    return '<span class="pill ok">Visible</span>';
+  }
+  function listHtml(kind, arr, path) {
+    var sc = SCHEMAS[kind];
+    return '<div class="list">' + arr.map(function (it, i) {
+      var title = it.name || it.title || it.gamertag || it.code || (sc.title + ' nuevo');
+      var fields = sc.fields.map(function (f) { return fieldHtml(f, it[f[0]], path + '.' + i); });
+      var body;
+      if (kind === 'events') body = fields[0] + fields[1] + fields[2] + '<div class="grid g3">' + fields[3] + fields[4] + fields[5] + '</div>';
+      else if (kind === 'news') body = fields[0] + fields[1] + fields[2] + '<div class="grid g2">' + fields[3] + fields[4] + '</div>';
+      else if (kind === 'team') body = '<div class="grid g2">' + fields[0] + fields[1] + fields[2] + fields[3] + '</div>' + fields[4];
+      else if (kind === 'kits') body = '<div class="grid g3">' + fields[0] + fields[1] + fields[2] + '</div>' + fields[3];
+      else if (kind === 'addons') body = '<div class="grid g2">' + fields[0] + fields[1] + '</div>' + fields[2] + fields[3];
+      else body = '<div class="grid g2">' + fields[0] + fields[1] + '</div>' + fields[2];
+      return '<div class="item"><div class="item-head"><b>' + esc(title) + '</b>' + (kind === 'events' ? eventPill(it) : '') +
+        '<button class="icon-btn" type="button" title="Subir" data-move="-1" data-path="' + path + '" data-i="' + i + '"' + (i === 0 ? ' disabled' : '') + '><svg class="icon"><use href="#up"/></svg></button>' +
+        '<button class="icon-btn" type="button" title="Bajar" data-move="1" data-path="' + path + '" data-i="' + i + '"' + (i === arr.length - 1 ? ' disabled' : '') + '><svg class="icon"><use href="#down"/></svg></button>' +
+        '<button class="icon-btn" type="button" title="Eliminar" data-del data-path="' + path + '" data-i="' + i + '" style="color:var(--bad)"><svg class="icon"><use href="#trash"/></svg></button></div>' + body + '</div>';
+    }).join('') + '<button class="btn add" type="button" data-add="' + kind + '" data-path="' + path + '"><svg class="icon"><use href="#plus"/></svg>Agregar ' + sc.title.toLowerCase() + '</button></div>';
+  }
+
+  function get(path) { return path.split('.').reduce(function (o, k) { return o == null ? o : o[k]; }, data); }
+  function collectionOf(path) { return path.split('.')[0]; }
+  function markDirty(path) { dirty[collectionOf(path)] = true; updateBar(); }
+  function updateBar() { $('#savebar').classList.toggle('show', Object.keys(dirty).length > 0); }
+
+  function render() {
+    if (!data) return;
+    var m = $('#main'), html = '';
+    if (tab === 'servers') {
+      var s = data.servers[srv];
+      html = '<div class="sec-title"><div><h2>Servidores</h2><p class="muted small">Lo que se muestra en «Información del servidor».</p></div></div>' +
+        '<div class="sub"><button class="tab' + (srv === 'nubelia' ? ' on' : '') + '" data-srv="nubelia">Nubelia</button><button class="tab' + (srv === 'solune' ? ' on' : '') + '" data-srv="solune">Solune</button></div>' +
+        '<div class="card grid"><div class="grid g2">' +
+          fieldHtml(['name', 'Nombre', 'text'], s.name, 'servers.' + srv) + fieldHtml(['version', 'Versión de Minecraft', 'text', 'Ej.: 1.21.111'], s.version, 'servers.' + srv) +
+          fieldHtml(['ip', 'IP', 'text'], s.ip, 'servers.' + srv) + fieldHtml(['port', 'Puerto', 'text'], s.port, 'servers.' + srv) + '</div>' +
+          fieldHtml(['tagline', 'Frase corta', 'text'], s.tagline, 'servers.' + srv) + '</div>' +
+        '<div class="group"><h3>Addons</h3><p class="muted small">Cada addon puede llevar a su guía.</p>' + listHtml('addons', s.addons, 'servers.' + srv + '.addons') + '</div>' +
+        '<div class="group"><h3>Sistemas</h3><p class="muted small">Lo que ofrece el servidor: protección de terrenos, tienda, teletransporte…</p>' + listHtml('systems', s.systems, 'servers.' + srv + '.systems') + '</div>' +
+        '<div class="group"><h3>Códigos de kits</h3><p class="muted small">El código que el jugador canjea para recibir su kit.</p>' + listHtml('kits', s.kits, 'servers.' + srv + '.kits') + '</div>';
+    } else if (tab === 'events') {
+      html = '<div class="sec-title"><div><h2>Eventos</h2><p class="muted small">Se muestran desde hoy hasta su fecha de fin. Después se ocultan solos.</p></div></div>' + listHtml('events', data.events, 'events');
+    } else if (tab === 'news') {
+      html = '<div class="sec-title"><div><h2>Novedades</h2><p class="muted small">Se muestran de la más nueva a la más antigua.</p></div></div>' + listHtml('news', data.news, 'news');
+    } else if (tab === 'team') {
+      html = '<div class="sec-title"><div><h2>Equipo y ayudantes</h2><p class="muted small">Aparecen en la información de cada servidor.</p></div></div>' +
+        '<p class="note">No pongas números de teléfono: la página es pública. Usa el nombre que tienen en WhatsApp o su usuario de Discord.</p><br>' + listHtml('team', data.team, 'team');
+    }
+    m.innerHTML = html + '<datalist id="roles"><option value="Dueño"><option value="Administrador"><option value="Moderador"><option value="Ayudante"><option value="Constructor"></datalist>';
+  }
+
+  /* ---------- eventos del formulario ---------- */
+  var main = $('#main');
+  main.addEventListener('input', function (e) {
+    var t = e.target; if (!t.dataset || !t.dataset.path || t.type === 'file') return;
+    var o = get(t.dataset.path); if (!o) return;
+    o[t.dataset.k] = t.value; markDirty(t.dataset.path);
+    if (['name', 'title', 'gamertag'].indexOf(t.dataset.k) >= 0) { var b = t.closest('.item'); if (b) b.querySelector('.item-head b').textContent = t.value || 'Nuevo'; }
+    if (t.dataset.k === 'start' || t.dataset.k === 'end') { var it = t.closest('.item'); if (it) { var p = it.querySelector('.pill'); if (p) p.outerHTML = eventPill(o); } }
+  });
+  main.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.type === 'file' && t.files && t.files[0]) upload(t, t.files[0]);
+    else if (t.tagName === 'SELECT' && t.dataset.path) { var o = get(t.dataset.path); o[t.dataset.k] = t.value; markDirty(t.dataset.path); }
+  });
+  main.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.srv) { srv = b.dataset.srv; render(); return; }
+    if (b.dataset.icon) { var o = get(b.dataset.path); o.icon = b.dataset.icon; markDirty(b.dataset.path); b.parentNode.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); }); return; }
+    if (b.hasAttribute('data-clear-img')) { var o2 = get(b.dataset.path); o2[b.dataset.k] = ''; markDirty(b.dataset.path); render(); return; }
+    if (b.dataset.add) { var arr = get(b.dataset.path), sc = SCHEMAS[b.dataset.add]; arr.push(typeof sc.empty === 'function' ? sc.empty() : clone(sc.empty)); markDirty(b.dataset.path); render(); var items = main.querySelectorAll('.item'); var last = b.parentNode.querySelectorAll('.item'); last = last[last.length - 1]; if (last) { last.scrollIntoView({ block: 'center' }); var inp = last.querySelector('input[type=text]'); if (inp) inp.focus({ preventScroll: true }); } return; }
+    if (b.hasAttribute('data-del')) { var a2 = get(b.dataset.path), i = +b.dataset.i; var it = a2[i]; var nm = it.name || it.title || it.gamertag || 'este elemento'; if (!window.confirm('¿Eliminar «' + nm + '»?')) return; a2.splice(i, 1); markDirty(b.dataset.path); render(); return; }
+    if (b.dataset.move) { var a3 = get(b.dataset.path), j = +b.dataset.i, k = j + (+b.dataset.move); if (k < 0 || k >= a3.length) return; var tmp = a3[j]; a3[j] = a3[k]; a3[k] = tmp; markDirty(b.dataset.path); render(); return; }
+  });
+
+  /* ---------- subir imagen (se achica antes de enviar) ---------- */
+  function shrink(file) {
+    return new Promise(function (res, rej) {
+      if (file.type === 'image/gif') return res(file);
+      var img = new Image(), url = URL.createObjectURL(file);
+      img.onload = function () {
+        var max = 1600, w = img.naturalWidth, hh = img.naturalHeight, k = Math.min(1, max / Math.max(w, hh));
+        var c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(hh * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        c.toBlob(function (b) { b ? res(b) : rej(new Error('No se pudo procesar la imagen.')); }, 'image/jpeg', 0.85);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); rej(new Error('El archivo no es una imagen válida.')); };
+      img.src = url;
+    });
+  }
+  function upload(input, file) {
+    var msg = input.closest('.img-actions').querySelector('[data-up-msg]');
+    msg.textContent = 'Subiendo…';
+    shrink(file).then(function (blob) {
+      return api('admin/upload', { method: 'POST', headers: { 'content-type': blob.type || 'image/jpeg' }, body: blob });
+    }).then(function (r) {
+      var o = get(input.dataset.path); o[input.dataset.k] = r.url; markDirty(input.dataset.path); render(); toast('Imagen lista. No olvides publicar los cambios.');
+    }, function (e) { msg.textContent = ''; toast(e.message, true); });
+  }
+
+  /* ---------- guardar ---------- */
+  $('#save').addEventListener('click', function () {
+    var keys = Object.keys(dirty), btn = this;
+    if (!keys.length) return;
+    var bad = data.events.filter(function (e) { return e.start && e.end && e.end < e.start; });
+    if (bad.length) { toast('Revisa «' + (bad[0].title || 'un evento') + '»: la fecha de fin es antes del inicio.', true); return; }
+    btn.disabled = true; btn.textContent = 'Publicando…';
+    var body = {}; keys.forEach(function (k) { body[k] = data[k]; });
+    api('admin/save', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(function (r) {
+      keys.forEach(function (k) { if (r[k]) data[k] = r[k]; });
+      saved = clone(data); dirty = {}; updateBar(); render(); toast('¡Publicado! Ya se ve en la página.');
+    }, function (e) { toast('No se pudo publicar: ' + e.message, true); if (e.status === 401) showLogin(e.message); })
+      .then(function () { btn.disabled = false; btn.textContent = 'Publicar cambios'; });
+  });
+  $('#discard').addEventListener('click', function () {
+    if (!window.confirm('¿Descartar los cambios sin publicar?')) return;
+    data = clone(saved); dirty = {}; updateBar(); render();
+  });
+
+  if (pass) start(); else showLogin();
+})();
+</script>
+</body>
+</html>
