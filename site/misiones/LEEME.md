@@ -21,28 +21,19 @@ misiones/
 └── LEEME.md
 ```
 
-## Datos simulados (para probar)
+## Base de datos (Supabase)
 
-`js/datos.js` trae datos de ejemplo y un pequeño retraso artificial. Los cambios se guardan **solo en el navegador donde pruebas** (localStorage), para que lo que edites en `admin.html` se vea en `index.html`.
+`js/datos.js` ya está conectado a Supabase. La página carga la librería desde
+`https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2` antes de `datos.js`.
 
-- **Jugador de prueba:** en «Mi aventura» escribe el código `ABC123`.
-- **Administrador de prueba:** cualquier correo con la contraseña `admin`.
-- **Volver a los datos de ejemplo:** abre la consola del navegador y escribe `Datos.reiniciarDatosSimulados()`, luego recarga.
+- **Clave:** en `datos.js` solo va la clave publicable (`sb_publishable_...`). La clave secreta **nunca** va en la página.
+- **Seguridad:** lo que cada visitante ve o cambia lo deciden las reglas (RLS) y funciones de la base. Los comandos de recompensa y la historia de capítulos no completados nunca llegan al jugador.
+- **Jugadores:** al escribir su código de vinculación se crea una sesión anónima (sin cuenta ni contraseña). Requiere tener activado *Anonymous sign-ins* en Supabase.
+- **Administradores:** inician sesión con su correo y contraseña de Supabase y deben estar en la tabla `admins`.
+- **Sesiones separadas:** `index.html` y `admin.html` guardan su sesión con claves distintas, así un admin puede probar como jugador en el mismo navegador.
+- Las funciones de `window.Datos` mantienen los mismos nombres y formas de respuesta (`{ ok }` o `{ ok: false, motivo }`), y `_id_original` sigue sirviendo para renombrar ids.
 
-## Conectar con Supabase
-
-Solo hay que reemplazar `js/datos.js`. Las demás partes llaman únicamente a las funciones de `window.Datos`, con los mismos nombres y formas que pide el documento:
-
-- Públicas: `obtenerConfiguracion`, `listarNpcs`, `listarCapitulos`, `listarMisiones`, `obtenerMision`
-- Jugador: `estadoSesionJugador`, `vincularCuenta`, `cerrarSesionJugador`, `miProgreso`, `miHistoria`, `aceptarMision`
-- Admin: `iniciarSesionAdmin`, `cerrarSesionAdmin`, `esAdmin`, `guardarMision`, `eliminarMision`, `obtenerComandos`, `guardarCapitulo`, `obtenerHistoriaAdmin`, `eliminarCapitulo`, `guardarNpc`, `eliminarNpc`, `guardarConfiguracion`
-
-Detalles que la versión real debe respetar:
-
-- Las funciones de guardar y eliminar devuelven `{ ok: true }` o `{ ok: false, motivo }`. Si el motivo contiene la palabra «sesión», el panel vuelve a pedir el inicio de sesión.
-- Al **renombrar** el id de una misión, capítulo o NPC, el panel envía el id anterior en el campo `_id_original` para que la base sepa qué registro actualizar.
-- Los comandos de recompensa y la historia de los capítulos **nunca** deben enviarse a jugadores. En Supabase, protégelos con políticas de seguridad (RLS) y no solo ocultándolos en la página.
-- `miHistoria()` debe devolver solo los capítulos que el jugador completó.
+Los scripts SQL están en la carpeta `supabase/` del repositorio (ejecutar en orden: `01_...`, `02_...`).
 
 ## Íconos de ítems
 

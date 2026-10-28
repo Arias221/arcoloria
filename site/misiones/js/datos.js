@@ -1,341 +1,293 @@
 /* =====================================================================
-   CAPA DE DATOS — Sistema de misiones
+   CAPA DE DATOS — Sistema de misiones (conectada a Supabase)
    ---------------------------------------------------------------------
    Toda la lectura y escritura de datos pasa por este archivo.
-   Ahora mismo usa DATOS SIMULADOS (en memoria, guardados en este
-   navegador para poder probar). Para conectar con Supabase solo hay que
-   reemplazar este archivo manteniendo los mismos nombres de funciones
-   y las mismas formas de respuesta. Todas las funciones son async.
+   Requiere cargar antes la librería de Supabase:
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+   Seguridad: aquí solo va la clave PUBLICABLE (es pública por diseño).
+   Lo que cada visitante puede ver o cambiar lo deciden las reglas (RLS)
+   y funciones de la base de datos, no esta página.
    ===================================================================== */
 (function () {
   'use strict';
 
-  var CLAVE_BD = 'misiones-simuladas-v1';
-  var CLAVE_JUGADOR = 'misiones-sesion-jugador';
-  var CLAVE_ADMIN = 'misiones-sesion-admin';
-  var RETRASO = 220; // ms, para simular la red
+  var SUPABASE_URL = 'https://dmmnebecrsndkukuwavu.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_2NpfuuhagaSM10qigxkdBA_17cDEyPM';
 
-  /* ---------- utilidades internas ---------- */
-  function esperar(valor) {
-    return new Promise(function (ok) { setTimeout(function () { ok(copia(valor)); }, RETRASO); });
-  }
-  function copia(v) { return v === undefined ? undefined : JSON.parse(JSON.stringify(v)); }
-  function ahora() { return new Date().toISOString(); }
-  function haceHoras(h) { return new Date(Date.now() - h * 3600e3).toISOString(); }
-  function leer(clave, almacen) {
-    try { var t = (almacen || localStorage).getItem(clave); return t ? JSON.parse(t) : null; } catch (e) { return null; }
-  }
-  function escribir(clave, valor, almacen) {
-    try { (almacen || localStorage).setItem(clave, JSON.stringify(valor)); } catch (e) { /* sin almacenamiento: queda en memoria */ }
-  }
-  function borrar(clave, almacen) { try { (almacen || localStorage).removeItem(clave); } catch (e) {} }
+  // Jugadores y admins guardan su sesión por separado para no pisarse
+  var ES_ADMIN = document.body.classList.contains('admin') || /admin\.html$/.test(location.pathname);
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: {
+      storageKey: ES_ADMIN ? 'misiones-sesion-admin' : 'misiones-sesion-jugador',
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: false
+    }
+  });
+
+  /* ---------- mensajes ---------- */
+  var SIN_CONEXION = 'No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.';
+  var SIN_SESION_ADMIN = 'Tu sesión de administrador terminó. Vuelve a iniciar sesión.';
   var ID_VALIDO = /^[a-z0-9_]+$/;
 
-  /* ---------- datos simulados de ejemplo ---------- */
-  function datosIniciales() {
+  function fallo(motivo) { return { ok: false, motivo: motivo }; }
+  function aviso(error) { if (error) console.error('[Misiones]', error); }
+
+  async function rpc(nombre, parametros) {
+    try {
+      var r = await sb.rpc(nombre, parametros || {});
+      if (r.error) { aviso(r.error); return fallo(SIN_CONEXION); }
+      return r.data || fallo(SIN_CONEXION);
+    } catch (e) { aviso(e); return fallo(SIN_CONEXION); }
+  }
+  async function sesionActual() {
+    try { var r = await sb.auth.getSession(); return (r.data && r.data.session) || null; }
+    catch (e) { aviso(e); return null; }
+  }
+  function txt(v) { return v == null ? '' : v; }
+
+  /* ---------- normalizar lo que llega de la base ---------- */
+  function normObjetivo(o) {
     return {
-      configuracion: { max_misiones_activas: 3, max_completadas_diarias: 5, hora_reinicio: 4, zona_horaria: 'America/La_Paz' },
-      npcs: [
-        { id: 'guardian_aurelio', nombre: 'Aurelio, el Guardián', descripcion: 'Custodio de la plaza central. Conoce las leyendas más antiguas del reino.', es_principal: true },
-        { id: 'herrera_mira', nombre: 'Mira, la herrera', descripcion: 'Forja armas en el barrio de los artesanos y siempre necesita materiales raros.', es_principal: false }
-      ],
-      capitulos: [
-        { id: 'cap_despertar', orden: 1, titulo: 'El despertar del reino', resumen: 'Llegas a un reino tranquilo… pero algo se mueve bajo las nubes.', npc_id: '', capitulo_previo: '', activo: true },
-        { id: 'cap_sombras', orden: 2, titulo: 'Sombras en el bosque', resumen: 'Extrañas criaturas aparecen al caer la noche cerca del bosque de cerezos.', npc_id: '', capitulo_previo: 'cap_despertar', activo: true }
-      ],
-      historias: {
-        cap_despertar: {
-          texto: 'Cuando cruzaste el puente de piedra, Aurelio te esperaba con una lámpara en la mano.\n\n«Hace muchos inviernos que nadie nuevo llegaba a Arcoloria», dijo, mirando las nubes que cubren el castillo. «Dicen que el reino despierta cuando alguien construye su primer hogar aquí».\n\nEsa noche, mientras colocabas la última tabla de tu refugio, una luz violeta recorrió el cielo. El reino había despertado.',
-          imagen_url: 'img/fondo.jpg'
-        },
-        cap_sombras: {
-          texto: 'Las huellas en el barro no eran de ningún animal conocido. Siguiéndolas, llegaste al corazón del bosque, donde un cristal de amatista latía como un corazón.\n\n«No es una piedra», susurró Aurelio. «Es una puerta».',
-          imagen_url: ''
-        }
-      },
-      misiones: [
-        {
-          id: 'llegada_reino', titulo: 'Llegada al reino', descripcion: 'Preséntate ante Aurelio en la plaza central y recoge provisiones para tus primeros días.',
-          icono: 'textures/items/bread', categoria: 'historia', capitulo_id: 'cap_despertar', orden: 1, npc_id: '', mision_previa: '',
-          repeticion: 'una_vez', repeticion_veces: 1, repeticion_horas: 0, tiempo_limite_seg: null, recompensa_texto: '16 panes y un mapa del reino', activa: true,
-          objetivos: [
-            { id: 'o1', orden: 1, tipo: 'interactuar', objetivo: 'minecraft:villager', cantidad: 1, descripcion: 'Habla con Aurelio en la plaza', condiciones: {} },
-            { id: 'o2', orden: 2, tipo: 'obtener', objetivo: 'minecraft:wheat', cantidad: 10, descripcion: 'Recoge 10 de trigo', condiciones: {} }
-          ]
-        },
-        {
-          id: 'primer_refugio', titulo: 'Tu primer refugio', descripcion: 'Toda aventura empieza con un techo. Construye un pequeño refugio antes de que caiga la noche.',
-          icono: 'textures/items/oak_door', categoria: 'historia', capitulo_id: 'cap_despertar', orden: 2, npc_id: '', mision_previa: 'llegada_reino',
-          repeticion: 'una_vez', repeticion_veces: 1, repeticion_horas: 0, tiempo_limite_seg: 1800, recompensa_texto: 'Una cama y 8 antorchas', activa: true,
-          objetivos: [
-            { id: 'o1', orden: 1, tipo: 'colocar', objetivo: 'minecraft:oak_planks', cantidad: 32, descripcion: 'Coloca 32 tablas de roble', condiciones: { dimension: 'overworld' } }
-          ]
-        },
-        {
-          id: 'rastro_sombras', titulo: 'El rastro de las sombras', descripcion: 'Algo acecha cerca del bosque. Elimina a los zombis que rondan de noche.',
-          icono: 'textures/items/rotten_flesh', categoria: 'historia', capitulo_id: 'cap_sombras', orden: 1, npc_id: '', mision_previa: '',
-          repeticion: 'una_vez', repeticion_veces: 1, repeticion_horas: 0, tiempo_limite_seg: null, recompensa_texto: 'Espada de hierro encantada', activa: true,
-          objetivos: [
-            { id: 'o1', orden: 1, tipo: 'matar', objetivo: 'minecraft:zombie', cantidad: 10, descripcion: 'Derrota 10 zombis', condiciones: { hora_del_dia: 'night', bioma: 'cherry_grove' } },
-            { id: 'o2', orden: 2, tipo: 'matar', objetivo: 'minecraft:skeleton', cantidad: 5, descripcion: 'Derrota 5 esqueletos', condiciones: { hora_del_dia: 'night' } }
-          ]
-        },
-        {
-          id: 'corazon_bosque', titulo: 'El corazón del bosque', descripcion: 'Encuentra el cristal que late en el centro del bosque de cerezos.',
-          icono: 'textures/items/amethyst_shard', categoria: 'historia', capitulo_id: 'cap_sombras', orden: 2, npc_id: 'guardian_aurelio', mision_previa: 'rastro_sombras',
-          repeticion: 'una_vez', repeticion_veces: 1, repeticion_horas: 0, tiempo_limite_seg: null, recompensa_texto: 'Fragmento de amatista mágico', activa: true,
-          objetivos: [
-            { id: 'o1', orden: 1, tipo: 'romper', objetivo: 'minecraft:amethyst_cluster', cantidad: 3, descripcion: 'Rompe 3 racimos de amatista', condiciones: { fase_lunar: 'fullmoon', hora_del_dia: 'midnight' } }
-          ]
-        },
-        {
-          id: 'cazador_ghasts', titulo: 'Cazador de Ghasts', descripcion: 'Mira necesita lágrimas de ghast para templar una espada legendaria. Viaja al Nether y caza ghasts con tu arco.',
-          icono: 'textures/items/ghast_tear', categoria: 'independiente', capitulo_id: '', orden: 0, npc_id: 'herrera_mira', mision_previa: '',
-          repeticion: 'por_dia', repeticion_veces: 1, repeticion_horas: 0, tiempo_limite_seg: null, recompensa_texto: '10 lágrimas de ghast', activa: true,
-          objetivos: [
-            { id: 'o1', orden: 1, tipo: 'matar', objetivo: 'minecraft:ghast', cantidad: 5, descripcion: 'Derrota 5 ghasts con arco', condiciones: { herramienta: 'bow', metodo: 'projectile', dimension: 'nether' } }
-          ]
-        },
-        {
-          id: 'minero_profundo', titulo: 'Minero de las profundidades', descripcion: 'Baja a las cuevas más hondas y trae diamantes para la forja de Mira.',
-          icono: 'textures/items/diamond', categoria: 'independiente', capitulo_id: '', orden: 0, npc_id: 'herrera_mira', mision_previa: '',
-          repeticion: 'cada_horas', repeticion_veces: 1, repeticion_horas: 12, tiempo_limite_seg: 3600, recompensa_texto: '3 lingotes de oro y 20 de experiencia', activa: true,
-          objetivos: [
-            { id: 'o1', orden: 1, tipo: 'romper', objetivo: 'minecraft:deepslate_diamond_ore', cantidad: 4, descripcion: 'Rompe 4 menas de diamante', condiciones: { herramienta: 'iron_pickaxe', altura: { tipo: 'debajo', valor: 0 } } }
-          ]
-        }
-      ],
-      comandos: {
-        llegada_reino: ['give @s bread 16', 'give @s filled_map 1'],
-        primer_refugio: ['give @s bed 1', 'give @s torch 8'],
-        rastro_sombras: ['give @s iron_sword 1'],
-        corazon_bosque: ['give @s amethyst_shard 1'],
-        cazador_ghasts: ['give @s ghast_tear 10'],
-        minero_profundo: ['give @s gold_ingot 3', 'xp 20 @s']
-      },
-      jugadores: [{ id: 'jug_1', gamertag: 'SteveAventurero', codigo: 'ABC123' }],
-      progreso: {
-        jug_1: [
-          { mision_id: 'llegada_reino', estado: 'completada', avance: { o1: 1, o2: 10 }, veces_completada: 1, aceptada_en: haceHoras(72), completada_en: haceHoras(70), origen: 'juego' },
-          { mision_id: 'primer_refugio', estado: 'completada', avance: { o1: 32 }, veces_completada: 1, aceptada_en: haceHoras(69), completada_en: haceHoras(68), origen: 'web' },
-          { mision_id: 'rastro_sombras', estado: 'aceptada', avance: { o1: 6, o2: 2 }, veces_completada: 0, aceptada_en: haceHoras(5), completada_en: null, origen: 'juego' },
-          { mision_id: 'cazador_ghasts', estado: 'completada', avance: { o1: 5 }, veces_completada: 3, aceptada_en: haceHoras(2), completada_en: haceHoras(1), origen: 'web' }
-        ]
-      }
+      id: String(o.id), orden: o.orden, tipo: o.tipo, objetivo: o.objetivo, cantidad: o.cantidad,
+      descripcion: txt(o.descripcion), condiciones: o.condiciones || {}
     };
   }
-
-  var bd = leer(CLAVE_BD) || datosIniciales();
-  function guardarBd() { escribir(CLAVE_BD, bd); }
-  guardarBd();
-
-  function misionConObjetivos(m) {
-    var c = copia(m);
-    c.objetivos = (c.objetivos || []).slice().sort(function (a, b) { return a.orden - b.orden; });
-    return c;
+  function normMision(m) {
+    return {
+      id: m.id, titulo: m.titulo, descripcion: txt(m.descripcion), icono: txt(m.icono),
+      categoria: m.categoria, capitulo_id: txt(m.capitulo_id), orden: m.orden || 0,
+      npc_id: txt(m.npc_id), mision_previa: txt(m.mision_previa),
+      repeticion: m.repeticion, repeticion_veces: m.repeticion_veces || 1, repeticion_horas: m.repeticion_horas || 0,
+      tiempo_limite_seg: m.tiempo_limite_seg || null, recompensa_texto: txt(m.recompensa_texto), activa: !!m.activa,
+      objetivos: (m.objetivos || []).map(normObjetivo).sort(function (a, b) { return a.orden - b.orden; })
+    };
   }
-  function jugadorActual() { return leer(CLAVE_JUGADOR); }
-  function adminActivo() { return !!leer(CLAVE_ADMIN, sessionStorage); }
-  function noAutorizado() { return esperar({ ok: false, motivo: 'Tu sesión de administrador terminó. Vuelve a iniciar sesión.' }); }
+  function normCapitulo(c) {
+    return {
+      id: c.id, orden: c.orden, titulo: c.titulo, resumen: txt(c.resumen),
+      npc_id: txt(c.npc_id), capitulo_previo: txt(c.capitulo_previo), activo: !!c.activo
+    };
+  }
+  function normNpc(n) { return { id: n.id, nombre: n.nombre, descripcion: txt(n.descripcion), es_principal: !!n.es_principal }; }
 
   /* =================== PÚBLICAS =================== */
-  async function obtenerConfiguracion() { return esperar(bd.configuracion); }
-  async function listarNpcs() { return esperar(bd.npcs); }
-  async function listarCapitulos() {
-    return esperar(bd.capitulos.slice().sort(function (a, b) { return a.orden - b.orden; }));
+  var CONFIG_POR_DEFECTO = { max_misiones_activas: 5, max_completadas_diarias: 10, hora_reinicio: 20, zona_horaria: 'America/La_Paz' };
+
+  async function obtenerConfiguracion() {
+    try {
+      var r = await sb.from('configuracion')
+        .select('max_misiones_activas, max_completadas_diarias, hora_reinicio, zona_horaria')
+        .eq('id', 1).maybeSingle();
+      aviso(r.error);
+      return r.data || Object.assign({}, CONFIG_POR_DEFECTO);
+    } catch (e) { aviso(e); return Object.assign({}, CONFIG_POR_DEFECTO); }
   }
-  async function listarMisiones() { return esperar(bd.misiones.map(misionConObjetivos)); }
+  async function listarNpcs() {
+    try {
+      var r = await sb.from('npcs').select('id, nombre, descripcion, es_principal').order('nombre');
+      aviso(r.error);
+      return (r.data || []).map(normNpc);
+    } catch (e) { aviso(e); return []; }
+  }
+  async function listarCapitulos() {
+    try {
+      var r = await sb.from('capitulos').select('id, orden, titulo, resumen, npc_id, capitulo_previo, activo').order('orden');
+      aviso(r.error);
+      return (r.data || []).map(normCapitulo);
+    } catch (e) { aviso(e); return []; }
+  }
+  async function listarMisiones() {
+    try {
+      var r = await sb.from('misiones').select('*, objetivos(*)').order('orden').order('titulo');
+      aviso(r.error);
+      return (r.data || []).map(normMision);
+    } catch (e) { aviso(e); return []; }
+  }
   async function obtenerMision(id) {
-    var m = bd.misiones.find(function (x) { return x.id === id; });
-    return esperar(m ? misionConObjetivos(m) : null);
+    try {
+      var r = await sb.from('misiones').select('*, objetivos(*)').eq('id', id).maybeSingle();
+      aviso(r.error);
+      return r.data ? normMision(r.data) : null;
+    } catch (e) { aviso(e); return null; }
   }
 
   /* =================== JUGADOR =================== */
-  async function estadoSesionJugador() { return esperar(jugadorActual()); }
+  async function estadoSesionJugador() {
+    var s = await sesionActual();
+    if (!s) return null;
+    try {
+      var r = await sb.from('jugadores').select('id, gamertag').eq('auth_uid', s.user.id).maybeSingle();
+      aviso(r.error);
+      return r.data || null;
+    } catch (e) { aviso(e); return null; }
+  }
   async function vincularCuenta(codigo) {
     var c = String(codigo || '').trim().toUpperCase();
-    if (!/^[A-Z0-9]{6}$/.test(c)) return esperar({ ok: false, motivo: 'El código tiene 6 letras o números. Revísalo y vuelve a intentarlo.' });
-    var j = bd.jugadores.find(function (x) { return x.codigo === c; });
-    if (!j) return esperar({ ok: false, motivo: 'Ese código no existe o ya venció. Pide uno nuevo al NPC de misiones.' });
-    var sesion = { id: j.id, gamertag: j.gamertag };
-    escribir(CLAVE_JUGADOR, sesion);
-    return esperar({ ok: true, jugador: sesion });
+    if (!/^[A-Z0-9]{6}$/.test(c)) return fallo('El código tiene 6 letras o números. Revísalo y vuelve a intentarlo.');
+    // Sesión invisible: el jugador no crea cuenta ni contraseña
+    if (!(await sesionActual())) {
+      try {
+        var a = await sb.auth.signInAnonymously();
+        if (a.error) { aviso(a.error); return fallo(SIN_CONEXION); }
+      } catch (e) { aviso(e); return fallo(SIN_CONEXION); }
+    }
+    return rpc('vincular_cuenta', { p_codigo: c });
   }
-  async function cerrarSesionJugador() { borrar(CLAVE_JUGADOR); return esperar({ ok: true }); }
+  async function cerrarSesionJugador() {
+    if (await sesionActual()) {
+      await rpc('desvincular_cuenta');
+      try { await sb.auth.signOut(); } catch (e) { aviso(e); }
+    }
+    return { ok: true };
+  }
   async function miProgreso() {
-    var j = jugadorActual();
-    return esperar(j ? (bd.progreso[j.id] || []) : []);
+    if (!(await sesionActual())) return [];
+    try {
+      var r = await sb.from('progreso')
+        .select('mision_id, estado, avance, veces_completada, aceptada_en, completada_en, origen');
+      aviso(r.error);
+      return (r.data || []).map(function (p) { p.avance = p.avance || {}; return p; });
+    } catch (e) { aviso(e); return []; }
   }
   async function miHistoria() {
-    var j = jugadorActual();
-    if (!j) return esperar([]);
-    var prog = bd.progreso[j.id] || [];
-    var hechas = {};
-    prog.forEach(function (p) { if (p.veces_completada > 0 || p.estado === 'completada') hechas[p.mision_id] = true; });
-    var out = [];
-    bd.capitulos.forEach(function (cap) {
-      var ms = bd.misiones.filter(function (m) { return m.categoria === 'historia' && m.capitulo_id === cap.id && m.activa; });
-      if (ms.length && ms.every(function (m) { return hechas[m.id]; })) {
-        var h = bd.historias[cap.id] || { texto: '', imagen_url: '' };
-        out.push({ capitulo_id: cap.id, texto: h.texto, imagen_url: h.imagen_url });
-      }
-    });
-    return esperar(out);
+    if (!(await sesionActual())) return [];
+    try {
+      // La base solo devuelve los capítulos que este jugador completó
+      var r = await sb.from('capitulos_historia').select('capitulo_id, texto, imagen_url');
+      aviso(r.error);
+      return (r.data || []).map(function (h) { return { capitulo_id: h.capitulo_id, texto: txt(h.texto), imagen_url: txt(h.imagen_url) }; });
+    } catch (e) { aviso(e); return []; }
   }
   async function aceptarMision(misionId) {
-    var j = jugadorActual();
-    if (!j) return esperar({ ok: false, motivo: 'Primero vincula tu cuenta.' });
-    var m = bd.misiones.find(function (x) { return x.id === misionId; });
-    if (!m || !m.activa) return esperar({ ok: false, motivo: 'Esta misión no está disponible ahora.' });
-    var prog = bd.progreso[j.id] = bd.progreso[j.id] || [];
-    var p = prog.find(function (x) { return x.mision_id === misionId; });
-    if (p && p.estado === 'aceptada') return esperar({ ok: false, motivo: 'Ya tienes esta misión en curso.' });
-    if (m.categoria === 'independiente') {
-      var activas = prog.filter(function (x) {
-        var mm = bd.misiones.find(function (y) { return y.id === x.mision_id; });
-        return x.estado === 'aceptada' && mm && mm.categoria === 'independiente';
-      }).length;
-      if (activas >= bd.configuracion.max_misiones_activas) return esperar({ ok: false, motivo: 'Ya tienes el máximo de misiones independientes en curso. Termina alguna antes de aceptar otra.' });
-    }
-    var vacio = {};
-    m.objetivos.forEach(function (o) { vacio[o.id] = 0; });
-    if (p) { p.estado = 'aceptada'; p.avance = vacio; p.aceptada_en = ahora(); p.origen = 'web'; }
-    else prog.push({ mision_id: misionId, estado: 'aceptada', avance: vacio, veces_completada: 0, aceptada_en: ahora(), completada_en: null, origen: 'web' });
-    guardarBd();
-    return esperar({ ok: true });
+    if (!(await sesionActual())) return fallo('Primero vincula tu cuenta.');
+    return rpc('aceptar_mision', { p_mision: misionId });
   }
 
   /* =================== ADMINISTRADOR =================== */
-  async function iniciarSesionAdmin(correo, contrasena) {
-    if (!String(correo || '').trim()) return esperar({ ok: false, motivo: 'Escribe tu correo.' });
-    if (contrasena !== 'admin') return esperar({ ok: false, motivo: 'Correo o contraseña incorrectos.' });
-    escribir(CLAVE_ADMIN, { correo: String(correo).trim() }, sessionStorage);
-    return esperar({ ok: true });
+  async function cuentaEsAdmin(uid) {
+    try {
+      var r = await sb.from('admins').select('user_id').eq('user_id', uid).maybeSingle();
+      aviso(r.error);
+      return !!r.data;
+    } catch (e) { aviso(e); return false; }
   }
-  async function cerrarSesionAdmin() { borrar(CLAVE_ADMIN, sessionStorage); return esperar({ ok: true }); }
-  async function esAdmin() { return esperar(adminActivo()); }
+  async function iniciarSesionAdmin(correo, contrasena) {
+    var c = String(correo || '').trim();
+    if (!c) return fallo('Escribe tu correo.');
+    try {
+      var r = await sb.auth.signInWithPassword({ email: c, password: String(contrasena || '') });
+      if (r.error) return fallo(/invalid/i.test(r.error.message || '') ? 'Correo o contraseña incorrectos.' : SIN_CONEXION);
+      if (!(await cuentaEsAdmin(r.data.user.id))) {
+        await sb.auth.signOut();
+        return fallo('Esta cuenta no tiene permisos de administrador.');
+      }
+      return { ok: true };
+    } catch (e) { aviso(e); return fallo(SIN_CONEXION); }
+  }
+  async function cerrarSesionAdmin() {
+    try { await sb.auth.signOut(); } catch (e) { aviso(e); }
+    return { ok: true };
+  }
+  async function esAdmin() {
+    var s = await sesionActual();
+    return s ? cuentaEsAdmin(s.user.id) : false;
+  }
+  async function exigirAdmin() { return (await sesionActual()) ? null : fallo(SIN_SESION_ADMIN); }
 
   async function guardarMision(mision, objetivos, comandos) {
-    if (!adminActivo()) return noAutorizado();
-    var m = copia(mision || {});
-    if (!ID_VALIDO.test(m.id || '')) return esperar({ ok: false, motivo: 'El id solo puede tener minúsculas, números y guion bajo.' });
-    if (!String(m.titulo || '').trim()) return esperar({ ok: false, motivo: 'La misión necesita un título.' });
-    if (m.categoria === 'historia') {
-      if (!m.capitulo_id) return esperar({ ok: false, motivo: 'Las misiones de historia necesitan un capítulo.' });
-      m.repeticion = 'una_vez';
-    } else { m.categoria = 'independiente'; m.capitulo_id = ''; }
-    var objs = copia(objetivos || []);
-    if (!objs.length) return esperar({ ok: false, motivo: 'Agrega al menos un objetivo.' });
-    for (var i = 0; i < objs.length; i++) {
-      if (!(Number(objs[i].cantidad) > 0)) return esperar({ ok: false, motivo: 'Cada objetivo necesita una cantidad mayor a 0.' });
-      objs[i].id = objs[i].id || ('o' + (i + 1) + '_' + Math.random().toString(36).slice(2, 6));
-      objs[i].orden = i + 1;
-      objs[i].cantidad = Number(objs[i].cantidad);
-      objs[i].condiciones = objs[i].condiciones || {};
-    }
-    m.objetivos = objs;
-    var idOriginal = m._id_original || m.id;
-    delete m._id_original;
-    var idx = bd.misiones.findIndex(function (x) { return x.id === idOriginal; });
-    if (idOriginal !== m.id && bd.misiones.some(function (x) { return x.id === m.id; })) return esperar({ ok: false, motivo: 'Ya existe una misión con ese id.' });
-    if (idx === -1 && bd.misiones.some(function (x) { return x.id === m.id; })) return esperar({ ok: false, motivo: 'Ya existe una misión con ese id.' });
-    if (idx >= 0) bd.misiones[idx] = m; else bd.misiones.push(m);
-    if (idOriginal !== m.id) delete bd.comandos[idOriginal];
-    bd.comandos[m.id] = (comandos || []).map(function (c) { return String(c).trim(); }).filter(Boolean);
-    guardarBd();
-    return esperar({ ok: true, mision: misionConObjetivos(m) });
+    var m = JSON.parse(JSON.stringify(mision || {}));
+    if (!ID_VALIDO.test(m.id || '')) return fallo('El id solo puede tener minúsculas, números y guion bajo.');
+    if (!String(m.titulo || '').trim()) return fallo('La misión necesita un título.');
+    if (m.categoria === 'historia' && !m.capitulo_id) return fallo('Las misiones de historia necesitan un capítulo.');
+    var objs = (objetivos || []).map(function (o) {
+      return {
+        id: o.id == null ? '' : String(o.id), tipo: o.tipo, objetivo: String(o.objetivo || '').trim(),
+        cantidad: Number(o.cantidad), descripcion: o.descripcion || '', condiciones: o.condiciones || {}
+      };
+    });
+    if (!objs.length) return fallo('Agrega al menos un objetivo.');
+    if (objs.some(function (o) { return !(o.cantidad > 0); })) return fallo('Cada objetivo necesita una cantidad mayor a 0.');
+    var no = await exigirAdmin(); if (no) return no;
+
+    var idOriginal = m._id_original || null;
+    delete m._id_original; delete m.objetivos;
+    var cmds = (comandos || []).map(function (c) { return String(c).trim().replace(/^\//, ''); }).filter(Boolean);
+    return rpc('admin_guardar_mision', { p_mision: m, p_objetivos: objs, p_comandos: cmds, p_id_original: idOriginal });
   }
   async function eliminarMision(id) {
-    if (!adminActivo()) return noAutorizado();
-    bd.misiones = bd.misiones.filter(function (m) { return m.id !== id; });
-    delete bd.comandos[id];
-    bd.misiones.forEach(function (m) { if (m.mision_previa === id) m.mision_previa = ''; });
-    guardarBd();
-    return esperar({ ok: true });
+    var no = await exigirAdmin(); if (no) return no;
+    try {
+      var r = await sb.from('misiones').delete().eq('id', id).select('id');
+      if (r.error) { aviso(r.error); return fallo(SIN_CONEXION); }
+      return (r.data && r.data.length) ? { ok: true } : fallo(SIN_SESION_ADMIN);
+    } catch (e) { aviso(e); return fallo(SIN_CONEXION); }
   }
   async function obtenerComandos(misionId) {
-    if (!adminActivo()) return esperar([]);
-    return esperar(bd.comandos[misionId] || []);
+    try {
+      var r = await sb.from('misiones_comandos').select('comandos').eq('mision_id', misionId).maybeSingle();
+      aviso(r.error);
+      return (r.data && r.data.comandos) || [];
+    } catch (e) { aviso(e); return []; }
   }
   async function guardarCapitulo(capitulo, historia) {
-    if (!adminActivo()) return noAutorizado();
-    var c = copia(capitulo || {});
-    if (!ID_VALIDO.test(c.id || '')) return esperar({ ok: false, motivo: 'El id solo puede tener minúsculas, números y guion bajo.' });
-    if (!String(c.titulo || '').trim()) return esperar({ ok: false, motivo: 'El capítulo necesita un título.' });
-    c.orden = Number(c.orden);
-    if (!(c.orden > 0)) return esperar({ ok: false, motivo: 'El orden debe ser un número mayor a 0.' });
-    var idOriginal = c._id_original || c.id; delete c._id_original;
-    if (bd.capitulos.some(function (x) { return x.orden === c.orden && x.id !== idOriginal; })) return esperar({ ok: false, motivo: 'Ya hay otro capítulo con ese orden.' });
-    if (bd.capitulos.some(function (x) { return x.id === c.id && x.id !== idOriginal; })) return esperar({ ok: false, motivo: 'Ya existe un capítulo con ese id.' });
-    if (c.capitulo_previo === c.id) return esperar({ ok: false, motivo: 'Un capítulo no puede depender de sí mismo.' });
-    var idx = bd.capitulos.findIndex(function (x) { return x.id === idOriginal; });
-    if (idx >= 0) bd.capitulos[idx] = c; else bd.capitulos.push(c);
-    if (idOriginal !== c.id) {
-      bd.historias[c.id] = bd.historias[idOriginal]; delete bd.historias[idOriginal];
-      bd.misiones.forEach(function (m) { if (m.capitulo_id === idOriginal) m.capitulo_id = c.id; });
-      bd.capitulos.forEach(function (x) { if (x.capitulo_previo === idOriginal) x.capitulo_previo = c.id; });
-    }
-    bd.historias[c.id] = { texto: (historia && historia.texto) || '', imagen_url: (historia && historia.imagen_url) || '' };
-    guardarBd();
-    return esperar({ ok: true, capitulo: c });
+    var c = JSON.parse(JSON.stringify(capitulo || {}));
+    if (!ID_VALIDO.test(c.id || '')) return fallo('El id solo puede tener minúsculas, números y guion bajo.');
+    if (!String(c.titulo || '').trim()) return fallo('El capítulo necesita un título.');
+    var no = await exigirAdmin(); if (no) return no;
+    var idOriginal = c._id_original || null; delete c._id_original;
+    return rpc('admin_guardar_capitulo', {
+      p_capitulo: c,
+      p_historia: { texto: (historia && historia.texto) || '', imagen_url: (historia && historia.imagen_url) || '' },
+      p_id_original: idOriginal
+    });
   }
   async function obtenerHistoriaAdmin(capituloId) {
-    if (!adminActivo()) return esperar({ texto: '', imagen_url: '' });
-    return esperar(bd.historias[capituloId] || { texto: '', imagen_url: '' });
+    try {
+      var r = await sb.from('capitulos_historia').select('texto, imagen_url').eq('capitulo_id', capituloId).maybeSingle();
+      aviso(r.error);
+      return { texto: txt(r.data && r.data.texto), imagen_url: txt(r.data && r.data.imagen_url) };
+    } catch (e) { aviso(e); return { texto: '', imagen_url: '' }; }
   }
   async function eliminarCapitulo(id) {
-    if (!adminActivo()) return noAutorizado();
-    if (bd.misiones.some(function (m) { return m.capitulo_id === id; })) return esperar({ ok: false, motivo: 'Este capítulo todavía tiene misiones. Muévelas o elimínalas primero.' });
-    bd.capitulos = bd.capitulos.filter(function (c) { return c.id !== id; });
-    bd.capitulos.forEach(function (c) { if (c.capitulo_previo === id) c.capitulo_previo = ''; });
-    delete bd.historias[id];
-    guardarBd();
-    return esperar({ ok: true });
+    var no = await exigirAdmin(); if (no) return no;
+    return rpc('admin_eliminar_capitulo', { p_id: id });
   }
   async function guardarNpc(npc) {
-    if (!adminActivo()) return noAutorizado();
-    var n = copia(npc || {});
-    if (!ID_VALIDO.test(n.id || '')) return esperar({ ok: false, motivo: 'El id solo puede tener minúsculas, números y guion bajo.' });
-    if (!String(n.nombre || '').trim()) return esperar({ ok: false, motivo: 'El NPC necesita un nombre.' });
-    var idOriginal = n._id_original || n.id; delete n._id_original;
-    if (bd.npcs.some(function (x) { return x.id === n.id && x.id !== idOriginal; })) return esperar({ ok: false, motivo: 'Ya existe un NPC con ese id.' });
-    n.es_principal = !!n.es_principal;
-    if (n.es_principal) bd.npcs.forEach(function (x) { x.es_principal = false; });
-    var idx = bd.npcs.findIndex(function (x) { return x.id === idOriginal; });
-    if (idx >= 0) bd.npcs[idx] = n; else bd.npcs.push(n);
-    if (idOriginal !== n.id) {
-      bd.misiones.forEach(function (m) { if (m.npc_id === idOriginal) m.npc_id = n.id; });
-      bd.capitulos.forEach(function (c) { if (c.npc_id === idOriginal) c.npc_id = n.id; });
-    }
-    if (!bd.npcs.some(function (x) { return x.es_principal; }) && bd.npcs.length) bd.npcs[0].es_principal = true;
-    guardarBd();
-    return esperar({ ok: true, npc: n });
+    var n = JSON.parse(JSON.stringify(npc || {}));
+    if (!ID_VALIDO.test(n.id || '')) return fallo('El id solo puede tener minúsculas, números y guion bajo.');
+    if (!String(n.nombre || '').trim()) return fallo('El NPC necesita un nombre.');
+    var no = await exigirAdmin(); if (no) return no;
+    var idOriginal = n._id_original || null; delete n._id_original;
+    return rpc('admin_guardar_npc', { p_npc: n, p_id_original: idOriginal });
   }
   async function eliminarNpc(id) {
-    if (!adminActivo()) return noAutorizado();
-    bd.npcs = bd.npcs.filter(function (n) { return n.id !== id; });
-    bd.misiones.forEach(function (m) { if (m.npc_id === id) m.npc_id = ''; });
-    bd.capitulos.forEach(function (c) { if (c.npc_id === id) c.npc_id = ''; });
-    if (!bd.npcs.some(function (x) { return x.es_principal; }) && bd.npcs.length) bd.npcs[0].es_principal = true;
-    guardarBd();
-    return esperar({ ok: true });
+    var no = await exigirAdmin(); if (no) return no;
+    return rpc('admin_eliminar_npc', { p_id: id });
   }
   async function guardarConfiguracion(config) {
-    if (!adminActivo()) return noAutorizado();
-    var c = copia(config || {});
+    var c = config || {};
     var n = function (v) { return Math.max(0, Math.floor(Number(v) || 0)); };
-    bd.configuracion = {
+    var zona = String(c.zona_horaria || 'America/La_Paz').trim();
+    try { new Intl.DateTimeFormat('es', { timeZone: zona }); }
+    catch (e) { return fallo('La zona horaria no es válida. Usa un nombre como America/La_Paz.'); }
+    var datos = {
       max_misiones_activas: n(c.max_misiones_activas),
       max_completadas_diarias: n(c.max_completadas_diarias),
       hora_reinicio: Math.min(23, n(c.hora_reinicio)),
-      zona_horaria: String(c.zona_horaria || 'America/La_Paz')
+      zona_horaria: zona
     };
-    guardarBd();
-    return esperar({ ok: true, configuracion: bd.configuracion });
+    var no = await exigirAdmin(); if (no) return no;
+    try {
+      var r = await sb.from('configuracion').update(datos).eq('id', 1).select('id');
+      if (r.error) { aviso(r.error); return fallo(SIN_CONEXION); }
+      return (r.data && r.data.length) ? { ok: true, configuracion: datos } : fallo(SIN_SESION_ADMIN);
+    } catch (e) { aviso(e); return fallo(SIN_CONEXION); }
   }
 
-  /* Solo para pruebas: vuelve a los datos de ejemplo (no forma parte de la base real). */
-  function reiniciarDatosSimulados() { bd = datosIniciales(); guardarBd(); borrar(CLAVE_JUGADOR); }
+  /* Ya no hay datos simulados; se deja para que nada falle si alguien la llama. */
+  function reiniciarDatosSimulados() { console.info('[Misiones] La página ya usa la base de datos real.'); }
 
   window.Datos = {
     obtenerConfiguracion: obtenerConfiguracion, listarNpcs: listarNpcs, listarCapitulos: listarCapitulos,
