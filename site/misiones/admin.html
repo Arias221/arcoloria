@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1C1210">
+<meta name="robots" content="noindex, nofollow">
+<title>Administración de Misiones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,500..700,100;1,9..144,500,100&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body class="admin">
+<div class="escena" aria-hidden="true"><div class="nitido"></div><div class="borroso"></div><div class="bruma"></div><div class="velo"></div></div>
+<div class="chispas" aria-hidden="true"></div>
+
+<header class="barra">
+  <div class="barra-in">
+    <a class="marca" href="admin.html"><span id="marca-sello"></span><b>Administración</b></a>
+    <a class="boton sec peq" href="index.html" target="_blank" rel="noopener" id="ver-pagina"></a>
+    <button class="boton sec peq" type="button" id="salir" hidden></button>
+  </div>
+</header>
+
+<main class="contenedor" id="raiz" tabindex="-1"></main>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="js/datos.js"></script>
+<script src="js/comun.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
