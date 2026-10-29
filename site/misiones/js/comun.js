@@ -334,9 +334,11 @@
     if (!opciones.vistaPrevia) {
       if (e.detalle) html += '<div class="aviso ' + (e.clave === 'limite' ? 'rosa' : e.clave === 'espera' ? 'oro' : '') + '" style="margin-top:16px">' + ic(e.clave === 'bloqueada' ? 'candado' : 'info') + '<span>' + esc(e.detalle) + '</span></div>';
       html += '<div class="acciones">';
-      if (e.clave === 'sin_sesion') html += '<a class="boton magico ancho" href="#aventura">' + ic('enlace') + 'Vincula tu cuenta para aceptar</a>';
-      else if (e.clave === 'disponible') html += '<button class="boton ancho" type="button" data-aceptar="' + esc(m.id) + '">' + ic('destello') + 'Aceptar misión</button>';
-      else if (e.clave === 'aceptada') html += '<div class="aviso" style="width:100%">' + ic('destello') + '<span>Esta misión está en curso. Tu avance se actualiza mientras juegas.</span></div>';
+      var conNpc = npc ? 've con <b>' + esc(npc.nombre) + '</b> y escribe <b>/misiones</b>' : 've con el NPC de misiones y escribe <b>/misiones</b>';
+      if (e.clave === 'sin_sesion') html += '<div class="aviso" style="width:100%">' + ic('persona') + '<span>Para aceptarla, ' + conNpc + ' en el juego.</span></div>' +
+        '<a class="boton magico ancho" href="#aventura">' + ic('enlace') + 'Vincula tu cuenta para ver tu progreso</a>';
+      else if (e.clave === 'disponible') html += '<div class="aviso" style="width:100%">' + ic('persona') + '<span>¡Está disponible! Para aceptarla, ' + conNpc + ' en el juego.</span></div>';
+      else if (e.clave === 'aceptada') html += '<div class="aviso" style="width:100%">' + ic('destello') + '<span>Esta misión está en curso. Tu avance se actualiza mientras juegas. Al terminar, entrégala ' + (npc ? 'a <b>' + esc(npc.nombre) + '</b>' : 'al NPC') + ' con <b>/misiones</b>.</span></div>';
       html += '</div>';
     }
     return html + '</section>';

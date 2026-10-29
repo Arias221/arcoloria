@@ -73,10 +73,10 @@
       '</div>' +
       '<section class="perg entrar" style="margin-top:34px"><div class="perg-brillo"></div><span class="runa">Cómo funciona</span>' +
         '<ol class="pasos-inicio">' +
-          '<li><span>Habla con el NPC de misiones en el juego y pide tu código para vincular tu cuenta.</span></li>' +
-          '<li><span>Elige una misión aquí o en el juego. Las de <b>historia</b> cuentan la leyenda del reino; las <b>independientes</b> se pueden repetir.</span></li>' +
+          '<li><span>En el juego escribe <b>/misiones</b> y elige «Vincular con la página» para obtener tu código.</span></li>' +
+          '<li><span>Mira aquí las misiones y acéptalas en el juego junto al NPC que las entrega, con <b>/misiones</b>. Las de <b>historia</b> cuentan la leyenda del reino; las <b>independientes</b> se pueden repetir.</span></li>' +
           '<li><span>Juega con normalidad: tu avance se guarda solo mientras cumples los objetivos.</span></li>' +
-          '<li><span>Al terminar recibes tu recompensa, y si es de historia, se desbloquea su capítulo en las Crónicas.</span></li>' +
+          '<li><span>Al terminar, vuelve con ese NPC y entrégala para recibir tu recompensa. Si es de historia, se desbloquea su capítulo en las Crónicas.</span></li>' +
         '</ol></section>';
   }
   function acceso(href, icono, titulo, texto) {
@@ -176,11 +176,11 @@
   async function verAventura(d) {
     if (!d.sesion) {
       vista.innerHTML =
-        '<div class="titulo-seccion entrar"><span class="runa">Tu aventura</span><h2>Vincula tu cuenta</h2><p>Así podrás aceptar misiones desde aquí y ver tu progreso.</p></div>' +
+        '<div class="titulo-seccion entrar"><span class="runa">Tu aventura</span><h2>Vincula tu cuenta</h2><p>Así podrás ver aquí tu progreso, tus misiones en curso y las crónicas que vayas desbloqueando.</p></div>' +
         '<section class="perg entrar"><div class="perg-brillo"></div>' +
           '<ol class="pasos-inicio">' +
-            '<li><span>Entra al servidor y busca al <b>NPC de misiones</b>.</span></li>' +
-            '<li><span>Pídele tu <b>código de vinculación</b>. Son 6 letras o números.</span></li>' +
+            '<li><span>Entra al servidor y escribe <b>/misiones</b> en el chat.</span></li>' +
+            '<li><span>Elige <b>Vincular con la página</b> y anota tu código. Son 6 letras o números y vence en 10 minutos.</span></li>' +
             '<li><span>Escríbelo aquí abajo y toca <b>Vincular</b>.</span></li>' +
           '</ol>' +
           '<form class="codigo-form" id="form-codigo" autocomplete="off"><label class="sr" for="codigo">Código de vinculación</label>' +

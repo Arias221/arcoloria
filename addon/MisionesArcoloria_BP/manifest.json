@@ -1,0 +1,25 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "§6Misiones Arcoloria",
+    "description": "Libro de misiones conectado a la página. Usa /misiones junto a un NPC.",
+    "uuid": "18702bc9-bed4-4e22-afb3-1edbeccb6063",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 100]
+  },
+  "modules": [
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "929435f0-a392-4d72-a3e3-ec171eb401ed",
+      "entry": "scripts/main.js",
+      "version": [1, 0, 0]
+    }
+  ],
+  "dependencies": [
+    { "module_name": "@minecraft/server", "version": "2.9.0" },
+    { "module_name": "@minecraft/server-ui", "version": "2.0.0" },
+    { "module_name": "@minecraft/server-net", "version": "1.0.0-beta" },
+    { "module_name": "@minecraft/server-admin", "version": "1.0.0-beta" }
+  ]
+}
