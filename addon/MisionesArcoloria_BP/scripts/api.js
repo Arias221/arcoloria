@@ -7,15 +7,24 @@ import { MAX_PETICIONES, TIEMPO_PETICION } from "./config.js";
 
 let urlBase = null;
 let clave = null;
+let servidor = null;
 let activas = 0;
 const cola = [];
 
 export function iniciarApi() {
   urlBase = variables.get("supabase_url");
   clave = secrets.get("supabase_secret");
+  const s = String(variables.get("servidor") || "").trim().toLowerCase();
+  servidor = /^[a-z0-9_]+$/.test(s) ? s : null;
   if (!urlBase) console.error("[Misiones] Falta 'supabase_url' en config/default/variables.json");
   if (!clave) console.error("[Misiones] Falta 'supabase_secret' en config/default/secrets.json");
-  return !!(urlBase && clave);
+  if (!servidor) console.error("[Misiones] Falta 'servidor' en config/default/variables.json (por ejemplo \"nubelia\" o \"solune\"). Las misiones quedan desactivadas para no mezclar datos.");
+  return !!(urlBase && clave && servidor);
+}
+
+/** Servidor de este mundo (nubelia, solune...). */
+export function servidorActual() {
+  return servidor;
 }
 
 function siguiente() {
@@ -34,7 +43,7 @@ function encolar(fn) {
 }
 
 async function peticion(metodo, ruta, cuerpo) {
-  if (!urlBase || !clave) throw new Error("Conexión no configurada");
+  if (!urlBase || !clave || !servidor) throw new Error("Conexión no configurada");
   const req = new HttpRequest(urlBase + ruta);
   req.method = metodo;
   req.timeout = TIEMPO_PETICION;
@@ -52,12 +61,13 @@ async function peticion(metodo, ruta, cuerpo) {
   return res.body ? JSON.parse(res.body) : null;
 }
 
-/** Lee una tabla. ruta: "misiones?select=*" */
+/** Lee una tabla, solo los datos de este servidor. ruta: "misiones?select=*" */
 export function leer(ruta) {
-  return encolar(() => peticion(HttpRequestMethod.Get, "/rest/v1/" + ruta));
+  const filtro = (ruta.includes("?") ? "&" : "?") + "servidor=eq." + encodeURIComponent(servidor);
+  return encolar(() => peticion(HttpRequestMethod.Get, "/rest/v1/" + ruta + filtro));
 }
 
-/** Llama una función de la base. */
+/** Llama una función de la base, siempre indicando el servidor. */
 export function rpc(nombre, parametros) {
-  return encolar(() => peticion(HttpRequestMethod.Post, "/rest/v1/rpc/" + nombre, parametros || {}));
+  return encolar(() => peticion(HttpRequestMethod.Post, "/rest/v1/rpc/" + nombre, { p_servidor: servidor, ...(parametros || {}) }));
 }

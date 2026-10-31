@@ -2,9 +2,9 @@
 // Se guarda una copia en el mundo para seguir funcionando si la base no responde.
 
 import { world } from "@minecraft/server";
-import { leer } from "./api.js";
+import { leer, servidorActual } from "./api.js";
 
-const CLAVE_CACHE = "misiones:cache";
+const claveCache = () => "misiones:cache:" + servidorActual();
 const TAM_TROZO = 8000; // caracteres por trozo (el límite real es en bytes y las tildes ocupan más)
 
 export const contenido = {
@@ -33,10 +33,10 @@ function guardarCache(datos) {
   try {
     const texto = JSON.stringify(datos);
     const n = Math.ceil(texto.length / TAM_TROZO);
-    for (let i = 0; i < n; i++) world.setDynamicProperty(`${CLAVE_CACHE}:${i}`, texto.slice(i * TAM_TROZO, (i + 1) * TAM_TROZO));
-    const anterior = Number(world.getDynamicProperty(`${CLAVE_CACHE}:n`) || 0);
-    for (let i = n; i < anterior; i++) world.setDynamicProperty(`${CLAVE_CACHE}:${i}`, undefined);
-    world.setDynamicProperty(`${CLAVE_CACHE}:n`, n);
+    for (let i = 0; i < n; i++) world.setDynamicProperty(`${claveCache()}:${i}`, texto.slice(i * TAM_TROZO, (i + 1) * TAM_TROZO));
+    const anterior = Number(world.getDynamicProperty(`${claveCache()}:n`) || 0);
+    for (let i = n; i < anterior; i++) world.setDynamicProperty(`${claveCache()}:${i}`, undefined);
+    world.setDynamicProperty(`${claveCache()}:n`, n);
   } catch (e) {
     console.warn("[Misiones] No se pudo guardar la copia local: " + e);
   }
@@ -44,10 +44,10 @@ function guardarCache(datos) {
 
 export function cargarCache() {
   try {
-    const n = Number(world.getDynamicProperty(`${CLAVE_CACHE}:n`) || 0);
+    const n = Number(world.getDynamicProperty(`${claveCache()}:n`) || 0);
     if (!n) return false;
     let texto = "";
-    for (let i = 0; i < n; i++) texto += world.getDynamicProperty(`${CLAVE_CACHE}:${i}`) || "";
+    for (let i = 0; i < n; i++) texto += world.getDynamicProperty(`${claveCache()}:${i}`) || "";
     aplicar(JSON.parse(texto));
     return true;
   } catch (e) {
@@ -64,12 +64,16 @@ export async function sincronizar(forzar = false) {
   if (sincronizando) return false;
   sincronizando = true;
   try {
-    const v = await leer("sincronizacion?select=version_contenido&id=eq.1");
-    const version = v && v[0] ? Number(v[0].version_contenido) : 0;
+    const v = await leer("sincronizacion?select=version_contenido");
+    if (!v || !v[0]) {
+      console.error(`[Misiones] El servidor «${servidorActual()}» no existe en la base. Revisa 'servidor' en variables.json.`);
+      return false;
+    }
+    const version = Number(v[0].version_contenido);
     if (!forzar && version === contenido.version) return false;
 
     const [config, npcs, capitulos, misiones] = await Promise.all([
-      leer("configuracion?select=max_misiones_activas,max_completadas_diarias,hora_reinicio,zona_horaria&id=eq.1"),
+      leer("configuracion?select=max_misiones_activas,max_completadas_diarias,hora_reinicio,zona_horaria"),
       leer("npcs?select=id,nombre,es_principal"),
       leer("capitulos?select=id,orden,titulo,npc_id,capitulo_previo,activo&order=orden"),
       leer("misiones?select=id,titulo,descripcion,icono,categoria,capitulo_id,orden,npc_id,mision_previa,repeticion,repeticion_veces,repeticion_horas,tiempo_limite_seg,recompensa_texto,activa,objetivos(id,orden,tipo,objetivo,cantidad,condiciones,descripcion)"),
@@ -77,7 +81,7 @@ export async function sincronizar(forzar = false) {
     const datos = { version, config: config && config[0], npcs: npcs || [], capitulos: capitulos || [], misiones: misiones || [] };
     aplicar(datos);
     guardarCache(datos);
-    console.warn(`[Misiones] Contenido actualizado (versión ${version}): ${contenido.misiones.size} misiones, ${contenido.npcs.size} NPCs.`);
+    console.warn(`[Misiones] Contenido de ${servidorActual()} actualizado (versión ${version}): ${contenido.misiones.size} misiones, ${contenido.npcs.size} NPCs.`);
     return true;
   } finally {
     sincronizando = false;

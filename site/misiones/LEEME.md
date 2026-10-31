@@ -33,7 +33,11 @@ misiones/
 - **Sesiones separadas:** `index.html` y `admin.html` guardan su sesión con claves distintas, así un admin puede probar como jugador en el mismo navegador.
 - Las funciones de `window.Datos` mantienen los mismos nombres y formas de respuesta (`{ ok }` o `{ ok: false, motivo }`), y `_id_original` sigue sirviendo para renombrar ids.
 
-Los scripts SQL están en la carpeta `supabase/` del repositorio (ejecutar en orden: `01_...`, `02_...`).
+- **Varios servidores:** arriba hay un selector (Nubelia / Solune). El servidor elegido va en el enlace (`?s=solune`) y se recuerda en el navegador. Todas las funciones de `datos.js` trabajan sobre ese servidor. Al vincular un código, la página se cambia sola al servidor de ese código.
+- **Copiar entre servidores:** en el panel, cada misión y capítulo tiene un botón «A Solune» / «A Nubelia». La copia llega inactiva.
+- **Aceptar misiones:** solo en el juego, junto al NPC (`/misiones`). La página muestra a qué NPC ir.
+
+El script SQL está en la carpeta `supabase/` del repositorio (`04_multiservidor.sql`).
 
 ## Íconos de ítems
 

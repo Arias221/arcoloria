@@ -1,5 +1,7 @@
 # Misiones Arcoloria (addon del servidor)
 
+El mismo addon sirve para Nubelia y Solune: cada servidor solo lee y escribe sus propios datos.
+
 Addon para Bedrock Dedicated Server (BDS) conectado a la misma base de datos que la página de misiones.
 
 ## Cómo se juega
@@ -21,10 +23,14 @@ Los NPCs se registran en la página (o en la tabla `npcs`) y en el juego se marc
 
 ## Instalación
 
-1. Ejecutar en Supabase, en orden, los scripts de `../supabase/` (`01`, `02` y `03`).
+1. Ejecutar en Supabase `../supabase/04_multiservidor.sql` (una sola vez).
 2. Subir `MisionesArcoloria_BP` (o el `.mcpack`) a la carpeta `addons` del servidor.
 3. En `config/default/permissions.json`, `allowed_modules` debe incluir `@minecraft/server-net` y `@minecraft/server-admin`.
-4. En `config/default/variables.json`: `"supabase_url": "https://<proyecto>.supabase.co"`.
+4. En `config/default/variables.json`:
+   ```json
+   { "supabase_url": "https://<proyecto>.supabase.co", "servidor": "nubelia" }
+   ```
+   `servidor` es `nubelia` o `solune` según el mundo. Sin esta línea el addon no arranca, para no mezclar datos.
 5. En `config/default/secrets.json`: `"supabase_secret": "sb_secret_..."` (la clave secreta **nunca** va en el código ni en la página).
 6. Reiniciar el servidor.
 

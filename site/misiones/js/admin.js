@@ -47,10 +47,37 @@
   }
   function aviso(texto, tipo) { C.toast(texto, tipo); }
   function confirmar(texto) { return window.confirm(texto); }
+  var selector = document.getElementById('selector-servidor');
   async function recargar() {
+    var servidores = await D.listarServidores();
     var r = await Promise.all([D.obtenerConfiguracion(), D.listarNpcs(), D.listarCapitulos(), D.listarMisiones()]);
-    datos = { config: r[0], npcs: r[1], capitulos: r[2], misiones: r[3] };
+    datos = { config: r[0], npcs: r[1], capitulos: r[2], misiones: r[3], servidores: servidores };
+    var html = C.selectorServidor(servidores, D.servidorActual());
+    selector.innerHTML = html; selector.hidden = !html;
   }
+  function otrosServidores() {
+    return (datos.servidores || []).filter(function (s) { return s.id !== D.servidorActual(); });
+  }
+  function botonesCopiar(atributo, id) {
+    return otrosServidores().map(function (s) {
+      return '<button class="boton sec peq" type="button" data-' + atributo + '="' + esc(id) + '" data-destino="' + esc(s.id) + '" title="Copiar a ' + esc(s.nombre) + '">' + ic('copiar') + 'A ' + esc(s.nombre) + '</button>';
+    }).join('');
+  }
+  async function copiarA(tipo, id, destino) {
+    var r = tipo === 'mision' ? await D.copiarMision(id, destino) : await D.copiarCapitulo(id, destino);
+    if (!(await revisarSesion(r))) return;
+    if (r.ok) aviso((tipo === 'mision' ? 'Misión copiada' : 'Capítulo copiado') + ' a ' + D.nombreServidor(destino) + ' como «' + r.id + '». ' + (tipo === 'mision' ? 'Llega inactiva: revísala y actívala allí.' : 'Llega inactivo: revísalo y actívalo allí.'), 'magico');
+    else aviso(r.motivo || 'No se pudo copiar.', 'error');
+  }
+  selector.addEventListener('click', async function (e) {
+    var b = e.target.closest('[data-servidor]');
+    if (!b || b.dataset.servidor === D.servidorActual()) return;
+    if (form && !confirmar('Tienes una misión sin guardar. ¿Cambiar de servidor de todos modos?')) return;
+    form = null;
+    D.cambiarServidor(b.dataset.servidor);
+    raiz.innerHTML = C.cargando('Abriendo ' + D.nombreServidor() + '…');
+    await recargar(); pintar(); window.scrollTo(0, 0);
+  });
 
   /* =================== acceso =================== */
   async function iniciar() {
@@ -104,7 +131,7 @@
     else if (pestana === 'config') pintarConfig(c);
     else pintarPanel(c);
   }
-  function titulo(runa, texto, extra) { return '<div class="titulo-seccion" style="text-align:left;margin-top:4px"><span class="runa">' + runa + '</span><h2>' + texto + '</h2>' + (extra ? '<p style="margin-left:0">' + extra + '</p>' : '') + '</div>'; }
+  function titulo(runa, texto, extra) { return '<div class="titulo-seccion" style="text-align:left;margin-top:4px"><span class="runa">' + runa + ' · ' + esc(D.nombreServidor()) + '</span><h2>' + texto + '</h2>' + (extra ? '<p style="margin-left:0">' + extra + '</p>' : '') + '</div>'; }
 
   /* =================== panel =================== */
   function pintarPanel(c) {
@@ -143,7 +170,7 @@
       document.getElementById('m-lista').innerHTML = lista.length ? lista.map(function (m) {
         var cap = datos.capitulos.find(function (x) { return x.id === m.capitulo_id; });
         return '<div class="fila-admin">' + C.imgIcono(m.icono, '') + '<div><b>' + esc(m.titulo) + '</b><small>' + esc(m.id) + ' · ' + (m.categoria === 'historia' ? 'Historia' + (cap ? ' · cap. ' + cap.orden : '') : 'Independiente') + ' · ' + m.objetivos.length + (m.objetivos.length === 1 ? ' objetivo' : ' objetivos') + (m.activa ? '' : ' · <span style="color:var(--rojo)">inactiva</span>') + '</small></div>' +
-          '<div class="botones"><button class="boton sec peq" type="button" data-editar="' + esc(m.id) + '">' + ic('editar') + 'Editar</button><button class="boton sec peq" type="button" data-duplicar="' + esc(m.id) + '">' + ic('copiar') + 'Duplicar</button><button class="boton peligro peq" type="button" data-eliminar="' + esc(m.id) + '">' + ic('basura') + 'Eliminar</button></div></div>';
+          '<div class="botones"><button class="boton sec peq" type="button" data-editar="' + esc(m.id) + '">' + ic('editar') + 'Editar</button><button class="boton sec peq" type="button" data-duplicar="' + esc(m.id) + '">' + ic('copiar') + 'Duplicar</button>' + botonesCopiar('copiar', m.id) + '<button class="boton peligro peq" type="button" data-eliminar="' + esc(m.id) + '">' + ic('basura') + 'Eliminar</button></div></div>';
       }).join('') : '<section class="perg"><p class="vacio">No hay misiones con esos filtros.</p></section>';
     }
     filtrar();
@@ -154,6 +181,7 @@
       var b = e.target.closest('button'); if (!b) return;
       if (b.dataset.editar) abrirFormMision(b.dataset.editar);
       if (b.dataset.duplicar) abrirFormMision(b.dataset.duplicar, true);
+      if (b.dataset.copiar) await copiarA('mision', b.dataset.copiar, b.dataset.destino);
       if (b.dataset.eliminar) {
         var m = datos.misiones.find(function (x) { return x.id === b.dataset.eliminar; });
         if (!confirmar('¿Eliminar la misión «' + m.titulo + '»? Esta acción no se puede deshacer.')) return;
@@ -420,12 +448,13 @@
         var nm = datos.misiones.filter(function (m) { return m.capitulo_id === x.id; }).length;
         return '<div class="fila-admin"><span class="orden-num">' + x.orden + '</span><div><b>' + esc(x.titulo) + '</b><small>' + esc(x.id) + ' · ' + nm + (nm === 1 ? ' misión' : ' misiones') + ' · NPC: ' + esc(npc ? npc.nombre : 'principal') + (prev ? ' · después de «' + esc(prev.titulo) + '»' : '') + (x.activo ? '' : ' · <span style="color:var(--rojo)">inactivo</span>') + '</small>' + (x.resumen ? '<small style="display:block;font-style:italic">' + esc(x.resumen) + '</small>' : '') + '</div>' +
           '<div class="botones"><button class="btn-icono" type="button" data-c-mover="-1" data-i="' + i + '" title="Subir"' + (i === 0 ? ' disabled' : '') + '>' + ic('arriba') + '</button><button class="btn-icono" type="button" data-c-mover="1" data-i="' + i + '" title="Bajar"' + (i === caps.length - 1 ? ' disabled' : '') + '>' + ic('abajo') + '</button>' +
-          '<button class="boton sec peq" type="button" data-c-editar="' + esc(x.id) + '">' + ic('editar') + 'Editar</button><button class="boton peligro peq" type="button" data-c-eliminar="' + esc(x.id) + '">' + ic('basura') + 'Eliminar</button></div></div>';
+          '<button class="boton sec peq" type="button" data-c-editar="' + esc(x.id) + '">' + ic('editar') + 'Editar</button>' + botonesCopiar('c-copiar', x.id) + '<button class="boton peligro peq" type="button" data-c-eliminar="' + esc(x.id) + '">' + ic('basura') + 'Eliminar</button></div></div>';
       }).join('') : '<section class="perg"><p class="vacio">Todavía no hay capítulos.</p></section>') + '</div><div id="c-form"></div>';
     document.getElementById('c-nuevo').addEventListener('click', function () { formCapitulo(null); });
     c.addEventListener('click', async function (e) {
       var b = e.target.closest('button'); if (!b) return;
       if (b.dataset.cEditar) formCapitulo(b.dataset.cEditar);
+      if (b.dataset.cCopiar) await copiarA('capitulo', b.dataset.cCopiar, b.dataset.destino);
       if (b.dataset.cEliminar) {
         var x = caps.find(function (y) { return y.id === b.dataset.cEliminar; });
         if (!confirmar('¿Eliminar el capítulo «' + x.titulo + '» y su historia?')) return;

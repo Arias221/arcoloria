@@ -368,6 +368,12 @@
     t.className = 'toast ' + (tipo || ''); t.textContent = msg; t.hidden = false;
     clearTimeout(tTimer); tTimer = setTimeout(function () { t.hidden = true; }, 4200);
   }
+  function selectorServidor(lista, actual) {
+    if (!lista || lista.length < 2) return '';
+    return '<div class="pildora" role="group" aria-label="Servidor">' + lista.map(function (s) {
+      return '<button type="button" data-servidor="' + esc(s.id) + '" aria-pressed="' + (s.id === actual) + '">' + esc(s.nombre) + '</button>';
+    }).join('') + '</div>';
+  }
   function cargando(texto) { return '<div class="cargando"><div class="orbe"></div><span>' + esc(texto || 'Abriendo el libro de misiones…') + '</span></div>'; }
 
   window.Comun = {
@@ -376,7 +382,7 @@
     contexto: contexto, npcDe: npcDe, estadoMision: estadoMision, requisitos: requisitos, barras: barras,
     tarjetaMision: tarjetaMision, detalleMision: detalleMision, etiquetaEstado: etiquetaEstado,
     inicioDelDia: inicioDelDia, cuandoAmigable: cuandoAmigable,
-    iniciarChispas: iniciarChispas, iniciarNiebla: iniciarNiebla, toast: toast, cargando: cargando,
+    iniciarChispas: iniciarChispas, iniciarNiebla: iniciarNiebla, toast: toast, cargando: cargando, selectorServidor: selectorServidor,
     ENTIDADES: ENTIDADES, METODOS: METODOS, ENCANTAMIENTOS: ENCANTAMIENTOS, EFECTOS: EFECTOS, BIOMAS: BIOMAS,
     DIMENSIONES: DIMENSIONES, CLIMAS: CLIMAS, HORAS: HORAS, LUNAS: LUNAS, PLATAFORMAS: PLATAFORMAS, RANURAS: RANURAS
   };

@@ -13,8 +13,23 @@
   document.getElementById('marca-sello').innerHTML = C.SELLO;
 
   /* ---------- carga de datos ---------- */
+  var selector = document.getElementById('selector-servidor');
+  function pintarSelector(lista) {
+    var html = C.selectorServidor(lista, D.servidorActual());
+    selector.innerHTML = html; selector.hidden = !html;
+  }
+  selector.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-servidor]');
+    if (!b || b.dataset.servidor === D.servidorActual()) return;
+    D.cambiarServidor(b.dataset.servidor);
+    cache = null;
+    // Las misiones son distintas en cada servidor: el detalle abierto ya no aplica
+    if (ruta().nombre === 'mision') location.hash = '#misiones'; else navegar();
+  });
+
   async function cargar(forzar) {
     if (cache && !forzar) return cache;
+    pintarSelector(await D.listarServidores());
     var r = await Promise.all([D.obtenerConfiguracion(), D.listarNpcs(), D.listarCapitulos(), D.listarMisiones(), D.estadoSesionJugador()]);
     var sesion = r[4];
     var progreso = sesion ? await D.miProgreso() : [];
@@ -175,6 +190,7 @@
   /* ---------- Mi aventura ---------- */
   async function verAventura(d) {
     if (!d.sesion) {
+      var otras = (await D.misCuentas()).filter(function (c) { return c.servidor !== D.servidorActual(); });
       vista.innerHTML =
         '<div class="titulo-seccion entrar"><span class="runa">Tu aventura</span><h2>Vincula tu cuenta</h2><p>Así podrás ver aquí tu progreso, tus misiones en curso y las crónicas que vayas desbloqueando.</p></div>' +
         '<section class="perg entrar"><div class="perg-brillo"></div>' +
@@ -183,10 +199,17 @@
             '<li><span>Elige <b>Vincular con la página</b> y anota tu código. Son 6 letras o números y vence en 10 minutos.</span></li>' +
             '<li><span>Escríbelo aquí abajo y toca <b>Vincular</b>.</span></li>' +
           '</ol>' +
+          '<p style="color:var(--tinta-suave);font-size:.93rem;margin-top:10px">Cada servidor se vincula por separado: pide el código en el servidor donde juegas y la página se cambiará sola a ese servidor.</p>' +
           '<form class="codigo-form" id="form-codigo" autocomplete="off"><label class="sr" for="codigo">Código de vinculación</label>' +
             '<input class="codigo-input" id="codigo" maxlength="6" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="······" required>' +
             '<button class="boton magico ancho" type="submit">' + ic('enlace') + 'Vincular</button></form>' +
-        '</section>';
+        '</section>' +
+        (otras.length ? '<section class="perg entrar"><div class="perg-brillo"></div><p>También tienes vinculada tu cuenta de: ' + otras.map(function (c) {
+          return '<button class="boton sec peq" type="button" data-ir-servidor="' + esc(c.servidor) + '" style="margin:6px 6px 0 0">' + esc(D.nombreServidor(c.servidor)) + ' · ' + esc(c.gamertag) + '</button>';
+        }).join('') + '</p></section>' : '');
+      vista.querySelectorAll('[data-ir-servidor]').forEach(function (b) {
+        b.addEventListener('click', function () { D.cambiarServidor(b.dataset.irServidor); cache = null; navegar(); });
+      });
       var inp = document.getElementById('codigo');
       inp.addEventListener('input', function () { inp.value = inp.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); });
       document.getElementById('form-codigo').addEventListener('submit', async function (e) {
@@ -194,7 +217,7 @@
         var b = this.querySelector('button'); b.disabled = true;
         var r = await D.vincularCuenta(inp.value);
         b.disabled = false;
-        if (r.ok) { C.toast('¡Bienvenido, ' + r.jugador.gamertag + '! Tu cuenta quedó vinculada.', 'magico'); await cargar(true); navegar(); }
+        if (r.ok) { C.toast('¡Bienvenido, ' + r.jugador.gamertag + '! Tu cuenta de ' + D.nombreServidor(r.jugador.servidor) + ' quedó vinculada.', 'magico'); await cargar(true); navegar(); }
         else { C.toast(r.motivo || 'No se pudo vincular.', 'error'); inp.focus(); }
       });
       return;
@@ -206,7 +229,7 @@
     var vecesTotal = prog.reduce(function (s, p) { return s + (p.veces_completada || 0); }, 0);
     vista.innerHTML =
       '<div class="titulo-seccion entrar"><span class="runa">Tu aventura</span><h2>Mi aventura</h2></div>' +
-      '<section class="perg entrar"><div class="perg-brillo"></div><div class="perfil"><span class="avatar">' + esc(d.sesion.gamertag.charAt(0).toUpperCase()) + '</span><div><h2>' + esc(d.sesion.gamertag) + '</h2><p style="color:var(--tinta-suave)">Aventurero del gremio</p></div></div>' +
+      '<section class="perg entrar"><div class="perg-brillo"></div><div class="perfil"><span class="avatar">' + esc(d.sesion.gamertag.charAt(0).toUpperCase()) + '</span><div><h2>' + esc(d.sesion.gamertag) + '</h2><p style="color:var(--tinta-suave)">Aventurero de ' + esc(D.nombreServidor()) + '</p></div></div>' +
         '<div class="resumen-nums"><div><b>' + aceptadas.length + '</b><span>En curso</span></div><div><b>' + vecesTotal + '</b><span>Completadas</span></div><div><b>' + caps.length + '</b><span>Capítulos</span></div></div></section>' +
       '<section class="perg entrar"><div class="perg-brillo"></div><div class="bloque" style="margin-top:0"><h3>Misiones en curso</h3>' +
         (aceptadas.length ? '<div class="lista-mini">' + aceptadas.map(function (m) { return mini(m, d, true); }).join('') + '</div>' : '<p class="vacio">No tienes misiones en curso. <a href="#misiones" style="color:var(--oro)">Busca una en el tablón</a>.</p>') + '</div></section>' +
@@ -216,7 +239,7 @@
         (caps.length ? '<div class="lista-mini">' + caps.map(function (c) { return '<a class="mini-mision" href="#cronicas" style="text-decoration:none"><div class="cab"><span class="orden-num" style="width:36px;height:36px;font-size:.9rem">' + c.orden + '</span><b>' + esc(c.titulo) + '</b>' + ic('libro') + '</div></a>'; }).join('') + '</div>' : '<p class="vacio">Completa las misiones de historia para escribir tu primer capítulo.</p>') + '</div></section>' +
       '<div class="acciones" style="justify-content:center"><button class="boton peligro" type="button" id="desvincular">' + ic('salir') + 'Desvincular cuenta</button></div>';
     document.getElementById('desvincular').addEventListener('click', async function () {
-      if (!window.confirm('¿Desvincular tu cuenta en este dispositivo? Tu progreso en el juego no se pierde.')) return;
+      if (!window.confirm('¿Desvincular tu cuenta de ' + D.nombreServidor() + ' en este dispositivo? Tu progreso en el juego no se pierde.')) return;
       await D.cerrarSesionJugador(); C.toast('Cuenta desvinculada.'); await cargar(true); navegar();
     });
   }

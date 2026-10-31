@@ -106,6 +106,29 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .sesion-chip i .icono { width: 15px; height: 15px; }
 .sesion-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* Selector de servidor (Nubelia / Solune) */
+.selector-servidor { display: flex; justify-content: center; margin: 14px auto 0; padding-left: var(--margen-i); padding-right: var(--margen-d); }
+.selector-servidor[hidden] { display: none; }
+.selector-servidor .pildora {
+  display: inline-flex; gap: 4px; padding: 4px; border-radius: 99rem; max-width: 100%; overflow-x: auto; scrollbar-width: none;
+  background: rgba(50, 28, 44, .56); border: 1px solid rgba(255, 222, 200, .26);
+  -webkit-backdrop-filter: blur(12px) saturate(170%); backdrop-filter: blur(12px) saturate(170%);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .25);
+}
+.selector-servidor .pildora::-webkit-scrollbar { display: none; }
+.selector-servidor button {
+  -webkit-appearance: none; appearance: none; flex: none; cursor: pointer; font: inherit; font-weight: 800; font-size: .95rem;
+  padding: 7px 20px; border-radius: 99rem; border: 1px solid transparent; background: none; color: rgba(255, 238, 222, .82);
+  transition: background .18s ease, color .18s ease;
+}
+.selector-servidor button:hover { background: rgba(255, 236, 220, .12); color: #FFE3BE; }
+.selector-servidor button[aria-pressed="true"] {
+  background: linear-gradient(180deg, rgba(243, 208, 138, .38), rgba(160, 100, 64, .32));
+  border-color: rgba(250, 214, 160, .55); color: #FFF1DA;
+  box-shadow: 0 0 16px rgba(243, 208, 138, .3), inset 2px 2px 5px -2px rgba(255, 255, 255, .45);
+}
+.selector-servidor button:focus-visible { outline: 2px solid var(--oro); outline-offset: 2px; }
+
 /* Barra inferior (celular) */
 .nav-movil {
   position: fixed; left: var(--margen-i); right: var(--margen-d); bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 30;
