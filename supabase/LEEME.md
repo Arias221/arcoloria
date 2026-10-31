@@ -7,6 +7,6 @@
   insert into servidores (id, nombre, orden) values ('nuevo', 'Nuevo', 3);
   ```
   Su configuración y su contador de sincronización se crean solos.
-- El script se niega a ejecutarse dos veces para no borrar misiones.
+- Si se corta a mitad de camino, basta con ejecutarlo otra vez. Cuando ya hay misiones, capítulos o jugadores, se niega a ejecutarse para no borrarlos.
 
 La carpeta `anteriores/` guarda los scripts de la primera versión (un solo servidor). Ya no se usan; quedan como historial.

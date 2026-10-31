@@ -7,37 +7,52 @@
 --    - CONSERVA: los administradores y los NPCs registrados (pasan a Nubelia).
 --    - BORRA: misiones, capítulos, jugadores, progreso y códigos de prueba.
 --
---  Se ejecuta UNA SOLA VEZ. Si la base ya está preparada para varios
---  servidores, el script se detiene sin cambiar nada.
---  Si algo falla a mitad de camino, no se aplica ningún cambio.
+--  Si se corta a mitad de camino, basta con ejecutarlo otra vez: retoma
+--  y recupera los admins. Cuando ya existan misiones, capítulos o jugadores
+--  del nuevo sistema, se niega a ejecutarse para no borrarlos.
 -- =====================================================================
 
 
 begin;
 
 -- ---------------------------------------------------------------------
--- 0. Seguridad: no ejecutar dos veces
+-- 0. Seguridad: no borrar contenido real del nuevo sistema
 -- ---------------------------------------------------------------------
 do $$
 begin
   if to_regclass('public.servidores') is not null then
-    raise exception 'La base ya está preparada para varios servidores. Este script no se debe ejecutar otra vez (borraría las misiones).';
+    if exists (select 1 from public.misiones) or exists (select 1 from public.capitulos) or exists (select 1 from public.jugadores) then
+      raise exception 'La base ya tiene misiones, capítulos o jugadores en el sistema de varios servidores. Este script no se debe ejecutar otra vez (los borraría).';
+    end if;
   end if;
 end $$;
 
 
 -- ---------------------------------------------------------------------
--- 1. Guardar admins y NPCs actuales
+-- 1. Respaldo de admins y NPCs (tablas normales: sobreviven si el script se corta)
 -- ---------------------------------------------------------------------
-create temp table _r_admins (user_id uuid, nombre text);
-create temp table _r_npcs (id text, nombre text, descripcion text, es_principal boolean);
+create table if not exists public._respaldo_admins (user_id uuid primary key, nombre text);
+create table if not exists public._respaldo_npcs (servidor text, id text, nombre text, descripcion text, es_principal boolean, primary key (servidor, id));
 do $$
 begin
   if to_regclass('public.admins') is not null then
-    insert into _r_admins select user_id, nombre from public.admins;
+    insert into public._respaldo_admins select user_id, nombre from public.admins on conflict do nothing;
   end if;
   if to_regclass('public.npcs') is not null then
-    insert into _r_npcs select id, nombre, descripcion, es_principal from public.npcs;
+    if exists (select 1 from information_schema.columns
+                where table_schema = 'public' and table_name = 'npcs' and column_name = 'servidor') then
+      execute 'insert into public._respaldo_npcs select servidor, id, nombre, descripcion, es_principal from public.npcs on conflict do nothing';
+    else
+      execute 'insert into public._respaldo_npcs select ''nubelia'', id, nombre, descripcion, es_principal from public.npcs on conflict do nothing';
+    end if;
+  end if;
+  -- Si no quedó ningún admin (una ejecución anterior se cortó), se recuperan
+  -- las cuentas creadas en el panel de Supabase (las de jugadores son anónimas)
+  if not exists (select 1 from public._respaldo_admins) then
+    if exists (select 1 from information_schema.columns
+                where table_schema = 'auth' and table_name = 'users' and column_name = 'is_anonymous') then
+      execute 'insert into public._respaldo_admins select id, coalesce(email, '''') from auth.users where not coalesce(is_anonymous, false) on conflict do nothing';
+    end if;
   end if;
 end $$;
 
@@ -46,7 +61,7 @@ end $$;
 -- 2. Quitar la estructura anterior
 -- ---------------------------------------------------------------------
 drop table if exists historial_completadas, progreso, jugadores, objetivos, misiones_comandos,
-  misiones, capitulos_historia, capitulos, npcs, configuracion, sincronizacion, admins cascade;
+  misiones, capitulos_historia, capitulos, npcs, configuracion, sincronizacion, admins, servidores cascade;
 
 do $$
 declare f record;
@@ -61,7 +76,7 @@ begin
          '_sin_sesion_admin','admin_guardar_mision','admin_guardar_capitulo','admin_guardar_npc',
          'admin_eliminar_npc','admin_eliminar_capitulo','admin_copiar_mision','admin_copiar_capitulo',
          '_registrar_jugador','_estado_jugador','_generar_codigo','_guardar_avance',
-         '_completar_mision','_abandonar_mision','servidor_valido'])
+         '_completar_mision','_abandonar_mision','servidor_valido','_servidor_desconocido','crear_datos_servidor'])
   loop
     execute 'drop function if exists ' || f.firma || ' cascade';
   end loop;
@@ -895,17 +910,22 @@ grant execute on function _registrar_jugador(text, text, text), _estado_jugador(
 -- 10. Devolver admins y NPCs (los NPCs pasan a Nubelia)
 -- ---------------------------------------------------------------------
 insert into admins (user_id, nombre)
-select user_id, nombre from _r_admins where user_id in (select id from auth.users)
+select user_id, coalesce(nombre, '') from public._respaldo_admins where user_id in (select id from auth.users)
 on conflict do nothing;
 
 insert into npcs (servidor, id, nombre, descripcion, es_principal)
-select 'nubelia', id, nombre, descripcion, es_principal from _r_npcs;
+select r.servidor, r.id, r.nombre, r.descripcion, r.es_principal
+  from public._respaldo_npcs r
+ where r.servidor in (select id from servidores)
+   and (not r.es_principal or not exists (select 1 from public._respaldo_npcs x
+                                           where x.servidor = r.servidor and x.es_principal and x.id < r.id))
+on conflict do nothing;
 
-drop table _r_admins, _r_npcs;
+drop table public._respaldo_admins, public._respaldo_npcs;
 
 notify pgrst, 'reload schema';
 
 commit;
 
-select 'Listo: misiones para Nubelia y Solune. Admins conservados: ' || (select count(*) from admins)
-       || ', NPCs pasados a Nubelia: ' || (select count(*) from npcs) as resultado;
+select 'Listo: misiones para Nubelia y Solune. Admins: ' || (select count(*) from admins)
+       || ', NPCs: ' || (select count(*) from npcs) as resultado;
