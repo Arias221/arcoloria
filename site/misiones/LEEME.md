@@ -37,7 +37,7 @@ misiones/
 - **Copiar entre servidores:** en el panel, cada misión y capítulo tiene un botón «A Solune» / «A Nubelia». La copia llega inactiva.
 - **Aceptar misiones:** solo en el juego, junto al NPC (`/misiones`). La página muestra a qué NPC ir.
 
-El script SQL está en la carpeta `supabase/` del repositorio (`04_multiservidor.sql`).
+Los scripts SQL están en la carpeta `supabase/` del repositorio (`04_multiservidor.sql` y luego `05_misiones_avanzadas.sql`).
 
 ## Íconos de ítems
 

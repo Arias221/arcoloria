@@ -110,16 +110,24 @@
       npc_id: txt(m.npc_id), mision_previa: txt(m.mision_previa),
       repeticion: m.repeticion, repeticion_veces: m.repeticion_veces || 1, repeticion_horas: m.repeticion_horas || 0,
       tiempo_limite_seg: m.tiempo_limite_seg || null, recompensa_texto: txt(m.recompensa_texto), activa: !!m.activa,
+      requiere_npc: m.requiere_npc !== false,
       objetivos: (m.objetivos || []).map(normObjetivo).sort(function (a, b) { return a.orden - b.orden; })
     };
   }
   function normCapitulo(c) {
     return {
       id: c.id, orden: c.orden, titulo: c.titulo, resumen: txt(c.resumen),
-      npc_id: txt(c.npc_id), capitulo_previo: txt(c.capitulo_previo), activo: !!c.activo
+      npc_id: txt(c.npc_id), capitulo_previo: txt(c.capitulo_previo), activo: !!c.activo,
+      disponible_desde: c.disponible_desde || '', recompensa_texto: txt(c.recompensa_texto)
     };
   }
-  function normNpc(n) { return { id: n.id, nombre: n.nombre, descripcion: txt(n.descripcion), es_principal: !!n.es_principal }; }
+  function normNpc(n) {
+    return {
+      id: n.id, nombre: n.nombre, descripcion: txt(n.descripcion), es_principal: !!n.es_principal,
+      x: n.x == null ? null : n.x, y: n.y == null ? null : n.y, z: n.z == null ? null : n.z,
+      dimension: n.dimension || 'overworld', ubicacion_fija: !!n.ubicacion_fija
+    };
+  }
 
   /* =================== PÚBLICAS =================== */
   var CONFIG_POR_DEFECTO = { max_misiones_activas: 5, max_completadas_diarias: 10, hora_reinicio: 20, zona_horaria: 'America/La_Paz' };
@@ -135,14 +143,14 @@
   }
   async function listarNpcs() {
     try {
-      var r = await sb.from('npcs').select('id, nombre, descripcion, es_principal').eq('servidor', servidor).order('nombre');
+      var r = await sb.from('npcs').select('id, nombre, descripcion, es_principal, x, y, z, dimension, ubicacion_fija').eq('servidor', servidor).order('nombre');
       aviso(r.error);
       return (r.data || []).map(normNpc);
     } catch (e) { aviso(e); return []; }
   }
   async function listarCapitulos() {
     try {
-      var r = await sb.from('capitulos').select('id, orden, titulo, resumen, npc_id, capitulo_previo, activo')
+      var r = await sb.from('capitulos').select('id, orden, titulo, resumen, npc_id, capitulo_previo, activo, disponible_desde, recompensa_texto')
         .eq('servidor', servidor).order('orden');
       aviso(r.error);
       return (r.data || []).map(normCapitulo);
@@ -293,7 +301,7 @@
       return (r.data && r.data.comandos) || [];
     } catch (e) { aviso(e); return []; }
   }
-  async function guardarCapitulo(capitulo, historia) {
+  async function guardarCapitulo(capitulo, historia, comandos) {
     var c = JSON.parse(JSON.stringify(capitulo || {}));
     if (!ID_VALIDO.test(c.id || '')) return fallo('El id solo puede tener minúsculas, números y guion bajo.');
     if (!String(c.titulo || '').trim()) return fallo('El capítulo necesita un título.');
@@ -303,8 +311,17 @@
       p_servidor: servidor,
       p_capitulo: c,
       p_historia: { texto: (historia && historia.texto) || '', imagen_url: (historia && historia.imagen_url) || '' },
+      p_comandos: comandos === undefined ? await obtenerComandosCapitulo(idOriginal || c.id)
+        : (comandos || []).map(function (x) { return String(x).trim().replace(/^\//, ''); }).filter(Boolean),
       p_id_original: idOriginal
     });
+  }
+  async function obtenerComandosCapitulo(capituloId) {
+    try {
+      var r = await sb.from('capitulos_comandos').select('comandos').eq('servidor', servidor).eq('capitulo_id', capituloId).maybeSingle();
+      aviso(r.error);
+      return (r.data && r.data.comandos) || [];
+    } catch (e) { aviso(e); return []; }
   }
   async function obtenerHistoriaAdmin(capituloId) {
     try {
@@ -353,9 +370,9 @@
     var no = await exigirAdmin(); if (no) return no;
     return rpc('admin_copiar_mision', { p_origen: servidor, p_destino: destino, p_id: id });
   }
-  async function copiarCapitulo(id, destino) {
+  async function copiarCapitulo(id, destino, conMisiones) {
     var no = await exigirAdmin(); if (no) return no;
-    return rpc('admin_copiar_capitulo', { p_origen: servidor, p_destino: destino, p_id: id });
+    return rpc('admin_copiar_capitulo', { p_origen: servidor, p_destino: destino, p_id: id, p_con_misiones: conMisiones !== false });
   }
 
   /* Ya no hay datos simulados; se deja para que nada falle si alguien la llama. */
@@ -369,7 +386,7 @@
     miProgreso: miProgreso, miHistoria: miHistoria, aceptarMision: aceptarMision,
     iniciarSesionAdmin: iniciarSesionAdmin, cerrarSesionAdmin: cerrarSesionAdmin, esAdmin: esAdmin,
     guardarMision: guardarMision, eliminarMision: eliminarMision, obtenerComandos: obtenerComandos,
-    guardarCapitulo: guardarCapitulo, obtenerHistoriaAdmin: obtenerHistoriaAdmin, eliminarCapitulo: eliminarCapitulo,
+    guardarCapitulo: guardarCapitulo, obtenerHistoriaAdmin: obtenerHistoriaAdmin, obtenerComandosCapitulo: obtenerComandosCapitulo, eliminarCapitulo: eliminarCapitulo,
     guardarNpc: guardarNpc, eliminarNpc: eliminarNpc, guardarConfiguracion: guardarConfiguracion,
     copiarMision: copiarMision, copiarCapitulo: copiarCapitulo,
     reiniciarDatosSimulados: reiniciarDatosSimulados

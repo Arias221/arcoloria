@@ -9,4 +9,6 @@
   Su configuración y su contador de sincronización se crean solos.
 - Si se corta a mitad de camino, basta con ejecutarlo otra vez. Cuando ya hay misiones, capítulos o jugadores, se niega a ejecutarse para no borrarlos.
 
+**Después: `05_misiones_avanzadas.sql`.** Agrega los nuevos tipos de objetivo, misiones que no piden NPC, fecha de apertura y premio por capítulo, ubicación de los NPC y lugares de cada jugador. Se puede ejecutar más de una vez sin problema.
+
 La carpeta `anteriores/` guarda los scripts de la primera versión (un solo servidor). Ya no se usan; quedan como historial.

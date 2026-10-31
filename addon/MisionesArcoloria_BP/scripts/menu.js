@@ -1,14 +1,19 @@
-// Menú /misiones: misiones de los NPC cercanos, misiones en curso y vinculación con la página.
+// Menús del libro de misiones.
+//   /misiones  -> panel general: misiones disponibles (con dónde está su NPC), en curso y vinculación.
+//   Tocar NPC  -> panel de ese NPC: aceptar y entregar sus misiones.
+// Las misiones que no piden NPC se aceptan y entregan desde /misiones, estés donde estés.
 
 import { system } from "@minecraft/server";
 import { ActionFormData, MessageFormData, FormCancelationReason } from "@minecraft/server-ui";
-import { contenido, npcDeMision, misionesDeNpc } from "./contenido.js";
-import { estadoDe, cargarJugador, misionesEnCurso, objetivosCompletos, aceptar, abandonar, entregar } from "./progreso.js";
+import { contenido, npcDeMision, misionesDeNpc, aperturaPendiente } from "./contenido.js";
+import {
+  estadoDe, cargarJugador, misionesEnCurso, objetivosCompletos, valorObjetivo,
+  aceptar, abandonar, entregar, recontarConstruccion,
+} from "./progreso.js";
 import { rpc } from "./api.js";
 import { textoObjetivo, frasesCondiciones, textoRepeticion, textoDuracion } from "./textos.js";
-import { PREFIJO, RADIO_NPC, ETIQUETA_NPC } from "./config.js";
-
-const URL_PAGINA = "arcoloria.netlify.app/misiones";
+import { dimensionCorta, distancia, NOMBRE_DIMENSION } from "./util.js";
+import { PREFIJO, RADIO_NPC, ETIQUETA_NPC, URL_PAGINA } from "./config.js";
 
 /* =================== mostrar formularios =================== */
 
@@ -23,11 +28,10 @@ async function mostrar(form, jugador) {
 }
 
 async function mensaje(jugador, titulo, cuerpo) {
-  const f = new ActionFormData().title(titulo).body(cuerpo).button("Volver");
-  await mostrar(f, jugador);
+  await mostrar(new ActionFormData().title(titulo).body(cuerpo).button("Volver"), jugador);
 }
 
-/* =================== NPC cercanos =================== */
+/* =================== NPC =================== */
 
 export function npcsCercanos(jugador) {
   const vistos = new Map();
@@ -50,6 +54,20 @@ function estaCercaDe(jugador, npcId) {
   return npcsCercanos(jugador).some((n) => n.id === npcId);
 }
 
+/** "Aurelio, en 120, 64, -30 (Mundo normal), a 85 bloques" */
+function dondeEsta(jugador, npc) {
+  if (!npc) return "el NPC de misiones";
+  if (npc.x == null) return `§f${npc.nombre}§7`;
+  let t = `§f${npc.nombre}§7, en §f${npc.x}, ${npc.y}, ${npc.z}§7 (${NOMBRE_DIMENSION[npc.dimension] || npc.dimension})`;
+  if (dimensionCorta(jugador.dimension.id) === npc.dimension) t += `, a ${Math.round(distancia(jugador.location, npc))} bloques`;
+  return t;
+}
+
+/** ¿Esta misión se acepta y entrega junto a su NPC? */
+function pideNpc(m) {
+  return m.requiere_npc !== false && !!npcDeMision(m);
+}
+
 /* =================== estado de una misión =================== */
 
 function completada(est, misionId) {
@@ -64,13 +82,21 @@ function capituloCompleto(est, capId) {
 
 // El motor de scripts no trae zonas horarias: se deduce la diferencia con UTC a partir
 // del último reinicio diario, que la base calcula en la hora local configurada.
-function horaTexto(est, ms) {
+function aLocal(est, ms) {
   const ini = new Date(est.inicioDia);
   let dif = ini.getUTCHours() * 60 + ini.getUTCMinutes() - Number(contenido.config.hora_reinicio || 0) * 60;
   dif = ((dif % 1440) + 1440) % 1440;
   if (dif > 720) dif -= 1440;
-  const d = new Date(ms - dif * 60000);
-  return `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}`;
+  return new Date(ms - dif * 60000);
+}
+const dos = (n) => String(n).padStart(2, "0");
+function horaTexto(est, ms) {
+  const d = aLocal(est, ms);
+  return `${dos(d.getUTCHours())}:${dos(d.getUTCMinutes())}`;
+}
+function fechaTexto(est, ms) {
+  const d = aLocal(est, ms);
+  return `el ${dos(d.getUTCDate())}/${dos(d.getUTCMonth() + 1)} a las ${dos(d.getUTCHours())}:${dos(d.getUTCMinutes())}`;
 }
 
 export function estadoMision(jugador, est, m) {
@@ -84,9 +110,11 @@ export function estadoMision(jugador, est, m) {
   if (m.categoria === "historia") {
     const cap = contenido.capitulos.get(m.capitulo_id);
     if (!cap || !cap.activo) return { clave: "bloqueada", texto: "§8Próximamente", detalle: "Este capítulo todavía no está disponible." };
+    const abre = aperturaPendiente(m);
+    if (abre) return { clave: "proxima", texto: "§8Próximamente", detalle: `Esta parte de la historia se abre ${fechaTexto(est, abre)}.` };
     if (cap.capitulo_previo && !capituloCompleto(est, cap.capitulo_previo)) {
       const prev = contenido.capitulos.get(cap.capitulo_previo);
-      return { clave: "bloqueada", texto: "§8Bloqueada", detalle: `Primero completa el capítulo «${prev ? prev.titulo : cap.capitulo_previo}».` };
+      return { clave: "bloqueada", texto: "§8Bloqueada", detalle: `Primero completa «${prev ? prev.titulo : cap.capitulo_previo}».` };
     }
   }
   if (m.mision_previa && !completada(est, m.mision_previa)) {
@@ -120,6 +148,13 @@ export function estadoMision(jugador, est, m) {
   return { clave: "disponible", texto: "§1Disponible" };
 }
 
+/** Misiones que el jugador puede aceptar ahora mismo. */
+export function disponibles(jugador, est) {
+  const lista = [...contenido.misiones.values()].filter((m) => m.activa && estadoMision(jugador, est, m).clave === "disponible");
+  const ordenCap = (m) => (m.categoria === "historia" ? contenido.capitulos.get(m.capitulo_id)?.orden ?? 9999 : 99999);
+  return lista.sort((a, b) => ordenCap(a) - ordenCap(b) || a.orden - b.orden || a.titulo.localeCompare(b.titulo));
+}
+
 /* =================== textos del detalle =================== */
 
 function cuerpoMision(jugador, est, m, e) {
@@ -129,9 +164,10 @@ function cuerpoMision(jugador, est, m, e) {
   const npc = npcDeMision(m);
   if (m.categoria === "historia") {
     const cap = contenido.capitulos.get(m.capitulo_id);
-    if (cap) lineas.push(`§5Capítulo ${cap.orden}: ${cap.titulo}`);
+    if (cap) lineas.push(`§5Parte ${cap.orden}: ${cap.titulo}`);
   }
-  if (npc) lineas.push(`§7Te la da: §f${npc.nombre}`);
+  if (pideNpc(m)) lineas.push(`§7Te la da: ${dondeEsta(jugador, npc)}`);
+  else lineas.push("§7Se acepta y entrega desde §f/misiones§7, estés donde estés.");
   lineas.push(`§7Estado: ${e.texto}`, "");
   if (m.descripcion) lineas.push(`§f${m.descripcion}`, "");
 
@@ -139,15 +175,13 @@ function cuerpoMision(jugador, est, m, e) {
   for (const o of m.objetivos) {
     let linea = `§f• ${textoObjetivo(o)}`;
     if (enCurso) {
-      const n = o.tipo === "obtener"
-        ? Math.min(o.cantidad, Number(p.avance[o.id] || 0))
-        : Number(p.avance[o.id] || 0);
+      const n = valorObjetivo(jugador, o, p);
       linea += ` ${n >= o.cantidad ? "§a" : "§e"}(${n}/${o.cantidad})`;
     }
     lineas.push(linea);
     const fr = frasesCondiciones(o.condiciones);
     if (fr.length) lineas.push(`  §7${fr.join(", ")}`);
-    if (o.tipo === "obtener") lineas.push("  §8Se entregan al completar la misión");
+    if (o.tipo === "obtener" && !(o.condiciones && (o.condiciones.fijar || o.condiciones.no_quitar))) lineas.push("  §8Se entregan al completar la misión");
   }
   lineas.push("");
   if (m.recompensa_texto) lineas.push(`§6Recompensa: §f${m.recompensa_texto}`);
@@ -159,32 +193,46 @@ function cuerpoMision(jugador, est, m, e) {
 
 /* =================== pantallas =================== */
 
-export async function abrirMenu(jugador) {
+async function prepararEstado(jugador) {
   let est = estadoDe(jugador);
   if (!est || !est.cargado) est = await cargarJugador(jugador);
   if (!est) {
     jugador.sendMessage(`${PREFIJO}§cNo se pudo conectar con el libro de misiones. Inténtalo en unos segundos.`);
-    return;
+    return null;
   }
   if (!contenido.misiones.size) {
-    jugador.sendMessage(`${PREFIJO}§7Todavía no hay misiones disponibles.`);
-    return;
+    jugador.sendMessage(`${PREFIJO}§7Todavía no hay misiones.`);
+    return null;
   }
+  recontarConstruccion(jugador);
+  return est;
+}
+
+/** Panel general (/misiones). */
+export async function abrirMenu(jugador) {
+  const est = await prepararEstado(jugador);
+  if (!est) return;
 
   const cerca = npcsCercanos(jugador);
+  const libres = disponibles(jugador, est);
   const enCurso = misionesEnCurso(est);
+  const listas = enCurso.filter(({ m, p }) => objetivosCompletos(jugador, m, p)).length;
+
   const f = new ActionFormData().title("§l§6Libro de Misiones");
-  f.body(cerca.length
-    ? `Estás junto a: §e${cerca.map((n) => n.nombre).join(", ")}`
-    : "§7No hay ningún NPC de misiones cerca.\nAcércate a uno para aceptar o entregar misiones.");
+  let cuerpo = cerca.length ? `Estás junto a: §e${cerca.map((n) => n.nombre).join(", ")}§r\n` : "";
+  cuerpo += libres.length ? `§aTienes ${libres.length} ${libres.length === 1 ? "misión disponible" : "misiones disponibles"}.` : "§7No tienes misiones nuevas por ahora.";
+  if (listas) cuerpo += `\n§2${listas} lista${listas === 1 ? "" : "s"} para entregar.`;
+  f.body(cuerpo);
 
   const acciones = [];
   for (const npc of cerca) {
-    f.button(`§lMisiones de ${npc.nombre}`, "textures/items/book_writable");
+    f.button(`§lHablar con ${npc.nombre}`, "textures/items/book_writable");
     acciones.push(() => menuNpc(jugador, npc));
   }
+  f.button(`§lMisiones disponibles §r§8(${libres.length})`, "textures/items/map_filled");
+  acciones.push(() => menuLista(jugador, "Misiones disponibles", () => disponibles(jugador, estadoDe(jugador)), "No hay misiones disponibles por ahora."));
   f.button(`§lMis misiones en curso §r§8(${enCurso.length})`, "textures/items/clock_item");
-  acciones.push(() => menuEnCurso(jugador));
+  acciones.push(() => menuLista(jugador, "Mis misiones en curso", () => misionesEnCurso(estadoDe(jugador)).map(({ m }) => m), "No tienes misiones en curso."));
   f.button("§lVincular con la página", "textures/items/name_tag");
   acciones.push(() => vincular(jugador));
 
@@ -193,9 +241,11 @@ export async function abrirMenu(jugador) {
   await acciones[r.selection]();
 }
 
-async function menuNpc(jugador, npc) {
-  const est = estadoDe(jugador);
-  const lista = misionesDeNpc(npc.id);
+/** Panel de un NPC (al tocarlo o desde /misiones). */
+export async function menuNpc(jugador, npc) {
+  const est = await prepararEstado(jugador);
+  if (!est) return;
+  const lista = misionesDeNpc(npc.id).filter((m) => pideNpc(m) || estadoDe(jugador).progreso.has(m.id));
   if (!lista.length) return mensaje(jugador, npc.nombre, "§7Por ahora no tengo misiones para ti.");
 
   const f = new ActionFormData().title(`§l${npc.nombre}`).body("§7Elige una misión:");
@@ -203,50 +253,51 @@ async function menuNpc(jugador, npc) {
     const e = estadoMision(jugador, est, m);
     f.button(`§l${m.titulo}§r\n${e.texto}`, m.icono || undefined);
   }
-  f.button("§lVolver");
+  f.button("§lCerrar");
   const r = await mostrar(f, jugador);
-  if (r.canceled || r.selection === undefined) return;
-  if (r.selection === lista.length) return abrirMenu(jugador);
+  if (r.canceled || r.selection === undefined || r.selection === lista.length) return;
   await detalle(jugador, lista[r.selection], () => menuNpc(jugador, npc));
 }
 
-async function menuEnCurso(jugador) {
+async function menuLista(jugador, titulo, obtener, vacio) {
   const est = estadoDe(jugador);
-  const lista = misionesEnCurso(est).map(({ m }) => m);
+  const lista = obtener();
   if (!lista.length) {
-    await mensaje(jugador, "Mis misiones en curso", "§7No tienes misiones en curso.\nAcércate a un NPC y usa §f/misiones§7 para aceptar una.");
+    await mensaje(jugador, titulo, `§7${vacio}`);
     return abrirMenu(jugador);
   }
-  const f = new ActionFormData().title("§lMis misiones en curso");
+  const f = new ActionFormData().title(`§l${titulo}`);
   for (const m of lista) {
     const e = estadoMision(jugador, est, m);
     const npc = npcDeMision(m);
-    f.button(`§l${m.titulo}§r\n${e.texto}${npc ? ` §8· ${npc.nombre}` : ""}`, m.icono || undefined);
+    const donde = pideNpc(m) ? `§8· ${npc.nombre}` : "§8· desde aquí";
+    f.button(`§l${m.titulo}§r\n${e.texto} ${donde}`, m.icono || undefined);
   }
   f.button("§lVolver");
   const r = await mostrar(f, jugador);
   if (r.canceled || r.selection === undefined) return;
   if (r.selection === lista.length) return abrirMenu(jugador);
-  await detalle(jugador, lista[r.selection], () => menuEnCurso(jugador));
+  await detalle(jugador, lista[r.selection], () => menuLista(jugador, titulo, obtener, vacio));
 }
 
 async function detalle(jugador, m, volver) {
   const est = estadoDe(jugador);
   const e = estadoMision(jugador, est, m);
   const npc = npcDeMision(m);
-  const cerca = npc ? estaCercaDe(jugador, npc.id) : false;
+  const conNpc = pideNpc(m);
+  const puede = !conNpc || estaCercaDe(jugador, npc.id);
 
   const f = new ActionFormData().title(`§l${m.titulo}`);
   let cuerpo = cuerpoMision(jugador, est, m, e);
   const acciones = [];
 
   if (e.clave === "disponible") {
-    if (cerca) { f.button("§l§2Aceptar misión"); acciones.push("aceptar"); }
-    else cuerpo += `\n\n§eVe con ${npc ? npc.nombre : "el NPC"} para aceptarla.`;
+    if (puede) { f.button("§l§2Aceptar misión"); acciones.push("aceptar"); }
+    else cuerpo += `\n\n§eVe con ${dondeEsta(jugador, npc)}§e y tócalo para aceptarla.`;
   }
   if (e.clave === "lista") {
-    if (cerca) { f.button("§l§2Entregar misión"); acciones.push("entregar"); }
-    else cuerpo += `\n\n§eVe con ${npc ? npc.nombre : "el NPC"} para entregarla.`;
+    if (puede) { f.button("§l§2Entregar misión"); acciones.push("entregar"); }
+    else cuerpo += `\n\n§eVe con ${dondeEsta(jugador, npc)}§e y tócalo para entregarla.`;
   }
   if (e.clave === "en_curso" || e.clave === "lista") { f.button("§cAbandonar"); acciones.push("abandonar"); }
   f.button("Volver"); acciones.push("volver");
@@ -255,14 +306,11 @@ async function detalle(jugador, m, volver) {
   const r = await mostrar(f, jugador);
   if (r.canceled || r.selection === undefined) return;
   const accion = acciones[r.selection];
-
   if (accion === "volver") return volver();
 
-  if (accion === "aceptar" || accion === "entregar") {
-    if (!npc || !estaCercaDe(jugador, npc.id)) {
-      jugador.sendMessage(`${PREFIJO}§cTe alejaste de ${npc ? npc.nombre : "el NPC"}. Acércate e inténtalo de nuevo.`);
-      return;
-    }
+  if ((accion === "aceptar" || accion === "entregar") && conNpc && !estaCercaDe(jugador, npc.id)) {
+    jugador.sendMessage(`${PREFIJO}§cTe alejaste de ${npc.nombre}. Acércate e inténtalo de nuevo.`);
+    return;
   }
 
   if (accion === "aceptar") {

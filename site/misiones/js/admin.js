@@ -15,16 +15,47 @@
   document.getElementById('salir').innerHTML = ic('salir') + '<span>Salir</span>';
 
   var ID_VALIDO = /^[a-z0-9_]+$/;
-  var TIPOS = { matar: 'Matar', romper: 'Romper bloque', colocar: 'Colocar bloque', usar: 'Usar ítem', interactuar: 'Interactuar', consumir: 'Consumir', obtener: 'Obtener ítem' };
+  var TIPOS = {
+    matar: 'Matar', romper: 'Romper bloque', colocar: 'Colocar bloque', usar: 'Usar ítem', interactuar: 'Interactuar', consumir: 'Comer o beber',
+    obtener: 'Tener en el inventario', vestir: 'Ponerse (armadura)', visitar: 'Visitar un bioma o lugar', dormir: 'Dormir',
+    escoltar: 'Llevar una criatura', criar: 'Criar (que nazca un bebé)', viajar: 'Viajar a una dimensión', recorrer: 'Recorrer distancia',
+    guardar: 'Guardar en un cofre', construir: 'Construir (contar bloques)', apagar: 'Apagar lava con agua'
+  };
+  // Qué va en el campo «Qué» según el tipo
+  var AYUDA_TIPO = {
+    matar: ['minecraft:zombie', 'La criatura.'], romper: ['minecraft:oak_log', 'El bloque.'], colocar: ['minecraft:rose_bush', 'El bloque.'],
+    usar: ['minecraft:goat_horn', 'El ítem.'], interactuar: ['minecraft:bell', 'El bloque o la criatura.'], consumir: ['minecraft:milk_bucket', 'La comida o bebida.'],
+    obtener: ['minecraft:iron_ingot', 'El ítem.'], vestir: ['minecraft:golden_helmet', 'La pieza de armadura.'],
+    visitar: ['minecraft:desert', 'Un bioma, o * para cualquier lugar (usa condiciones para el resto).'], dormir: ['*', 'Escribe * (las condiciones dicen dónde).'],
+    escoltar: ['minecraft:sheep', 'La criatura que debe ir contigo.'], criar: ['minecraft:fox', 'La criatura que debe nacer cerca.'],
+    viajar: ['end', 'overworld, nether o end.'], recorrer: ['minecraft:boat', 'a_pie, * (como sea) o el vehículo: minecraft:boat, minecraft:minecart, minecraft:horse. La cantidad son bloques.'],
+    guardar: ['minecraft:gold_ingot', 'El ítem que debe quedar en el cofre.'], construir: ['minecraft:sandstone', 'El bloque que se cuenta alrededor del lugar.'],
+    apagar: ['minecraft:lava', 'Siempre minecraft:lava.']
+  };
   var REPETICION = { una_vez: 'Una sola vez', por_dia: 'Varias veces al día', cada_horas: 'Cada cierto número de horas' };
-  var SI_NO = ['bajo_agua', 'agachado', 'en_llamas', 'en_aire', 'sin_armadura', 'sin_dano'];
+  var SI_NO = ['bajo_agua', 'agachado', 'en_llamas', 'en_aire', 'sin_armadura', 'sin_dano', 'cielo_abierto', 'sin_vehiculo', 'sin_placa',
+    'distintas', 'dias_distintos', 'dias_seguidos', 'fijar', 'no_quitar', 'tenido'];
+  var TEXTO_SI_NO = {
+    cielo_abierto: 'Sin techo sobre el jugador o el bloque.', sin_vehiculo: 'Sin vagoneta, bote ni montura.', sin_placa: 'Si pisa una placa de presión, el avance vuelve a 0.',
+    sin_dano: 'Si recibe daño, el avance vuelve a 0.', distintas: 'No cuenta dos veces la misma criatura o el mismo lugar.',
+    dias_distintos: 'Cuenta como máximo una vez por día del juego.', dias_seguidos: 'Una vez por día del juego; si se salta un día, vuelve a empezar.',
+    fijar: 'Al lograrse queda cumplido aunque luego use o pierda los objetos. No se quitan al entregar.',
+    no_quitar: 'No se le quitan los objetos al entregar la misión.', tenido: 'La armadura debe estar teñida.'
+  };
   var CONDICIONES = [
     ['herramienta', 'Herramienta en la mano'], ['metodo', 'Forma de matar'], ['dimension', 'Dimensión'], ['bioma', 'Bioma'], ['hora_del_dia', 'Hora del día'],
     ['fase_lunar', 'Fase lunar'], ['clima', 'Clima'], ['zona', 'Zona (dos esquinas)'], ['altura', 'Altura (Y)'], ['ubicacion_objetivo', 'Ubicación exacta (interactuar)'],
     ['cerca_de', 'Cerca de una entidad'], ['montado', 'Montado en'], ['sin_dano', 'Sin recibir daño'], ['encantamiento', 'Encantamiento en la herramienta'],
     ['vida', 'Vida del jugador'], ['efecto', 'Efecto activo'], ['hambre', 'Hambre'], ['nivel', 'Nivel de experiencia mínimo'], ['puntaje', 'Puntaje de marcador'],
     ['bajo_agua', 'Bajo el agua'], ['agachado', 'Agachado'], ['en_llamas', 'En llamas'], ['en_aire', 'En el aire'], ['sin_armadura', 'Sin armadura'],
-    ['plataforma', 'Plataforma'], ['etiqueta', 'Etiqueta (tag)'], ['equipo', 'Equipo puesto'], ['sobre_bloque', 'Parado sobre un bloque']
+    ['plataforma', 'Plataforma'], ['etiqueta', 'Etiqueta (tag)'], ['equipo', 'Equipo puesto'], ['sobre_bloque', 'Parado sobre un bloque'],
+    ['cerca_lugar', 'Cerca de un lugar del jugador'], ['marca_lugar', 'Marca un lugar del jugador'], ['cerca_bloque', 'Cerca de un bloque (estructuras)'],
+    ['encima_de', 'El bloque está encima de'], ['cielo_abierto', 'A cielo abierto'], ['lejos_origen', 'Distancia al centro del mundo'],
+    ['nombre', 'Criatura con nombre'], ['npc', 'Es el NPC'], ['desde_dimension', 'Viniendo desde'], ['pocion', 'Tipo de poción'],
+    ['efecto_reciente', 'Tuvo un efecto hace poco'], ['sin_vehiculo', 'Sin vehículo'], ['sin_placa', 'Sin pisar placas de presión'],
+    ['radio', 'Radio (llevar / construir)'], ['ranura', 'Ranura de armadura'], ['tenido', 'Armadura teñida'],
+    ['distintas', 'Cada vez distinta'], ['dias_distintos', 'Una vez por día'], ['dias_seguidos', 'Días seguidos'],
+    ['fijar', 'Queda cumplido al lograrlo'], ['no_quitar', 'No quitar objetos al entregar']
   ];
   var NOMBRE_COND = {}; CONDICIONES.forEach(function (c) { NOMBRE_COND[c[0]] = c[1]; });
   var DEF_COND = {
@@ -32,8 +63,17 @@
     zona: { x1: 0, y1: 0, z1: 0, x2: 10, y2: 10, z2: 10 }, altura: { tipo: 'encima', valor: 64 }, ubicacion_objetivo: { x: 0, y: 64, z: 0 },
     cerca_de: { entidad: 'villager', radio: 8 }, montado: 'horse', sin_dano: true, encantamiento: { id: 'sharpness', nivel: 1 }, vida: { tipo: 'encima', valor: 10 },
     efecto: { id: 'speed', nivel: 1 }, hambre: { tipo: 'encima', valor: 10 }, nivel: 10, puntaje: { objetivo: '', valor: 1 }, bajo_agua: true, agachado: true,
-    en_llamas: true, en_aire: true, sin_armadura: true, plataforma: 'mobile', etiqueta: '', equipo: { ranura: 'helmet', item: 'diamond_helmet' }, sobre_bloque: 'grass_block'
+    en_llamas: true, en_aire: true, sin_armadura: true, plataforma: 'mobile', etiqueta: '', equipo: { ranura: 'helmet', item: 'diamond_helmet' }, sobre_bloque: 'grass_block',
+    cerca_lugar: { lugar: 'planeta', radio: 10 }, marca_lugar: 'planeta', cerca_bloque: { bloque: 'minecraft:bell', radio: 5 }, encima_de: 'minecraft:grass_block',
+    cielo_abierto: true, lejos_origen: { tipo: 'encima', valor: 1000 }, nombre: '', npc: '', desde_dimension: 'end', pocion: 'invisibility',
+    efecto_reciente: { id: 'poison', segundos: 30 }, sin_vehiculo: true, sin_placa: true, radio: 5, ranura: 'helmet', tenido: true,
+    distintas: true, dias_distintos: true, dias_seguidos: true, fijar: true, no_quitar: true
   };
+  var POCIONES = { night_vision: 'Visión nocturna', invisibility: 'Invisibilidad', fire_resistance: 'Resistencia al fuego', water_breathing: 'Respiración acuática',
+    regeneration: 'Regeneración', slow_falling: 'Caída lenta', swiftness: 'Velocidad', strength: 'Fuerza', healing: 'Curación', leaping: 'Salto', water: 'Agua' };
+  var AYUDA_RECOMPENSAS = 'Uno por línea, con @s para el jugador. Especiales: @libro_encantado mending · @encantado golden_helmet unbreaking 2 · ' +
+    '@pocion night_vision 1 · @libro_firmado Título | Autor | Página 1 | Página 2 · @elegir Cama roja=give @s red_bed ; Cama azul=give @s blue_bed · ' +
+    '@titulo Texto | Subtítulo · @sonido random.levelup';
   var SOLO_NETHER = ['ghast', 'wither_skeleton', 'blaze', 'magma_cube', 'piglin', 'piglin_brute', 'hoglin', 'zoglin', 'strider', 'zombified_piglin'];
   var SOLO_END = ['shulker', 'endermite', 'ender_dragon'];
   var HERRAMIENTAS = ['bow', 'crossbow', 'trident', 'mace', 'wooden_sword', 'stone_sword', 'iron_sword', 'golden_sword', 'diamond_sword', 'netherite_sword', 'iron_axe', 'diamond_axe', 'netherite_axe', 'wooden_pickaxe', 'stone_pickaxe', 'iron_pickaxe', 'diamond_pickaxe', 'netherite_pickaxe', 'iron_shovel', 'diamond_shovel', 'shears', 'fishing_rod', 'flint_and_steel', 'shield'];
@@ -66,7 +106,8 @@
   async function copiarA(tipo, id, destino) {
     var r = tipo === 'mision' ? await D.copiarMision(id, destino) : await D.copiarCapitulo(id, destino);
     if (!(await revisarSesion(r))) return;
-    if (r.ok) aviso((tipo === 'mision' ? 'Misión copiada' : 'Capítulo copiado') + ' a ' + D.nombreServidor(destino) + ' como «' + r.id + '». ' + (tipo === 'mision' ? 'Llega inactiva: revísala y actívala allí.' : 'Llega inactivo: revísalo y actívalo allí.'), 'magico');
+    if (r.ok) aviso((tipo === 'mision' ? 'Misión copiada' : 'Capítulo copiado') + ' a ' + D.nombreServidor(destino) + ' como «' + r.id + '». ' +
+      (tipo === 'mision' ? 'Llega inactiva: revísala y actívala allí.' : (r.misiones ? 'Con ' + r.misiones + (r.misiones === 1 ? ' misión. ' : ' misiones. ') : '') + 'Llega inactivo, con sus misiones inactivas: revísalo y actívalo allí.'), 'magico');
     else aviso(r.motivo || 'No se pudo copiar.', 'error');
   }
   selector.addEventListener('click', async function (e) {
@@ -196,7 +237,7 @@
   function misionVacia() {
     var principal = datos.capitulos[0];
     return { id: '', titulo: '', descripcion: '', icono: 'textures/items/', categoria: 'independiente', capitulo_id: principal ? principal.id : '', orden: 1, npc_id: '', mision_previa: '',
-      repeticion: 'una_vez', repeticion_veces: 1, repeticion_horas: 24, tiempo_limite_seg: null, recompensa_texto: '', activa: true };
+      repeticion: 'una_vez', repeticion_veces: 1, repeticion_horas: 24, tiempo_limite_seg: null, recompensa_texto: '', activa: true, requiere_npc: true };
   }
   async function abrirFormMision(id, duplicar) {
     var m, objetivos, comandos = [];
@@ -235,6 +276,7 @@
             campo('Orden en el capítulo', '<input type="number" min="1" step="1" data-m="orden" value="' + esc(m.orden) + '">') : '') +
           campo('NPC que la entrega', '<select data-m="npc_id"><option value="">Automático (' + (esHist ? 'el del capítulo o el principal' : 'el principal') + ')</option>' + datos.npcs.map(function (n) { return '<option value="' + esc(n.id) + '"' + (m.npc_id === n.id ? ' selected' : '') + '>' + esc(n.nombre) + '</option>'; }).join('') + '</select>') +
           campo('Misión previa', '<select data-m="mision_previa"><option value="">Ninguna</option>' + otras.map(function (x) { return '<option value="' + esc(x.id) + '"' + (m.mision_previa === x.id ? ' selected' : '') + '>' + esc(x.titulo) + '</option>'; }).join('') + '</select>', 'Debe completarse antes.') + '</div>' +
+        '<label class="interruptor"><input type="checkbox" data-m="requiere_npc"' + (m.requiere_npc !== false ? ' checked' : '') + '>Se acepta y entrega tocando al NPC (si no, desde /misiones en cualquier lugar)</label>' +
         '<label class="interruptor"><input type="checkbox" data-m="activa"' + (m.activa ? ' checked' : '') + '>Misión activa (visible para los jugadores)</label>' +
       '</div></div></section>' +
 
@@ -250,7 +292,7 @@
 
       '<section class="perg"><div class="bloque" style="margin-top:0"><h3>Recompensa</h3><div class="rejilla">' +
         campo('Lo que ve el jugador', '<input type="text" data-m="recompensa_texto" value="' + esc(m.recompensa_texto) + '" placeholder="10 lágrimas de ghast">') +
-        campo('Comandos de recompensa (uno por línea)', '<textarea class="comandos" id="comandos" placeholder="give @s diamond 1" spellcheck="false">' + esc(form.comandos) + '</textarea>', 'Nunca se muestran a los jugadores. Usa @s para el jugador que completa la misión.') +
+        campo('Comandos de recompensa (uno por línea)', '<textarea class="comandos" id="comandos" placeholder="give @s diamond 1" spellcheck="false">' + esc(form.comandos) + '</textarea>', 'Nunca se muestran a los jugadores. ' + AYUDA_RECOMPENSAS) +
       '</div></div></section>' +
 
       '<section class="perg"><div class="bloque" style="margin-top:0"><h3>Avisos</h3><div class="avisos-val" id="avisos"></div></div></section>' +
@@ -283,7 +325,7 @@
         '<button class="btn-icono" type="button" data-o-quitar="' + i + '" title="Quitar" style="color:var(--rojo)">' + ic('basura') + '</button></div>' +
         '<div class="rejilla r3">' +
           '<label class="campo"><span>Tipo</span><select data-o-campo="tipo" data-i="' + i + '">' + opciones(TIPOS, o.tipo) + '</select></label>' +
-          '<label class="campo' + (form.errores['obj' + i] ? ' error' : '') + '"><span>Qué (id de Minecraft)</span><input type="text" data-o-campo="objetivo" data-i="' + i + '" value="' + esc(o.objetivo) + '" placeholder="minecraft:ghast" list="lista-ids" spellcheck="false" autocapitalize="off">' + (form.errores['obj' + i] ? '<span class="msg-error">' + esc(form.errores['obj' + i]) + '</span>' : '') + '</label>' +
+          '<label class="campo' + (form.errores['obj' + i] ? ' error' : '') + '"><span>Qué (id de Minecraft)</span><input type="text" data-o-campo="objetivo" data-i="' + i + '" value="' + esc(o.objetivo) + '" placeholder="' + esc((AYUDA_TIPO[o.tipo] || ['minecraft:ghast'])[0]) + '" list="' + (o.tipo === 'visitar' ? 'lista-biomas-id' : 'lista-ids') + '" spellcheck="false" autocapitalize="off">' + (form.errores['obj' + i] ? '<span class="msg-error">' + esc(form.errores['obj' + i]) + '</span>' : '<small>' + esc((AYUDA_TIPO[o.tipo] || ['', ''])[1]) + ' Varios: sepáralos con coma o usa * (ej. *_sapling).</small>') + '</label>' +
           '<label class="campo' + (form.errores['cant' + i] ? ' error' : '') + '"><span>Cantidad</span><input type="number" min="1" step="1" data-o-campo="cantidad" data-i="' + i + '" value="' + esc(o.cantidad) + '">' + (form.errores['cant' + i] ? '<span class="msg-error">' + esc(form.errores['cant' + i]) + '</span>' : '') + '</label>' +
         '</div>' +
         '<label class="campo"><span>Texto para el jugador</span><input type="text" data-o-campo="descripcion" data-i="' + i + '" value="' + esc(o.descripcion) + '" placeholder="' + esc(C.textoObjetivo(Object.assign({}, o, { descripcion: '' }))) + '"><small>Si lo dejas vacío se usa el texto sugerido.</small></label>' +
@@ -294,7 +336,8 @@
     }).join('') + '<datalist id="lista-ids">' + Object.keys(C.ENTIDADES).map(function (k) { return '<option value="minecraft:' + k + '">'; }).join('') + '</datalist>' +
       '<datalist id="lista-herr">' + HERRAMIENTAS.map(function (k) { return '<option value="' + k + '">'; }).join('') + '</datalist>' +
       '<datalist id="lista-ent">' + Object.keys(C.ENTIDADES).map(function (k) { return '<option value="' + k + '">'; }).join('') + '</datalist>' +
-      '<datalist id="lista-biomas">' + Object.keys(C.BIOMAS).map(function (k) { return '<option value="' + k + '">' + esc(C.BIOMAS[k]) + '</option>'; }).join('') + '</datalist>';
+      '<datalist id="lista-biomas">' + Object.keys(C.BIOMAS).map(function (k) { return '<option value="' + k + '">' + esc(C.BIOMAS[k]) + '</option>'; }).join('') + '</datalist>' +
+      '<datalist id="lista-biomas-id">' + Object.keys(C.BIOMAS).map(function (k) { return '<option value="minecraft:' + k + '">' + esc(C.BIOMAS[k]) + '</option>'; }).join('') + '<option value="*">Cualquier lugar</option></datalist>';
   }
   function filaCondicion(i, k, v) {
     var a = 'data-i="' + i + '" data-c="' + k + '"';
@@ -325,7 +368,19 @@
       case 'etiqueta': cuerpo = txt('', v, 'nombre_de_la_tag'); break;
       case 'equipo': cuerpo = '<div class="rejilla r2">' + sel('ranura', { helmet: 'Cabeza', chestplate: 'Pecho', leggings: 'Piernas', boots: 'Pies', offhand: 'Mano izquierda' }, v.ranura) + txt('item', v.item, 'diamond_helmet') + '</div>'; break;
       case 'sobre_bloque': cuerpo = txt('', v, 'grass_block'); break;
-      default: cuerpo = '<small>Activada: se cumple solo si el jugador está ' + esc(NOMBRE_COND[k].toLowerCase()) + '.</small>';
+      case 'encima_de': cuerpo = txt('', v, 'minecraft:sand') + '<small>El bloque colocado (o la criatura) debe estar encima de este.</small>'; break;
+      case 'cerca_lugar': cuerpo = '<div class="rejilla r2">' + txt('lugar', v.lugar, 'planeta') + num('radio', v.radio, 'Radio en bloques') + '</div><small>Un lugar que el jugador marcó antes (por ejemplo, donde construyó su planeta).</small>'; break;
+      case 'marca_lugar': cuerpo = txt('', v, 'planeta') + '<small>Donde se cumpla este objetivo quedará guardado ese lugar para el jugador (minúsculas, sin espacios).</small>'; break;
+      case 'cerca_bloque': cuerpo = '<div class="rejilla r2">' + txt('bloque', v.bloque, 'minecraft:bell') + num('radio', v.radio, 'Radio (máx. 6)') + '</div><small>Sirve para reconocer estructuras: minecraft:bell = aldea, minecraft:web = mina abandonada, minecraft:nether_brick = fortaleza.</small>'; break;
+      case 'lejos_origen': cuerpo = '<div class="rejilla r2">' + sel('tipo', { encima: 'A más de', debajo: 'A menos de' }, v.tipo) + num('valor', v.valor, 'Bloques') + '</div><small>En el End, las islas exteriores empiezan a unos 1000 bloques.</small>'; break;
+      case 'nombre': cuerpo = txt('', v, 'Principito') + '<small>El nombre puesto con una etiqueta de nombre.</small>'; break;
+      case 'npc': cuerpo = '<select ' + a + '>' + opciones(datos.npcs.reduce(function (o, x) { o[x.id] = x.nombre; return o; }, {}), v, 'Elige un NPC') + '</select>'; break;
+      case 'desde_dimension': cuerpo = sel('', { overworld: 'Mundo normal', nether: 'Nether', end: 'End' }, v); break;
+      case 'pocion': cuerpo = sel('', POCIONES, v); break;
+      case 'efecto_reciente': cuerpo = '<div class="rejilla r2">' + sel('id', C.EFECTOS, v.id) + num('segundos', v.segundos, 'Segundos') + '</div><small>Por ejemplo: beber leche después de que una araña de cueva lo envenene.</small>'; break;
+      case 'radio': cuerpo = num('', v, '5') + '<small>Para «Llevar una criatura» y «Construir» (máx. 8).</small>'; break;
+      case 'ranura': cuerpo = sel('', { helmet: 'Cabeza', chestplate: 'Pecho', leggings: 'Piernas', boots: 'Pies', offhand: 'Mano izquierda' }, v); break;
+      default: cuerpo = '<small>' + esc(TEXTO_SI_NO[k] || ('Activada: se cumple solo si el jugador está ' + NOMBRE_COND[k].toLowerCase() + '.')) + '</small>';
     }
     return '<div class="cond-fila"><div class="cab"><span>' + esc(NOMBRE_COND[k] || k) + '</span><button class="btn-icono" type="button" data-cond-quitar="' + k + '" data-i="' + i + '" title="Quitar condición" style="color:var(--rojo)">' + ic('basura') + '</button></div>' + cuerpo + '</div>';
   }
@@ -335,6 +390,7 @@
     if (t.dataset.m) {
       var k = t.dataset.m, m = form.mision;
       if (k === 'activa') m.activa = t.checked;
+      else if (k === 'requiere_npc') m.requiere_npc = t.checked;
       else if (k === 'tiempo_min') m.tiempo_limite_seg = t.value ? Math.max(0, Math.round(Number(t.value) * 60)) || null : null;
       else if (k === 'orden' || k === 'repeticion_veces' || k === 'repeticion_horas') m[k] = numero(t.value);
       else m[k] = t.value;
@@ -348,6 +404,7 @@
     else if (t.dataset.oCampo) {
       var o = form.objetivos[+t.dataset.i];
       o[t.dataset.oCampo] = t.dataset.oCampo === 'cantidad' ? numero(t.value) : t.value;
+      if (t.dataset.oCampo === 'tipo' && e.type === 'change') { var yo = window.scrollY; pintarObjetivos(); window.scrollTo(0, yo); actualizarVista(); return; }
       if (t.dataset.oCampo !== 'descripcion') { var d = document.querySelector('[data-o-campo="descripcion"][data-i="' + t.dataset.i + '"]'); if (d) d.placeholder = C.textoObjetivo(Object.assign({}, o, { descripcion: '' })); }
     } else if (t.dataset.c) {
       var ob = form.objetivos[+t.dataset.i], key = t.dataset.c, sub = t.dataset.sub;
@@ -377,7 +434,7 @@
     var m = form.mision, av = [];
     form.objetivos.forEach(function (o, i) {
       var id = String(o.objetivo || '').replace(/^minecraft:/, ''), c = o.condiciones || {}, n = 'Objetivo ' + (i + 1) + ': ';
-      if (o.objetivo && o.objetivo.indexOf(':') < 0) av.push(n + 'el id «' + o.objetivo + '» no tiene prefijo. ¿Quisiste decir «minecraft:' + o.objetivo + '»?');
+      if (o.objetivo && o.objetivo.indexOf(':') < 0 && o.objetivo.indexOf('*') < 0 && ['viajar', 'recorrer', 'dormir'].indexOf(o.tipo) < 0) av.push(n + 'el id «' + o.objetivo + '» no tiene prefijo. ¿Quisiste decir «minecraft:' + o.objetivo + '»?');
       if (SOLO_NETHER.indexOf(id) >= 0 && c.dimension && c.dimension !== 'nether') av.push(n + 'los ' + C.bonito(id).toLowerCase() + ' aparecen en el Nether, pero la condición pide otra dimensión.');
       if (SOLO_END.indexOf(id) >= 0 && c.dimension && c.dimension !== 'end') av.push(n + 'los ' + C.bonito(id).toLowerCase() + ' aparecen en el End, pero la condición pide otra dimensión.');
       if (id === 'enderman' && c.dimension === 'nether') av.push(n + 'los enderman son raros en el Nether; abundan en el End y de noche en el mundo normal.');
@@ -385,6 +442,11 @@
       if (c.ubicacion_objetivo && o.tipo !== 'interactuar') av.push(n + 'la ubicación exacta solo se usa con el tipo «Interactuar».');
       if (o.tipo !== 'matar' && c.metodo) av.push(n + 'la forma de matar solo sirve para objetivos de tipo «Matar».');
       if (c.zona && (c.zona.x1 === c.zona.x2 || c.zona.z1 === c.zona.z2)) av.push(n + 'la zona tiene ancho 0. Revisa las esquinas.');
+      if (/[,*]/.test(o.objetivo || '') && o.objetivo !== '*' && !String(o.descripcion || '').trim()) av.push(n + 'usa varios ids o comodines: escribe el «Texto para el jugador» para que se entienda.');
+      if (o.tipo === 'construir' && !c.cerca_lugar) av.push(n + 'construir cuenta los bloques alrededor del jugador; agrega «Cerca de un lugar del jugador» para contarlos alrededor de su construcción.');
+      if (c.cerca_lugar && c.cerca_lugar.lugar && !form.objetivos.some(function (x) { return x.condiciones && x.condiciones.marca_lugar === c.cerca_lugar.lugar; }) &&
+          !datos.misiones.some(function (mm) { return (mm.objetivos || []).some(function (x) { return x.condiciones && x.condiciones.marca_lugar === c.cerca_lugar.lugar; }); }))
+        av.push(n + 'ninguna misión marca el lugar «' + c.cerca_lugar.lugar + '». Agrega «Marca un lugar del jugador» al objetivo donde empieza.');
     });
     if (m.categoria === 'historia' && m.mision_previa) {
       var mp = datos.misiones.find(function (x) { return x.id === m.mision_previa; });
@@ -415,7 +477,7 @@
     if (m.repeticion === 'por_dia' && !(Number(m.repeticion_veces) > 0)) e.repeticion_veces = 'Debe ser mayor a 0.';
     if (m.repeticion === 'cada_horas' && !(Number(m.repeticion_horas) > 0)) e.repeticion_horas = 'Debe ser mayor a 0.';
     form.objetivos.forEach(function (o, i) {
-      if (!/^[a-z0-9_.-]+:[a-z0-9_./-]+$/.test(String(o.objetivo || '')) && !/^[a-z0-9_./-]+$/.test(String(o.objetivo || ''))) e['obj' + i] = 'Escribe un id válido, por ejemplo minecraft:zombie.';
+      if (!/^\s*[a-z0-9_.:*\/-]+(\s*,\s*[a-z0-9_.:*\/-]+)*\s*$/.test(String(o.objetivo || ''))) e['obj' + i] = 'Escribe un id válido, por ejemplo minecraft:zombie (varios separados por coma).';
       if (!(Number(o.cantidad) > 0)) e['cant' + i] = 'Debe ser mayor a 0.';
     });
     form.errores = e;
@@ -446,7 +508,7 @@
         var npc = datos.npcs.find(function (n) { return n.id === x.npc_id; });
         var prev = caps.find(function (y) { return y.id === x.capitulo_previo; });
         var nm = datos.misiones.filter(function (m) { return m.capitulo_id === x.id; }).length;
-        return '<div class="fila-admin"><span class="orden-num">' + x.orden + '</span><div><b>' + esc(x.titulo) + '</b><small>' + esc(x.id) + ' · ' + nm + (nm === 1 ? ' misión' : ' misiones') + ' · NPC: ' + esc(npc ? npc.nombre : 'principal') + (prev ? ' · después de «' + esc(prev.titulo) + '»' : '') + (x.activo ? '' : ' · <span style="color:var(--rojo)">inactivo</span>') + '</small>' + (x.resumen ? '<small style="display:block;font-style:italic">' + esc(x.resumen) + '</small>' : '') + '</div>' +
+        return '<div class="fila-admin"><span class="orden-num">' + x.orden + '</span><div><b>' + esc(x.titulo) + '</b><small>' + esc(x.id) + ' · ' + nm + (nm === 1 ? ' misión' : ' misiones') + ' · NPC: ' + esc(npc ? npc.nombre : 'principal') + (prev ? ' · después de «' + esc(prev.titulo) + '»' : '') + (x.activo ? '' : ' · <span style="color:var(--rojo)">inactivo</span>') + (x.disponible_desde && new Date(x.disponible_desde) > new Date() ? ' · se abre ' + esc(new Date(x.disponible_desde).toLocaleString('es', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })) : '') + (x.recompensa_texto ? ' · premio: ' + esc(x.recompensa_texto) : '') + '</small>' + (x.resumen ? '<small style="display:block;font-style:italic">' + esc(x.resumen) + '</small>' : '') + '</div>' +
           '<div class="botones"><button class="btn-icono" type="button" data-c-mover="-1" data-i="' + i + '" title="Subir"' + (i === 0 ? ' disabled' : '') + '>' + ic('arriba') + '</button><button class="btn-icono" type="button" data-c-mover="1" data-i="' + i + '" title="Bajar"' + (i === caps.length - 1 ? ' disabled' : '') + '>' + ic('abajo') + '</button>' +
           '<button class="boton sec peq" type="button" data-c-editar="' + esc(x.id) + '">' + ic('editar') + 'Editar</button>' + botonesCopiar('c-copiar', x.id) + '<button class="boton peligro peq" type="button" data-c-eliminar="' + esc(x.id) + '">' + ic('basura') + 'Eliminar</button></div></div>';
       }).join('') : '<section class="perg"><p class="vacio">Todavía no hay capítulos.</p></section>') + '</div><div id="c-form"></div>';
@@ -476,9 +538,17 @@
       }
     });
   }
+  function aLocal(iso) {
+    if (!iso) return '';
+    var d = new Date(iso); if (isNaN(d)) return '';
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + 'T' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+  function deLocal(v) { if (!v) return null; var d = new Date(v); return isNaN(d) ? null : d.toISOString(); }
   async function formCapitulo(id) {
-    var x = id ? copia(datos.capitulos.find(function (y) { return y.id === id; })) : { id: '', orden: (datos.capitulos.reduce(function (mx, y) { return Math.max(mx, y.orden); }, 0) + 1), titulo: '', resumen: '', npc_id: '', capitulo_previo: '', activo: true };
+    var x = id ? copia(datos.capitulos.find(function (y) { return y.id === id; })) : { id: '', orden: (datos.capitulos.reduce(function (mx, y) { return Math.max(mx, y.orden); }, 0) + 1), titulo: '', resumen: '', npc_id: '', capitulo_previo: '', activo: true, disponible_desde: '', recompensa_texto: '' };
     var h = id ? await D.obtenerHistoriaAdmin(id) : { texto: '', imagen_url: '' };
+    var cmds = id ? await D.obtenerComandosCapitulo(id) : [];
     var cont = document.getElementById('c-form');
     cont.innerHTML = '<section class="perg entrar"><div class="perg-brillo"></div><div class="bloque" style="margin-top:0"><h3>' + (id ? 'Editar capítulo' : 'Nuevo capítulo') + '</h3>' +
       '<form id="f-cap" class="rejilla" novalidate>' +
@@ -489,6 +559,9 @@
         '<div class="rejilla r2"><label class="campo"><span>NPC del capítulo</span><select name="npc_id"><option value="">El NPC principal</option>' + datos.npcs.map(function (n) { return '<option value="' + esc(n.id) + '"' + (x.npc_id === n.id ? ' selected' : '') + '>' + esc(n.nombre) + '</option>'; }).join('') + '</select></label>' +
           '<label class="campo"><span>Capítulo previo</span><select name="capitulo_previo"><option value="">Ninguno</option>' + datos.capitulos.filter(function (y) { return y.id !== id; }).map(function (y) { return '<option value="' + esc(y.id) + '"' + (x.capitulo_previo === y.id ? ' selected' : '') + '>' + y.orden + '. ' + esc(y.titulo) + '</option>'; }).join('') + '</select></label></div>' +
         '<label class="interruptor"><input type="checkbox" name="activo"' + (x.activo ? ' checked' : '') + '>Capítulo activo</label>' +
+        '<label class="campo"><span>Se abre el</span><input type="datetime-local" name="disponible_desde" value="' + esc(aLocal(x.disponible_desde)) + '"><small>Vacío = abierto ya. Antes de esa fecha los jugadores lo ven como «Próximamente» y no pueden aceptar sus misiones. Usa la hora de este dispositivo.</small></label>' +
+        '<label class="campo"><span>Premio por completar el capítulo (texto para el jugador)</span><input type="text" name="recompensa_texto" value="' + esc(x.recompensa_texto) + '" placeholder="Sombrero de explorador encantado"></label>' +
+        '<label class="campo"><span>Comandos del premio del capítulo (uno por línea)</span><textarea class="comandos" name="comandos" placeholder="give @s diamond 1" spellcheck="false">' + esc(cmds.join('\n')) + '</textarea><small>Se dan una sola vez, al entregar la última misión del capítulo. ' + AYUDA_RECOMPENSAS + '</small></label>' +
         '<label class="campo"><span>Historia (la ve el jugador al completar el capítulo)</span><textarea class="historia-editor" name="texto" placeholder="Escribe aquí la historia del capítulo…">' + esc(h.texto) + '</textarea><small>Deja una línea en blanco para separar párrafos.</small></label>' +
         '<label class="campo"><span>Imagen (URL)</span><input type="url" name="imagen_url" value="' + esc(h.imagen_url) + '" placeholder="https://…"></label>' +
         '<img class="img-previa" id="cap-img" alt="Vista previa de la imagen" ' + (h.imagen_url ? 'src="' + esc(h.imagen_url) + '"' : 'hidden') + ' onerror="this.hidden=true">' +
@@ -500,11 +573,13 @@
     document.getElementById('cap-cancelar').addEventListener('click', function () { cont.innerHTML = ''; });
     f.addEventListener('submit', async function (e) {
       e.preventDefault();
-      var cap = { id: f.elements['id'].value.trim(), orden: Number(f.orden.value), titulo: f.titulo.value.trim(), resumen: f.resumen.value.trim(), npc_id: f.npc_id.value, capitulo_previo: f.capitulo_previo.value, activo: f.activo.checked };
+      var cap = { id: f.elements['id'].value.trim(), orden: Number(f.orden.value), titulo: f.titulo.value.trim(), resumen: f.resumen.value.trim(), npc_id: f.npc_id.value, capitulo_previo: f.capitulo_previo.value, activo: f.activo.checked,
+        disponible_desde: deLocal(f.disponible_desde.value), recompensa_texto: f.recompensa_texto.value.trim() };
+      var comandos = f.comandos.value.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
       if (!ID_VALIDO.test(cap.id)) { aviso('El id solo puede tener minúsculas, números y guion bajo.', 'error'); f.elements['id'].focus(); return; }
       if (!cap.titulo) { aviso('Escribe un título.', 'error'); f.titulo.focus(); return; }
       if (id) cap._id_original = id;
-      var r = await D.guardarCapitulo(cap, { texto: f.texto.value, imagen_url: f.imagen_url.value.trim() });
+      var r = await D.guardarCapitulo(cap, { texto: f.texto.value, imagen_url: f.imagen_url.value.trim() }, comandos);
       if (!(await revisarSesion(r))) return;
       if (r.ok) { aviso('Capítulo guardado.'); await recargar(); pintar(); } else aviso(r.motivo, 'error');
     });
@@ -517,7 +592,8 @@
       '<div class="barra-herr" style="margin-top:14px"><button class="boton" type="button" id="n-nuevo">' + ic('mas') + 'Agregar NPC</button></div>' +
       '<div class="lista-admin">' + datos.npcs.map(function (n) {
         var usos = datos.misiones.filter(function (m) { return m.npc_id === n.id; }).length;
-        return '<div class="fila-admin"><span class="orden-num">' + (n.es_principal ? ic('corona') : esc(n.nombre.charAt(0))) + '</span><div><b>' + esc(n.nombre) + (n.es_principal ? ' <span class="etq independiente" style="margin-left:6px">Principal</span>' : '') + '</b><small>' + esc(n.id) + ' · ' + usos + (usos === 1 ? ' misión asignada' : ' misiones asignadas') + '</small>' + (n.descripcion ? '<small style="display:block">' + esc(n.descripcion) + '</small>' : '') + '<small style="display:block">Comando: <span class="nota-npc">/tag @e[type=!player,c=1] add npc:' + esc(n.id) + '</span></small></div>' +
+        return '<div class="fila-admin"><span class="orden-num">' + (n.es_principal ? ic('corona') : esc(n.nombre.charAt(0))) + '</span><div><b>' + esc(n.nombre) + (n.es_principal ? ' <span class="etq independiente" style="margin-left:6px">Principal</span>' : '') + '</b><small>' + esc(n.id) + ' · ' + usos + (usos === 1 ? ' misión asignada' : ' misiones asignadas') + '</small>' + (n.descripcion ? '<small style="display:block">' + esc(n.descripcion) + '</small>' : '') + '<small style="display:block">' + (n.x != null ? 'Está en ' + esc(C.textoUbicacion(n)) + (n.ubicacion_fija ? ' (fija)' : ' (se actualiza sola)') : 'Ubicación: aún sin detectar') + '</small>' +
+          '<small style="display:block">Comando: <span class="nota-npc">/tag @e[type=!player,c=1] add npc:' + esc(n.id) + '</span></small></div>' +
           '<div class="botones"><button class="boton sec peq" type="button" data-n-editar="' + esc(n.id) + '">' + ic('editar') + 'Editar</button><button class="boton peligro peq" type="button" data-n-eliminar="' + esc(n.id) + '">' + ic('basura') + 'Eliminar</button></div></div>';
       }).join('') + '</div><div id="n-form"></div>';
     document.getElementById('n-nuevo').addEventListener('click', function () { formNpc(null); });
@@ -534,13 +610,17 @@
     });
   }
   function formNpc(id) {
-    var n = id ? copia(datos.npcs.find(function (x) { return x.id === id; })) : { id: '', nombre: '', descripcion: '', es_principal: !datos.npcs.length };
+    var n = id ? copia(datos.npcs.find(function (x) { return x.id === id; })) : { id: '', nombre: '', descripcion: '', es_principal: !datos.npcs.length, x: null, y: null, z: null, dimension: 'overworld', ubicacion_fija: false };
     var cont = document.getElementById('n-form');
     cont.innerHTML = '<section class="perg entrar"><div class="perg-brillo"></div><div class="bloque" style="margin-top:0"><h3>' + (id ? 'Editar NPC' : 'Nuevo NPC') + '</h3>' +
       '<form id="f-npc" class="rejilla" novalidate><div class="rejilla r2"><label class="campo"><span>Id</span><input type="text" name="id" value="' + esc(n.id) + '" placeholder="herrero" spellcheck="false" autocapitalize="off"><small>Es el que va en la etiqueta npc:&lt;id&gt;.</small></label>' +
         '<label class="campo"><span>Nombre</span><input type="text" name="nombre" value="' + esc(n.nombre) + '" placeholder="Mira, la herrera"></label></div>' +
         '<label class="campo"><span>Descripción</span><textarea name="descripcion">' + esc(n.descripcion) + '</textarea></label>' +
         '<label class="interruptor"><input type="checkbox" name="es_principal"' + (n.es_principal ? ' checked' : '') + '>NPC principal (solo puede haber uno)</label>' +
+        '<div class="campo"><span>Ubicación (se muestra a los jugadores)</span><div class="coords">' + ['x', 'y', 'z'].map(function (s) { return '<label class="campo"><small>' + s.toUpperCase() + '</small><input type="number" step="1" name="' + s + '" value="' + esc(n[s] == null ? '' : n[s]) + '"></label>'; }).join('') +
+          '<label class="campo"><small>Dimensión</small><select name="dimension">' + opciones({ overworld: 'Mundo normal', nether: 'Nether', end: 'End' }, n.dimension || 'overworld') + '</select></label></div>' +
+          '<small>El servidor la detecta solo cuando hay alguien cerca del NPC y la actualiza si se mueve.</small></div>' +
+        '<label class="interruptor"><input type="checkbox" name="ubicacion_fija"' + (n.ubicacion_fija ? ' checked' : '') + '>Ubicación fija (el servidor no la cambia)</label>' +
         '<div class="aviso oro" id="npc-tag">' + ic('info') + '<span>Comando para el juego: <span class="nota-npc">/tag @e[type=!player,c=1] add npc:' + esc(n.id || '&lt;id&gt;') + '</span></span></div>' +
         '<div class="acciones"><button class="boton sec" type="button" id="npc-cancelar">Cancelar</button><button class="boton" type="submit">' + ic('check') + 'Guardar NPC</button></div></form></div></section>';
     cont.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -549,7 +629,13 @@
     document.getElementById('npc-cancelar').addEventListener('click', function () { cont.innerHTML = ''; });
     f.addEventListener('submit', async function (e) {
       e.preventDefault();
-      var npc = { id: f.elements['id'].value.trim(), nombre: f.nombre.value.trim(), descripcion: f.descripcion.value.trim(), es_principal: f.es_principal.checked };
+      var coord = function (k) { var v = f.elements[k].value.trim(); return v === '' ? null : Math.round(Number(v)); };
+      var npc = { id: f.elements['id'].value.trim(), nombre: f.nombre.value.trim(), descripcion: f.descripcion.value.trim(), es_principal: f.es_principal.checked,
+        x: coord('x'), y: coord('y'), z: coord('z'), dimension: f.dimension.value, ubicacion_fija: f.ubicacion_fija.checked };
+      var vacias = [npc.x, npc.y, npc.z].filter(function (v) { return v == null; }).length;
+      if (vacias && vacias < 3) { aviso('Escribe las tres coordenadas, o deja las tres vacías.', 'error'); return; }
+      if ([npc.x, npc.y, npc.z].some(function (v) { return v != null && isNaN(v); })) { aviso('Las coordenadas deben ser números.', 'error'); return; }
+      if (npc.ubicacion_fija && vacias) { aviso('Para fijar la ubicación escribe las coordenadas.', 'error'); return; }
       if (!ID_VALIDO.test(npc.id)) { aviso('El id solo puede tener minúsculas, números y guion bajo.', 'error'); f.elements['id'].focus(); return; }
       if (!npc.nombre) { aviso('Escribe el nombre del NPC.', 'error'); f.nombre.focus(); return; }
       if (id) npc._id_original = id;

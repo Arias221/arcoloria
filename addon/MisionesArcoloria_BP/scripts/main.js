@@ -1,13 +1,13 @@
 // Misiones Arcoloria — addon del servidor conectado a la página de misiones.
-// Comando para jugadores: /misiones  (nombre completo: /arcoloria:misiones)
+// Para jugadores: /misiones (nombre completo: /arcoloria:misiones) o tocar un NPC de misiones.
 
 import { world, system, Player, CommandPermissionLevel, CustomCommandStatus } from "@minecraft/server";
 import { iniciarApi } from "./api.js";
-import { cargarCache, sincronizar } from "./contenido.js";
+import { contenido, cargarCache, sincronizar, vigilarNpcs } from "./contenido.js";
 import { cargarJugador, quitarJugador, guardarJugador, iniciarCiclos } from "./progreso.js";
 import { escucharEventos } from "./eventos.js";
-import { abrirMenu } from "./menu.js";
-import { NOMBRE_COMANDO, SEG_SINCRONIZAR } from "./config.js";
+import { abrirMenu, menuNpc, disponibles } from "./menu.js";
+import { NOMBRE_COMANDO, PREFIJO, SEG_SINCRONIZAR, SEG_NPCS } from "./config.js";
 
 /* ---------- comando /misiones ---------- */
 system.beforeEvents.startup.subscribe((inicio) => {
@@ -29,12 +29,28 @@ system.beforeEvents.startup.subscribe((inicio) => {
   );
 });
 
-/* ---------- escuchar acciones de los jugadores ---------- */
-escucharEventos();
+/* ---------- acciones de los jugadores y NPC ---------- */
+escucharEventos({
+  alTocarNpc(jugador, npcId) {
+    const npc = contenido.npcs.get(npcId);
+    if (npc) menuNpc(jugador, npc).catch((e) => console.warn("[Misiones] " + e));
+  },
+});
 
 /* ---------- entrada y salida de jugadores ---------- */
 world.afterEvents.playerSpawn.subscribe((e) => {
-  if (e.initialSpawn) cargarJugador(e.player);
+  if (!e.initialSpawn) return;
+  const jugador = e.player;
+  cargarJugador(jugador).then((est) => {
+    if (!est) return;
+    // Aviso de bienvenida unos segundos después de entrar
+    system.runTimeout(() => {
+      try {
+        const n = disponibles(jugador, est).length;
+        if (n) jugador.sendMessage(`${PREFIJO}§aTienes ${n} ${n === 1 ? "misión disponible" : "misiones disponibles"}. §7Escribe §f/misiones§7 para verlas.`);
+      } catch { /* se desconectó */ }
+    }, 100);
+  });
 });
 
 world.beforeEvents.playerLeave.subscribe((e) => {
@@ -56,6 +72,9 @@ world.afterEvents.worldLoad.subscribe(() => {
     for (const j of world.getAllPlayers()) cargarJugador(j);
   }, 40);
   system.runInterval(sync, SEG_SINCRONIZAR * 20);
+  system.runInterval(() => {
+    try { vigilarNpcs(); } catch (e) { console.warn("[Misiones] " + e); }
+  }, SEG_NPCS * 20);
 
   iniciarCiclos();
 });

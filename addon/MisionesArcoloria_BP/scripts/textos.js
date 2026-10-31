@@ -28,7 +28,9 @@ var COSAS = {
   wooden_shovel: 'una pala de madera', iron_shovel: 'una pala de hierro', diamond_shovel: 'una pala de diamante', iron_hoe: 'una azada de hierro', diamond_hoe: 'una azada de diamante',
   iron_helmet: 'un casco de hierro', diamond_helmet: 'un casco de diamante', golden_helmet: 'un casco de oro', leather_helmet: 'un casco de cuero', turtle_helmet: 'un caparazón de tortuga', carved_pumpkin: 'una calabaza tallada',
   iron_chestplate: 'una pechera de hierro', diamond_chestplate: 'una pechera de diamante', elytra: 'unas élitros', iron_leggings: 'unas grebas de hierro', diamond_leggings: 'unas grebas de diamante',
-  iron_boots: 'unas botas de hierro', diamond_boots: 'unas botas de diamante', leather_boots: 'unas botas de cuero', totem_of_undying: 'un tótem de la inmortalidad', torch: 'una antorcha'
+  iron_boots: 'unas botas de hierro', diamond_boots: 'unas botas de diamante', leather_boots: 'unas botas de cuero', totem_of_undying: 'un tótem de la inmortalidad', torch: 'una antorcha',
+  potion: 'una poción', splash_potion: 'una poción arrojadiza', milk_bucket: 'un cubo de leche', water_bucket: 'un cubo de agua', goat_horn: 'un cuerno de cabra', spyglass: 'un catalejo',
+  compass: 'una brújula', map: 'un mapa', empty_map: 'un mapa vacío', clock: 'un reloj', name_tag: 'una etiqueta de nombre', lead: 'una rienda', saddle: 'una silla de montar', boat: 'un bote', ender_eye: 'un ojo de ender'
 };
 var NOMBRES = {
   wheat: 'trigo', bread: 'pan', apple: 'manzanas', golden_apple: 'manzanas doradas', carrot: 'zanahorias', potato: 'papas', cooked_beef: 'filetes', diamond: 'diamantes', emerald: 'esmeraldas',
@@ -37,7 +39,9 @@ var NOMBRES = {
   diamond_ore: 'menas de diamante', deepslate_diamond_ore: 'menas de diamante de pizarra', iron_ore: 'menas de hierro', gold_ore: 'menas de oro', coal_ore: 'menas de carbón', ancient_debris: 'escombros ancestrales',
   amethyst_cluster: 'racimos de amatista', amethyst_shard: 'fragmentos de amatista', cherry_log: 'troncos de cerezo', cherry_leaves: 'hojas de cerezo', pumpkin: 'calabazas', melon: 'sandías',
   sweet_berries: 'bayas dulces', honey_bottle: 'botellas de miel', milk_bucket: 'cubos de leche', potion: 'pociones', cake: 'pasteles', chest: 'cofres', crafting_table: 'mesas de trabajo', furnace: 'hornos',
-  grass_block: 'bloques de césped', obsidian: 'obsidiana', netherrack: 'netherrack', end_stone: 'piedra del End', bell: 'campanas', lever: 'palancas', stone_button: 'botones', oak_door: 'puertas de roble'
+  grass_block: 'bloques de césped', obsidian: 'obsidiana', netherrack: 'netherrack', end_stone: 'piedra del End', bell: 'campanas', lever: 'palancas', stone_button: 'botones', oak_door: 'puertas de roble',
+  sandstone: 'arenisca', red_sandstone: 'arenisca roja', sapling: 'brotes', leaves: 'hojas', log: 'troncos', planks: 'tablas', wool: 'lana', flower: 'flores', rose_bush: 'rosales', poppy: 'amapolas',
+  sunflower: 'girasoles', glass_pane: 'paneles de vidrio', lantern: 'faroles', candle: 'velas', bricks: 'ladrillos', snow_block: 'bloques de nieve', ice: 'hielo', packed_ice: 'hielo compacto', moss_block: 'bloques de musgo'
 };
 var BLOQUE_SING = { grass_block: 'un bloque de césped', sand: 'arena', stone: 'piedra', diamond_block: 'un bloque de diamante', gold_block: 'un bloque de oro', obsidian: 'obsidiana', ice: 'hielo', snow: 'nieve', netherrack: 'netherrack', end_stone: 'piedra del End', soul_sand: 'arena de almas', magma_block: 'un bloque de magma', slime_block: 'un bloque de slime', honey_block: 'un bloque de miel' };
 var METODOS = {
@@ -59,12 +63,17 @@ var EFECTOS = {
   night_vision: 'Visión nocturna', hunger: 'Hambre', weakness: 'Debilidad', poison: 'Veneno', wither: 'Wither', health_boost: 'Vida extra', absorption: 'Absorción', saturation: 'Saturación',
   levitation: 'Levitación', slow_falling: 'Caída lenta', conduit_power: 'Poder del conducto', darkness: 'Oscuridad', bad_omen: 'Mal presagio', hero_of_the_village: 'Héroe de la aldea'
 };
+// Ids de bioma de Bedrock (algunos difieren de Java: swampland, mesa, hell, cold_taiga...)
 var BIOMAS = {
-  plains: 'Llanura', sunflower_plains: 'Llanura de girasoles', forest: 'Bosque', flower_forest: 'Bosque florido', birch_forest: 'Bosque de abedules', dark_forest: 'Bosque oscuro', cherry_grove: 'Arboleda de cerezos',
-  taiga: 'Taiga', snowy_taiga: 'Taiga nevada', jungle: 'Jungla', bamboo_jungle: 'Jungla de bambú', savanna: 'Sabana', desert: 'Desierto', badlands: 'Tierras baldías', swamp: 'Pantano', mangrove_swamp: 'Manglar',
-  meadow: 'Pradera', snowy_plains: 'Llanura nevada', ice_spikes: 'Picos de hielo', mushroom_fields: 'Campos de champiñones', beach: 'Playa', river: 'Río', ocean: 'Océano', deep_ocean: 'Océano profundo',
-  lush_caves: 'Cuevas frondosas', dripstone_caves: 'Cuevas de espeleotemas', deep_dark: 'Oscuridad profunda', jagged_peaks: 'Picos escarpados', frozen_peaks: 'Picos helados', stony_peaks: 'Picos rocosos',
-  nether_wastes: 'Páramos del Nether', soul_sand_valley: 'Valle de arena de almas', crimson_forest: 'Bosque carmesí', warped_forest: 'Bosque distorsionado', basalt_deltas: 'Deltas de basalto', the_end: 'End'
+  plains: 'Llanura', sunflower_plains: 'Llanura de girasoles', forest: 'Bosque', flower_forest: 'Bosque de flores', birch_forest: 'Bosque de abedules',
+  roofed_forest: 'Bosque oscuro', cherry_grove: 'Arboleda de cerezos', pale_garden: 'Jardín pálido', taiga: 'Taiga', cold_taiga: 'Taiga nevada', mega_taiga: 'Taiga de pinos gigantes',
+  redwood_taiga_mutated: 'Taiga de abetos gigantes', jungle: 'Jungla', bamboo_jungle: 'Jungla de bambú', jungle_edge: 'Jungla dispersa', savanna: 'Sabana', savanna_plateau: 'Meseta de sabana',
+  desert: 'Desierto', mesa: 'Tierras baldías', mesa_bryce: 'Tierras baldías erosionadas', swampland: 'Pantano', mangrove_swamp: 'Manglar', meadow: 'Pradera', grove: 'Arboleda nevada',
+  snowy_slopes: 'Laderas nevadas', ice_plains: 'Llanura nevada', ice_plains_spikes: 'Picos de hielo', mushroom_island: 'Campos de champiñones', beach: 'Playa', cold_beach: 'Playa nevada',
+  stone_beach: 'Costa rocosa', river: 'Río', frozen_river: 'Río congelado', ocean: 'Océano', deep_ocean: 'Océano profundo', warm_ocean: 'Océano cálido', lukewarm_ocean: 'Océano templado',
+  cold_ocean: 'Océano frío', frozen_ocean: 'Océano congelado', extreme_hills: 'Colinas escarpadas', lush_caves: 'Cuevas frondosas', dripstone_caves: 'Cuevas de espeleotemas',
+  deep_dark: 'Oscuridad profunda', jagged_peaks: 'Picos escarpados', frozen_peaks: 'Picos helados', stony_peaks: 'Picos rocosos',
+  hell: 'Páramos del Nether', soulsand_valley: 'Valle de arena de almas', crimson_forest: 'Bosque carmesí', warped_forest: 'Bosque distorsionado', basalt_deltas: 'Deltas de basalto', the_end: 'End'
 };
 var DIMENSIONES = { overworld: 'en el mundo normal', nether: 'en el Nether', end: 'en el End' };
 var CLIMAS = { clear: 'con cielo despejado', rain: 'mientras llueve', thunder: 'durante una tormenta' };
@@ -72,14 +81,36 @@ var HORAS = { day: 'de día', noon: 'al mediodía', sunset: 'al atardecer', nigh
 var LUNAS = { fullmoon: 'con luna llena', newMoon: 'con luna nueva', firstQuarter: 'en cuarto creciente', lastQuarter: 'en cuarto menguante', waxingCrescent: 'con luna creciente', waningCrescent: 'con luna menguante', waxingGibbous: 'con luna gibosa creciente', waningGibbous: 'con luna gibosa menguante' };
 var PLATAFORMAS = { console: 'jugando en consola', desktop: 'jugando en PC', mobile: 'jugando en celular' };
 var RANURAS = { helmet: 'en la cabeza', chestplate: 'en el pecho', leggings: 'en las piernas', boots: 'en los pies', offhand: 'en la mano izquierda' };
-var VERBOS = { matar: 'Derrota a', romper: 'Rompe', colocar: 'Coloca', usar: 'Usa', interactuar: 'Interactúa con', consumir: 'Come o bebe', obtener: 'Consigue' };
+var VERBOS = {
+  matar: 'Derrota a', romper: 'Rompe', colocar: 'Coloca', usar: 'Usa', interactuar: 'Interactúa con', consumir: 'Come o bebe', obtener: 'Consigue',
+  vestir: 'Ponte', visitar: 'Visita', dormir: 'Duerme', escoltar: 'Lleva contigo a', criar: 'Haz que nazca', viajar: 'Viaja a',
+  recorrer: 'Recorre', guardar: 'Guarda', construir: 'Construye con', apagar: 'Apaga'
+};
+var VEHICULOS = { boat: 'en bote', chest_boat: 'en bote', minecart: 'en vagoneta', horse: 'a caballo', donkey: 'en burro', mule: 'en mula', camel: 'en camello', pig: 'en cerdo', strider: 'en strider', llama: 'en llama' };
+var POCIONES = {
+  nightvision: 'Visión nocturna', invisibility: 'Invisibilidad', fireresistance: 'Resistencia al fuego', waterbreathing: 'Respiración acuática', regeneration: 'Regeneración',
+  slowfalling: 'Caída lenta', swiftness: 'Velocidad', strength: 'Fuerza', healing: 'Curación', leaping: 'Salto', turtlemaster: 'Maestro tortuga', water: 'agua'
+};
+var BLOQUE_UNO = { bell: 'una campana', lectern: 'un atril', cartography_table: 'una mesa de cartografía', stone_pressure_plate: 'una placa de presión', web: 'telarañas',
+  nether_brick: 'ladrillos del Nether', sculk: 'sculk', trial_spawner: 'un generador de pruebas', end_portal_frame: 'un marco de portal del End', bed: 'una cama', campfire: 'una fogata',
+  rose_bush: 'un rosal', flower_pot: 'una maceta', chest: 'un cofre', barrel: 'un barril' };
 
 function nombreEntidad(id, cantidad) {
+  var lista = String(id || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+  if (lista.length > 1) return lista.map(function (x) { return nombreEntidad(x, cantidad); }).join(' o ');
+  if (String(id).indexOf('*') >= 0) { var base = limpiarId(id).replace(/[*_]+/g, ' ').trim(); return base ? base + ' (de cualquier tipo)' : 'criaturas'; }
   var k = limpiarId(id), e = ENTIDADES[k];
   if (e) return cantidad === 1 ? e[0] : e[1];
   return bonito(id).toLowerCase();
 }
 function nombreCosa(id, cantidad) {
+  var lista = String(id || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+  if (lista.length > 1) return lista.map(function (x) { return nombreCosa(x, cantidad); }).join(' o ');
+  if (String(id).indexOf('*') >= 0) {
+    var clave = limpiarId(id).replace(/\*/g, '').replace(/^_+|_+$/g, '');
+    var base = NOMBRES[clave] || clave.replace(/_/g, ' ').trim();
+    return base ? base + ' (de cualquier tipo)' : 'lo que sea';
+  }
   var k = limpiarId(id);
   if (cantidad === 1 && COSAS[k]) return COSAS[k].replace(/^(un|una|unas|unos) /, '');
   return NOMBRES[k] || (COSAS[k] ? COSAS[k].replace(/^(un|una|unas|unos) /, '') : bonito(id).toLowerCase());
@@ -90,18 +121,37 @@ function nombreObjetivo(o) {
   var esEntidad = o.tipo === 'matar' || o.tipo === 'interactuar' || ENTIDADES[limpiarId(o.objetivo)];
   return n + ' ' + (esEntidad ? nombreEntidad(o.objetivo, n) : nombreCosa(o.objetivo, n));
 }
+function plural(n, uno, varios) { return n + ' ' + (n === 1 ? uno : varios); }
+function variosIds(id) { return /[,*]/.test(String(id || '')); }
+function nombreBioma(id) {
+  var k = limpiarId(id);
+  return BIOMAS[k] ? 'el bioma ' + BIOMAS[k] : (variosIds(id) ? 'el bioma indicado' : 'el bioma «' + bonito(id) + '»');
+}
 function textoObjetivo(o) {
   if (o.descripcion && String(o.descripcion).trim()) return String(o.descripcion).trim();
+  var n = Number(o.cantidad) || 1, id = limpiarId(o.objetivo);
+  switch (o.tipo) {
+    case 'vestir': return 'Ponte ' + (COSAS[id] || '«' + bonito(o.objetivo) + '»');
+    case 'visitar': return (id === '*' || !id ? 'Ve al lugar indicado' : 'Visita ' + nombreBioma(o.objetivo)) + (n > 1 ? ' (' + plural(n, 'vez', 'veces') + ')' : '');
+    case 'dormir': return 'Duerme ' + plural(n, 'noche', 'noches');
+    case 'viajar': return 'Viaja ' + ({ overworld: 'al mundo normal', nether: 'al Nether', end: 'al End' }[id] || 'a ' + bonito(o.objetivo));
+    case 'recorrer': return 'Recorre ' + plural(n, 'bloque', 'bloques') + (id === 'a_pie' ? ' a pie' : VEHICULOS[id] ? ' ' + VEHICULOS[id] : '');
+    case 'apagar': return 'Apaga ' + plural(n, 'poza de lava', 'pozas de lava') + ' con agua';
+    case 'criar': return 'Haz que ' + (n === 1 ? 'nazca 1 ' : 'nazcan ' + n + ' ') + nombreEntidad(o.objetivo, n) + ' bebé';
+    case 'escoltar': return 'Lleva contigo a ' + n + ' ' + nombreEntidad(o.objetivo, n);
+    case 'guardar': return 'Guarda ' + nombreObjetivo(o) + ' en un cofre';
+    case 'construir': var nb = nombreCosa(o.objetivo, n); return 'Construye con al menos ' + n + ' ' + (/^(bloques|troncos|tablas|ladrillos|paneles|faroles|velas)/.test(nb) ? nb : 'bloques de ' + nb);
+  }
   return (VERBOS[o.tipo] || 'Completa') + ' ' + nombreObjetivo(o);
 }
 function corazones(v) { var h = Number(v) / 2; return (h % 1 ? h.toFixed(1) : h) + (h === 1 ? ' corazón' : ' corazones'); }
 function frasesCondiciones(c) {
   c = c || {};
   var f = [];
-  if (c.herramienta) f.push('usando ' + conArticulo(c.herramienta));
+  if (c.herramienta) f.push('usando ' + (variosIds(c.herramienta) ? 'la herramienta indicada' : conArticulo(c.herramienta)));
   if (c.metodo) f.push(METODOS[c.metodo] || ('con el método «' + c.metodo + '»'));
   if (c.dimension) f.push(DIMENSIONES[c.dimension] || ('en ' + c.dimension));
-  if (c.bioma) f.push('en ' + (BIOMAS[limpiarId(c.bioma)] ? 'el bioma ' + BIOMAS[limpiarId(c.bioma)] : 'el bioma «' + bonito(c.bioma) + '»'));
+  if (c.bioma) f.push('en ' + nombreBioma(c.bioma));
   if (c.hora_del_dia) f.push(HORAS[c.hora_del_dia] || c.hora_del_dia);
   if (c.fase_lunar) f.push(LUNAS[c.fase_lunar] || c.fase_lunar);
   if (c.clima) f.push(CLIMAS[c.clima] || c.clima);
@@ -126,6 +176,23 @@ function frasesCondiciones(c) {
   if (c.equipo) f.push('llevando ' + conArticulo(c.equipo.item) + ' ' + (RANURAS[c.equipo.ranura] || ''));
   if (c.sobre_bloque) f.push('parado sobre ' + (BLOQUE_SING[limpiarId(c.sobre_bloque)] || '«' + bonito(c.sobre_bloque) + '»'));
   if (c.etiqueta) f.push('con la marca especial «' + c.etiqueta + '»');
+  if (c.cerca_lugar && c.cerca_lugar.lugar) f.push('cerca de tu ' + String(c.cerca_lugar.lugar).replace(/_/g, ' '));
+  if (c.cerca_bloque && c.cerca_bloque.bloque) f.push('cerca de ' + (BLOQUE_UNO[limpiarId(c.cerca_bloque.bloque)] || '«' + bonito(c.cerca_bloque.bloque) + '»'));
+  if (c.encima_de) f.push('sobre ' + (BLOQUE_SING[limpiarId(c.encima_de)] || '«' + bonito(c.encima_de) + '»'));
+  if (c.cielo_abierto) f.push('a cielo abierto');
+  if (c.lejos_origen) f.push((c.lejos_origen.tipo === 'debajo' ? 'a menos' : 'a más') + ' de ' + c.lejos_origen.valor + ' bloques del centro del mundo');
+  if (c.nombre) f.push('llamado «' + c.nombre + '»');
+  if (c.npc) f.push('hablando con ' + bonito(c.npc));
+  if (c.desde_dimension) f.push('desde ' + ({ overworld: 'el mundo normal', nether: 'el Nether', end: 'el End' }[c.desde_dimension] || c.desde_dimension));
+  if (c.pocion) f.push('de ' + (POCIONES[String(c.pocion).toLowerCase().replace(/^minecraft:/, '').replace(/[^a-z]/g, '')] || bonito(c.pocion)));
+  if (c.efecto_reciente && c.efecto_reciente.id) f.push('justo después de tener el efecto ' + (EFECTOS[limpiarId(c.efecto_reciente.id)] || bonito(c.efecto_reciente.id)));
+  if (c.sin_vehiculo) f.push('sin vagoneta, bote ni montura');
+  if (c.sin_placa) f.push('sin pisar placas de presión');
+  if (c.tenido) f.push('teñido de algún color');
+  if (c.distintas) f.push('cada uno distinto');
+  if (c.dias_seguidos) f.push('en días seguidos');
+  else if (c.dias_distintos) f.push('en días distintos');
+  if (c.marca_lugar) f.push('aquí quedará tu ' + String(c.marca_lugar).replace(/_/g, ' '));
   return f;
 }
 function romano(n) { return ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'][Number(n)] || String(n); }

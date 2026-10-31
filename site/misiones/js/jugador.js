@@ -89,9 +89,9 @@
       '<section class="perg entrar" style="margin-top:34px"><div class="perg-brillo"></div><span class="runa">Cómo funciona</span>' +
         '<ol class="pasos-inicio">' +
           '<li><span>En el juego escribe <b>/misiones</b> y elige «Vincular con la página» para obtener tu código.</span></li>' +
-          '<li><span>Mira aquí las misiones y acéptalas en el juego junto al NPC que las entrega, con <b>/misiones</b>. Las de <b>historia</b> cuentan la leyenda del reino; las <b>independientes</b> se pueden repetir.</span></li>' +
+          '<li><span>Mira aquí las misiones. En el juego, escribe <b>/misiones</b> para ver las disponibles y dónde está cada NPC; tócalo para aceptarla. Las de <b>historia</b> cuentan la leyenda del reino; las <b>independientes</b> se pueden repetir.</span></li>' +
           '<li><span>Juega con normalidad: tu avance se guarda solo mientras cumples los objetivos.</span></li>' +
-          '<li><span>Al terminar, vuelve con ese NPC y entrégala para recibir tu recompensa. Si es de historia, se desbloquea su capítulo en las Crónicas.</span></li>' +
+          '<li><span>Al terminar, vuelve con ese NPC y entrégala para recibir tu recompensa (las que no piden NPC se entregan con <b>/misiones</b>). Si es de historia, se desbloquea su capítulo en las Crónicas.</span></li>' +
         '</ol></section>';
   }
   function acceso(href, icono, titulo, texto) {
@@ -181,7 +181,7 @@
         return '<article class="capitulo entrar' + (h ? '' : ' bloqueado') + '"><span class="punto">' + c.orden + '</span><div class="perg"><div class="perg-brillo"></div>' +
           '<span class="num-cap">Capítulo ' + c.orden + '</span><h3>' + esc(c.titulo) + '</h3>' + (c.resumen ? '<p class="resumen">' + esc(c.resumen) + '</p>' : '') +
           (h ? (h.texto ? '<div class="texto-historia">' + esc(h.texto) + '</div>' : '') + (h.imagen_url ? '<img class="historia-img" src="' + esc(h.imagen_url) + '" alt="Ilustración del capítulo" loading="lazy" onerror="this.remove()">' : '')
-             : '<p class="candado">' + ic('candado') + (d.sesion ? 'Completa ' + (nMis === 1 ? 'su misión' : 'sus ' + nMis + ' misiones') + ' para leer este capítulo' : 'Capítulo sellado') + '</p>') +
+             : '<p class="candado">' + ic('candado') + (c.disponible_desde && new Date(c.disponible_desde).getTime() > Date.now() ? 'Se abre ' + C.cuandoAmigable(new Date(c.disponible_desde).getTime(), d.config) : d.sesion ? 'Completa ' + (nMis === 1 ? 'su misión' : 'sus ' + nMis + ' misiones') + ' para leer este capítulo' : 'Capítulo sellado') + '</p>') +
           '</div></article>';
       }).join('') + '</div>' : '<section class="perg"><p class="vacio">Las crónicas todavía no tienen capítulos.</p></section>') +
       (d.sesion ? '' : '<div class="acciones" style="justify-content:center"><a class="boton magico" href="#aventura">' + ic('enlace') + 'Vincular mi cuenta</a></div>');

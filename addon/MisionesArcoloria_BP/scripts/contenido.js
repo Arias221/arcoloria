@@ -2,7 +2,9 @@
 // Se guarda una copia en el mundo para seguir funcionando si la base no responde.
 
 import { world } from "@minecraft/server";
-import { leer, servidorActual } from "./api.js";
+import { leer, rpc, servidorActual } from "./api.js";
+import { ID_DIMENSION, distancia } from "./util.js";
+import { ETIQUETA_NPC } from "./config.js";
 
 const claveCache = () => "misiones:cache:" + servidorActual();
 const TAM_TROZO = 8000; // caracteres por trozo (el límite real es en bytes y las tildes ocupan más)
@@ -74,9 +76,9 @@ export async function sincronizar(forzar = false) {
 
     const [config, npcs, capitulos, misiones] = await Promise.all([
       leer("configuracion?select=max_misiones_activas,max_completadas_diarias,hora_reinicio,zona_horaria"),
-      leer("npcs?select=id,nombre,es_principal"),
-      leer("capitulos?select=id,orden,titulo,npc_id,capitulo_previo,activo&order=orden"),
-      leer("misiones?select=id,titulo,descripcion,icono,categoria,capitulo_id,orden,npc_id,mision_previa,repeticion,repeticion_veces,repeticion_horas,tiempo_limite_seg,recompensa_texto,activa,objetivos(id,orden,tipo,objetivo,cantidad,condiciones,descripcion)"),
+      leer("npcs?select=id,nombre,es_principal,x,y,z,dimension,ubicacion_fija"),
+      leer("capitulos?select=id,orden,titulo,npc_id,capitulo_previo,activo,disponible_desde,recompensa_texto&order=orden"),
+      leer("misiones?select=id,titulo,descripcion,icono,categoria,capitulo_id,orden,npc_id,mision_previa,repeticion,repeticion_veces,repeticion_horas,tiempo_limite_seg,recompensa_texto,activa,requiere_npc,objetivos(id,orden,tipo,objetivo,cantidad,condiciones,descripcion)"),
     ]);
     const datos = { version, config: config && config[0], npcs: npcs || [], capitulos: capitulos || [], misiones: misiones || [] };
     aplicar(datos);
@@ -113,3 +115,39 @@ export function misionesDeNpc(npcId) {
   const ordenCap = (m) => (m.categoria === "historia" ? contenido.capitulos.get(m.capitulo_id)?.orden ?? 9999 : 99999);
   return lista.sort((a, b) => ordenCap(a) - ordenCap(b) || a.orden - b.orden || a.titulo.localeCompare(b.titulo));
 }
+
+/* ---------- ubicación de los NPC ---------- */
+const ultimoAviso = new Map();
+
+/** Busca a cada NPC en el mundo y guarda dónde está (si se movió y no tiene ubicación fija). */
+export function vigilarNpcs() {
+  for (const npc of contenido.npcs.values()) {
+    if (npc.ubicacion_fija) continue;
+    for (const dim of Object.keys(ID_DIMENSION)) {
+      let encontrados = [];
+      try { encontrados = world.getDimension(ID_DIMENSION[dim]).getEntities({ tags: [ETIQUETA_NPC + npc.id] }); } catch { continue; }
+      if (!encontrados.length) continue;
+      const loc = encontrados[0].location;
+      const r = { x: Math.floor(loc.x), y: Math.floor(loc.y), z: Math.floor(loc.z) };
+      const igual = npc.x != null && npc.dimension === dim && distancia(r, npc) < 4;
+      const reciente = Date.now() - (ultimoAviso.get(npc.id) || 0) < 5 * 60e3;
+      if (!igual && !reciente) {
+        ultimoAviso.set(npc.id, Date.now());
+        Object.assign(npc, r, { dimension: dim });
+        rpc("_ubicar_npc", { p_npc: npc.id, p_x: r.x, p_y: r.y, p_z: r.z, p_dimension: dim })
+          .catch((e) => console.warn("[Misiones] No se pudo guardar la ubicación de " + npc.id + ": " + e));
+      }
+      break;
+    }
+  }
+}
+
+/** ¿Ya se abrió el capítulo de esta misión? Devuelve la fecha de apertura si todavía no. */
+export function aperturaPendiente(m) {
+  if (m.categoria !== "historia") return null;
+  const cap = contenido.capitulos.get(m.capitulo_id);
+  if (!cap || !cap.disponible_desde) return null;
+  const t = new Date(cap.disponible_desde).getTime();
+  return t > Date.now() ? t : null;
+}
+
