@@ -13,7 +13,6 @@
 -- =====================================================================
 
 
-begin;
 
 -- ---------------------------------------------------------------------
 -- 0. Seguridad: no borrar contenido real del nuevo sistema
@@ -925,7 +924,6 @@ drop table public._respaldo_admins, public._respaldo_npcs;
 
 notify pgrst, 'reload schema';
 
-commit;
 
 select 'Listo: misiones para Nubelia y Solune. Admins: ' || (select count(*) from admins)
        || ', NPCs: ' || (select count(*) from npcs) as resultado;
