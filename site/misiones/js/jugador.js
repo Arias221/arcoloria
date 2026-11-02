@@ -62,7 +62,7 @@
       var d = await cargar();
       if (r.nombre === 'misiones') verMisiones(d);
       else if (r.nombre === 'mision') await verMision(d, r.id);
-      else if (r.nombre === 'cronicas') await verCronicas(d);
+      else if (r.nombre === 'cronicas') await window.Cronicas.ver(d, r.id, { antigua: verCronicasAntigua, recargar: async function () { cache = null; await cargar(true); navegar(); } });
       else if (r.nombre === 'aventura') await verAventura(d);
       else verInicio(d);
     } catch (e) {
@@ -168,7 +168,8 @@
   }
 
   /* ---------- Crónicas ---------- */
-  async function verCronicas(d) {
+  // Crónicas por capítulos (se usa si todavía no hay constelaciones con estrellas)
+  async function verCronicasAntigua(d) {
     var historias = d.sesion ? await D.miHistoria() : [];
     var porCap = {}; historias.forEach(function (h) { porCap[h.capitulo_id] = h; });
     var caps = d.capitulos.filter(function (c) { return c.activo; });
@@ -201,7 +202,7 @@
           '</ol>' +
           '<p style="color:var(--tinta-suave);font-size:.93rem;margin-top:10px">Cada servidor se vincula por separado: pide el código en el servidor donde juegas y la página se cambiará sola a ese servidor.</p>' +
           '<form class="codigo-form" id="form-codigo" autocomplete="off"><label class="sr" for="codigo">Código de vinculación</label>' +
-            '<input class="codigo-input" id="codigo" maxlength="6" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="······" required>' +
+            '<input class="codigo-input" id="codigo" maxlength="10" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="······" required>' +
             '<button class="boton magico ancho" type="submit">' + ic('enlace') + 'Vincular</button></form>' +
         '</section>' +
         (otras.length ? '<section class="perg entrar"><div class="perg-brillo"></div><p>También tienes vinculada tu cuenta de: ' + otras.map(function (c) {
@@ -211,13 +212,14 @@
         b.addEventListener('click', function () { D.cambiarServidor(b.dataset.irServidor); cache = null; navegar(); });
       });
       var inp = document.getElementById('codigo');
-      inp.addEventListener('input', function () { inp.value = inp.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); });
+      inp.addEventListener('input', function () { inp.value = inp.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10); });
       document.getElementById('form-codigo').addEventListener('submit', async function (e) {
         e.preventDefault();
         var b = this.querySelector('button'); b.disabled = true;
         var r = await D.vincularCuenta(inp.value);
         b.disabled = false;
-        if (r.ok) { C.toast('¡Bienvenido, ' + r.jugador.gamertag + '! Tu cuenta de ' + D.nombreServidor(r.jugador.servidor) + ' quedó vinculada.', 'magico'); await cargar(true); navegar(); }
+        if (r.ok && r.revision) { C.toast('Modo revisión activado: ya puedes leer todo el cuento en Crónicas.', 'magico'); cache = null; location.hash = '#cronicas'; }
+        else if (r.ok) { C.toast('¡Bienvenido, ' + r.jugador.gamertag + '! Tu cuenta de ' + D.nombreServidor(r.jugador.servidor) + ' quedó vinculada.', 'magico'); await cargar(true); navegar(); }
         else { C.toast(r.motivo || 'No se pudo vincular.', 'error'); inp.focus(); }
       });
       return;

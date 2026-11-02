@@ -46,3 +46,7 @@ El campo `icono` usa rutas como `textures/items/ghast_tear`. La página busca `t
 ## Netlify
 
 Sube la carpeta completa. Si va dentro del sitio de Arcoloria, ponla en una subcarpeta (por ejemplo `site/misiones/`) y quedará en `/misiones/`. Como `fondo.jpg` va incluido dentro de esta carpeta, funciona igual en cualquier ubicación.
+
+## Crónicas del cielo
+
+`js/cronicas.js` y `css/cronicas.css` muestran el cuento por constelaciones (capítulos) y estrellas. La página pide los datos a la función `cronicas()` de la base, que solo entrega el texto de las estrellas abiertas para ese visitante. Mientras la sección está abierta, revisa cada 30 segundos si se encendió alguna estrella y la anima. Si un servidor todavía no tiene estrellas, se muestran las crónicas por capítulos de antes.

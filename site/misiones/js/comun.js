@@ -21,6 +21,7 @@
     destello: '<path d="M12 3l1.8 6.2L20 11l-6.2 1.8L12 19l-1.8-6.2L4 11l6.2-1.8z"/>',
     izq: '<path d="M14.5 6l-6 6 6 6"/>',
     der: '<path d="M9.5 6l6 6-6 6"/>',
+    cerrar: '<path d="M6 6l12 12M18 6L6 18"/>',
     inicio: '<path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5M10 20v-5.5h4V20"/>',
     enlace: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
     salir: '<path d="M14 4.5h4.5v15H14M10 8l-4 4 4 4M6 12h10"/>',

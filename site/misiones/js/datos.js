@@ -188,7 +188,7 @@
   }
   async function vincularCuenta(codigo) {
     var c = String(codigo || '').trim().toUpperCase();
-    if (!/^[A-Z0-9]{6}$/.test(c)) return fallo('El código tiene 6 letras o números. Revísalo y vuelve a intentarlo.');
+    if (!/^([A-Z0-9]{6}|[A-Z0-9]{10})$/.test(c)) return fallo('El código del juego tiene 6 letras o números (el de revisión, 10). Revísalo y vuelve a intentarlo.');
     // Sesión invisible: el jugador no crea cuenta ni contraseña
     if (!(await sesionActual())) {
       try {
@@ -229,6 +229,18 @@
       aviso(r.error);
       return (r.data || []).map(function (h) { return { capitulo_id: h.capitulo_id, texto: txt(h.texto), imagen_url: txt(h.imagen_url) }; });
     } catch (e) { aviso(e); return []; }
+  }
+  // Crónicas por constelaciones: la base solo entrega los textos que este visitante tiene abiertos
+  async function cronicas() {
+    var r = await rpc('cronicas', { p_servidor: servidor });
+    if (!r || r.ok === false) return { ok: false, constelaciones: [], motivo: r && r.motivo };
+    return r;
+  }
+  async function salirRevision() {
+    if (!(await sesionActual())) return { ok: true };
+    var r = await rpc('salir_revision', {});
+    if (r && r.ok && !(await misCuentas()).length) { try { await sb.auth.signOut(); } catch (e) { aviso(e); } }
+    return r;
   }
   // Las misiones se aceptan en el juego, junto al NPC
   async function aceptarMision() {
@@ -383,7 +395,7 @@
     obtenerConfiguracion: obtenerConfiguracion, listarNpcs: listarNpcs, listarCapitulos: listarCapitulos,
     listarMisiones: listarMisiones, obtenerMision: obtenerMision,
     estadoSesionJugador: estadoSesionJugador, misCuentas: misCuentas, vincularCuenta: vincularCuenta, cerrarSesionJugador: cerrarSesionJugador,
-    miProgreso: miProgreso, miHistoria: miHistoria, aceptarMision: aceptarMision,
+    miProgreso: miProgreso, miHistoria: miHistoria, cronicas: cronicas, salirRevision: salirRevision, aceptarMision: aceptarMision,
     iniciarSesionAdmin: iniciarSesionAdmin, cerrarSesionAdmin: cerrarSesionAdmin, esAdmin: esAdmin,
     guardarMision: guardarMision, eliminarMision: eliminarMision, obtenerComandos: obtenerComandos,
     guardarCapitulo: guardarCapitulo, obtenerHistoriaAdmin: obtenerHistoriaAdmin, obtenerComandosCapitulo: obtenerComandosCapitulo, eliminarCapitulo: eliminarCapitulo,
