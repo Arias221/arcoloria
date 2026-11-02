@@ -90,8 +90,8 @@
   var selector = document.getElementById('selector-servidor');
   async function recargar() {
     var servidores = await D.listarServidores();
-    var r = await Promise.all([D.obtenerConfiguracion(), D.listarNpcs(), D.listarCapitulos(), D.listarMisiones()]);
-    datos = { config: r[0], npcs: r[1], capitulos: r[2], misiones: r[3], servidores: servidores };
+    var r = await Promise.all([D.obtenerConfiguracion(), D.listarNpcs(), D.listarCapitulos(), D.listarMisiones(), D.listarEstrellas()]);
+    datos = { config: r[0], npcs: r[1], capitulos: r[2], misiones: r[3], estrellas: r[4], servidores: servidores };
     var html = C.selectorServidor(servidores, D.servidorActual());
     selector.innerHTML = html; selector.hidden = !html;
   }
@@ -107,7 +107,7 @@
     var r = tipo === 'mision' ? await D.copiarMision(id, destino) : await D.copiarCapitulo(id, destino);
     if (!(await revisarSesion(r))) return;
     if (r.ok) aviso((tipo === 'mision' ? 'Misión copiada' : 'Capítulo copiado') + ' a ' + D.nombreServidor(destino) + ' como «' + r.id + '». ' +
-      (tipo === 'mision' ? 'Llega inactiva: revísala y actívala allí.' : (r.misiones ? 'Con ' + r.misiones + (r.misiones === 1 ? ' misión. ' : ' misiones. ') : '') + 'Llega inactivo, con sus misiones inactivas: revísalo y actívalo allí.'), 'magico');
+      (tipo === 'mision' ? 'Llega inactiva: revísala y actívala allí.' : (r.misiones || r.estrellas ? 'Con ' + [r.misiones ? r.misiones + (r.misiones === 1 ? ' misión' : ' misiones') : '', r.estrellas ? r.estrellas + (r.estrellas === 1 ? ' estrella' : ' estrellas') : ''].filter(Boolean).join(' y ') + '. ' : '') + 'Llega inactivo, con sus misiones inactivas: revísalo y actívalo allí.'), 'magico');
     else aviso(r.motivo || 'No se pudo copiar.', 'error');
   }
   selector.addEventListener('click', async function (e) {
@@ -252,8 +252,22 @@
       m.id = nuevo; m.titulo = m.titulo + ' (copia)';
       objetivos.forEach(function (o) { delete o.id; });
     }
-    form = { mision: m, objetivos: objetivos, comandos: comandos.join('\n'), idOriginal: (id && !duplicar) ? id : null, errores: {} };
+    var suEstrella = (id && !duplicar) ? datos.estrellas.find(function (x) { return x.mision_id === id; }) : null;
+    form = { mision: m, objetivos: objetivos, comandos: comandos.join('\n'), idOriginal: (id && !duplicar) ? id : null, errores: {}, estrella: suEstrella ? suEstrella.id : '' };
     pestana = 'misiones'; pintar(); window.scrollTo(0, 0);
+  }
+  // Estrella del cuento donde va la misión (agrupadas por constelación)
+  function campoEstrella() {
+    if (!datos.estrellas.length) return '';
+    var propia = form.idOriginal || form.mision.id;
+    var grupos = datos.capitulos.filter(function (c) { return datos.estrellas.some(function (e) { return e.capitulo_id === c.id; }); }).map(function (c) {
+      return '<optgroup label="' + esc(c.orden + '. ' + c.titulo) + '">' + datos.estrellas.filter(function (e) { return e.capitulo_id === c.id; }).map(function (e) {
+        var otra = e.mision_id && e.mision_id !== propia ? datos.misiones.find(function (x) { return x.id === e.mision_id; }) : null;
+        return '<option value="' + esc(e.id) + '"' + (form.estrella === e.id ? ' selected' : '') + (otra ? ' disabled' : '') + '>Estrella ' + e.orden + ' · ' + esc(e.titulo) + (otra ? ' (ya tiene «' + esc(otra.titulo) + '»)' : '') + '</option>';
+      }).join('') + '</optgroup>';
+    }).join('');
+    return campo('Estrella del cuento', '<select id="m-estrella"><option value="">Ninguna</option>' + grupos + '</select>',
+      form.estrella ? 'La misión queda en esta estrella: es de historia, va en su capítulo y se abre al completar la misión de la estrella anterior.' : 'Si la eliges, la misión aparece en Crónicas junto a ese trozo del cuento.');
   }
   function campo(etq, html, ayuda, clave) {
     var err = form && form.errores[clave];
@@ -276,6 +290,7 @@
             campo('Orden en el capítulo', '<input type="number" min="1" step="1" data-m="orden" value="' + esc(m.orden) + '">') : '') +
           campo('NPC que la entrega', '<select data-m="npc_id"><option value="">Automático (' + (esHist ? 'el del capítulo o el principal' : 'el principal') + ')</option>' + datos.npcs.map(function (n) { return '<option value="' + esc(n.id) + '"' + (m.npc_id === n.id ? ' selected' : '') + '>' + esc(n.nombre) + '</option>'; }).join('') + '</select>') +
           campo('Misión previa', '<select data-m="mision_previa"><option value="">Ninguna</option>' + otras.map(function (x) { return '<option value="' + esc(x.id) + '"' + (m.mision_previa === x.id ? ' selected' : '') + '>' + esc(x.titulo) + '</option>'; }).join('') + '</select>', 'Debe completarse antes.') + '</div>' +
+        campoEstrella() +
         '<label class="interruptor"><input type="checkbox" data-m="requiere_npc"' + (m.requiere_npc !== false ? ' checked' : '') + '>Se acepta y entrega tocando al NPC (si no, desde /misiones en cualquier lugar)</label>' +
         '<label class="interruptor"><input type="checkbox" data-m="activa"' + (m.activa ? ' checked' : '') + '>Misión activa (visible para los jugadores)</label>' +
       '</div></div></section>' +
@@ -387,6 +402,14 @@
   function numero(v) { return v === '' || v == null ? '' : Number(v); }
   function alCambiar(e) {
     var t = e.target;
+    if (t.id === 'm-estrella') {
+      if (e.type !== 'change') return;
+      form.estrella = t.value;
+      var est = datos.estrellas.find(function (x) { return x.id === t.value; });
+      if (est) { form.mision.categoria = 'historia'; form.mision.capitulo_id = est.capitulo_id; form.mision.orden = est.orden; form.mision.repeticion = 'una_vez'; }
+      var yE = window.scrollY; pintar(); window.scrollTo(0, yE);
+      return;
+    }
     if (t.dataset.m) {
       var k = t.dataset.m, m = form.mision;
       if (k === 'activa') m.activa = t.checked;
@@ -495,7 +518,14 @@
     var r = await D.guardarMision(m, objetivos, comandos);
     b.disabled = false;
     if (!(await revisarSesion(r))) return;
-    if (r.ok) { aviso('Misión guardada.'); form = null; await recargar(); pintar(); window.scrollTo(0, 0); }
+    if (r.ok) {
+      var antes = datos.estrellas.find(function (x) { return x.mision_id === (form.idOriginal || m.id); });
+      if ((antes ? antes.id : '') !== form.estrella) {
+        var re = await D.enlazarEstrella(m.id, form.estrella);
+        if (!re.ok) { aviso('La misión se guardó, pero no se pudo poner en la estrella: ' + (re.motivo || ''), 'error'); form = null; await recargar(); pintar(); return; }
+      }
+      aviso('Misión guardada.'); form = null; await recargar(); pintar(); window.scrollTo(0, 0);
+    }
     else aviso(r.motivo || 'No se pudo guardar.', 'error');
   }
 
@@ -510,12 +540,14 @@
         var nm = datos.misiones.filter(function (m) { return m.capitulo_id === x.id; }).length;
         return '<div class="fila-admin"><span class="orden-num">' + x.orden + '</span><div><b>' + esc(x.titulo) + '</b><small>' + esc(x.id) + ' · ' + nm + (nm === 1 ? ' misión' : ' misiones') + ' · NPC: ' + esc(npc ? npc.nombre : 'principal') + (prev ? ' · después de «' + esc(prev.titulo) + '»' : '') + (x.activo ? '' : ' · <span style="color:var(--rojo)">inactivo</span>') + (x.disponible_desde && new Date(x.disponible_desde) > new Date() ? ' · se abre ' + esc(new Date(x.disponible_desde).toLocaleString('es', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })) : '') + (x.recompensa_texto ? ' · premio: ' + esc(x.recompensa_texto) : '') + '</small>' + (x.resumen ? '<small style="display:block;font-style:italic">' + esc(x.resumen) + '</small>' : '') + '</div>' +
           '<div class="botones"><button class="btn-icono" type="button" data-c-mover="-1" data-i="' + i + '" title="Subir"' + (i === 0 ? ' disabled' : '') + '>' + ic('arriba') + '</button><button class="btn-icono" type="button" data-c-mover="1" data-i="' + i + '" title="Bajar"' + (i === caps.length - 1 ? ' disabled' : '') + '>' + ic('abajo') + '</button>' +
-          '<button class="boton sec peq" type="button" data-c-editar="' + esc(x.id) + '">' + ic('editar') + 'Editar</button>' + botonesCopiar('c-copiar', x.id) + '<button class="boton peligro peq" type="button" data-c-eliminar="' + esc(x.id) + '">' + ic('basura') + 'Eliminar</button></div></div>';
+          '<button class="boton sec peq" type="button" data-c-editar="' + esc(x.id) + '">' + ic('editar') + 'Editar</button>' +
+          '<button class="boton sec peq" type="button" data-c-estrellas="' + esc(x.id) + '">' + ic('estrella') + 'Estrellas (' + datos.estrellas.filter(function (e) { return e.capitulo_id === x.id; }).length + ')</button>' + botonesCopiar('c-copiar', x.id) + '<button class="boton peligro peq" type="button" data-c-eliminar="' + esc(x.id) + '">' + ic('basura') + 'Eliminar</button></div></div>';
       }).join('') : '<section class="perg"><p class="vacio">Todavía no hay capítulos.</p></section>') + '</div><div id="c-form"></div>';
     document.getElementById('c-nuevo').addEventListener('click', function () { formCapitulo(null); });
     c.addEventListener('click', async function (e) {
       var b = e.target.closest('button'); if (!b) return;
       if (b.dataset.cEditar) formCapitulo(b.dataset.cEditar);
+      if (b.dataset.cEstrellas) editorEstrellas(b.dataset.cEstrellas);
       if (b.dataset.cCopiar) await copiarA('capitulo', b.dataset.cCopiar, b.dataset.destino);
       if (b.dataset.cEliminar) {
         var x = caps.find(function (y) { return y.id === b.dataset.cEliminar; });
@@ -583,6 +615,78 @@
       if (!(await revisarSesion(r))) return;
       if (r.ok) { aviso('Capítulo guardado.'); await recargar(); pintar(); } else aviso(r.motivo, 'error');
     });
+  }
+
+  /* =================== estrellas del cuento =================== */
+  function editorEstrellas(capId, abrirId) {
+    var cap = datos.capitulos.find(function (x) { return x.id === capId; });
+    var lista = datos.estrellas.filter(function (e) { return e.capitulo_id === capId; }).sort(function (a, b) { return a.orden - b.orden; });
+    var cont = document.getElementById('c-form');
+    var opcionesMision = function (actual, propia) {
+      return '<option value="">Sin misión todavía</option>' + datos.misiones.map(function (m) {
+        var ocupada = datos.estrellas.find(function (e) { return e.mision_id === m.id && e.id !== propia; });
+        return '<option value="' + esc(m.id) + '"' + (actual === m.id ? ' selected' : '') + (ocupada ? ' disabled' : '') + '>' + esc(m.titulo) + (ocupada ? ' (en «' + esc(ocupada.titulo) + '»)' : '') + '</option>';
+      }).join('');
+    };
+    var tarjeta = function (e, nueva) {
+      var mis = e.mision_id && datos.misiones.find(function (m) { return m.id === e.mision_id; });
+      return '<details class="estrella-admin"' + (nueva || e.id === abrirId ? ' open' : '') + '><summary><span class="orden-num">' + (nueva ? '+' : e.orden) + '</span><span class="ea-txt"><b>' + esc(nueva ? 'Nueva estrella' : e.titulo) + '</b><small>' + (mis ? 'Misión: ' + esc(mis.titulo) : 'Sin misión') + '</small></span></summary>' +
+        '<form class="rejilla f-estrella" data-original="' + esc(nueva ? '' : e.id) + '" novalidate>' +
+          '<div class="rejilla r3"><label class="campo"><span>Id</span><input type="text" name="id" value="' + esc(e.id) + '" spellcheck="false" autocapitalize="off"></label>' +
+            '<label class="campo"><span>Lugar en la constelación</span><input type="number" min="1" step="1" name="orden" value="' + esc(e.orden) + '"></label>' +
+            '<label class="campo"><span>Título</span><input type="text" name="titulo" value="' + esc(e.titulo) + '"></label></div>' +
+          '<label class="campo"><span>Texto del cuento</span><textarea class="historia-editor" name="texto" placeholder="El trozo de la historia que se lee en esta estrella…">' + esc(e.texto) + '</textarea><small>Deja una línea en blanco entre párrafos. Se lee en Crónicas cuando la estrella se abre.</small></label>' +
+          '<label class="campo"><span>Misión de esta estrella</span><select name="mision_id">' + opcionesMision(e.mision_id, e.id) + '</select><small>Al completarla se enciende esta estrella y se abre la siguiente. La misión pasa a ser de historia en este capítulo.</small></label>' +
+          '<div class="acciones">' + (nueva ? '' : '<button class="boton peligro peq" type="button" data-e-eliminar="' + esc(e.id) + '">' + ic('basura') + 'Eliminar</button>') +
+            (mis ? '<button class="boton sec peq" type="button" data-e-mision="' + esc(mis.id) + '">' + ic('editar') + 'Editar su misión</button>' : '') +
+            '<button class="boton peq" type="submit">' + ic('check') + 'Guardar estrella</button></div>' +
+        '</form></details>';
+    };
+    var sig = (lista.length ? lista[lista.length - 1].orden : 0) + 1;
+    var idNuevo = capId + '_' + sig, k = sig;
+    while (datos.estrellas.some(function (e) { return e.id === idNuevo; })) idNuevo = capId + '_' + (++k);
+    cont.innerHTML = '<section class="perg entrar"><div class="perg-brillo"></div><div class="bloque" style="margin-top:0"><h3>Estrellas de «' + esc(cap.titulo) + '»</h3>' +
+      '<p style="color:var(--tinta-suave);margin-bottom:12px">Cada estrella es un trozo del cuento con su misión. Los jugadores las abren en orden: al completar la misión de una, se abre la siguiente.</p>' +
+      '<div class="lista-estrellas-admin">' + lista.map(function (e) { return tarjeta(e, false); }).join('') +
+      '<button class="boton sec" type="button" id="e-nueva">' + ic('mas') + 'Agregar estrella</button><div id="e-nueva-form"></div></div>' +
+      '<div class="acciones"><button class="boton sec" type="button" id="e-cerrar">Cerrar</button></div></div></section>';
+    cont.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('e-cerrar').addEventListener('click', function () { cont.innerHTML = ''; });
+    document.getElementById('e-nueva').addEventListener('click', function () {
+      this.hidden = true;
+      document.getElementById('e-nueva-form').innerHTML = tarjeta({ id: idNuevo, orden: sig, titulo: '', texto: '', mision_id: '' }, true);
+      conectarFormularios();
+    });
+    function conectarFormularios() {
+      cont.querySelectorAll('.f-estrella').forEach(function (f) {
+        if (f.dataset.listo) return; f.dataset.listo = '1';
+        f.elements['id'].addEventListener('input', function () { this.value = this.value.toLowerCase().replace(/\s+/g, '_'); });
+        f.addEventListener('submit', async function (ev) {
+          ev.preventDefault();
+          var est = { id: f.elements['id'].value.trim(), capitulo_id: capId, orden: Number(f.orden.value) || null, titulo: f.titulo.value.trim(), texto: f.texto.value.replace(/\r/g, ''), mision_id: f.mision_id.value };
+          if (!ID_VALIDO.test(est.id)) { aviso('El id solo puede tener minúsculas, números y guion bajo.', 'error'); f.elements['id'].focus(); return; }
+          if (!est.titulo) { aviso('Escribe un título.', 'error'); f.titulo.focus(); return; }
+          var b = f.querySelector('[type=submit]'); b.disabled = true;
+          var r = await D.guardarEstrella(est, f.dataset.original || null);
+          b.disabled = false;
+          if (!(await revisarSesion(r))) return;
+          if (r.ok) { aviso('Estrella guardada.'); await recargar(); pintar(); editorEstrellas(capId, est.id); }
+          else aviso(r.motivo || 'No se pudo guardar.', 'error');
+        });
+      });
+    }
+    conectarFormularios();
+    cont.onclick = async function (ev) {
+      var b = ev.target.closest('button'); if (!b) return;
+      if (b.dataset.eEliminar) {
+        var e = datos.estrellas.find(function (x) { return x.id === b.dataset.eEliminar; });
+        if (!confirmar('¿Eliminar la estrella «' + e.titulo + '»? Su texto se pierde. La misión no se borra.')) return;
+        var r = await D.eliminarEstrella(e.id);
+        if (!(await revisarSesion(r))) return;
+        if (r.ok) { aviso('Estrella eliminada.'); await recargar(); pintar(); editorEstrellas(capId); } else aviso(r.motivo, 'error');
+      }
+      if (b.dataset.eMision) abrirFormMision(b.dataset.eMision);
+    };
   }
 
   /* =================== NPCs =================== */

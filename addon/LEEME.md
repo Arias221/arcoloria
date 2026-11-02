@@ -9,7 +9,7 @@ Addon para Bedrock Dedicated Server (BDS) conectado a la misma base de datos que
 - `/misiones` abre el libro de misiones (nombre completo: `/arcoloria:misiones`): misiones disponibles, en curso y vincular con la página.
 - **Tocar un NPC registrado** abre su panel (el toque no hace nada más). Ahí se aceptan y entregan sus misiones.
 - Si una misión pide NPC y estás lejos, el libro dice a quién ir y en qué coordenadas está.
-- Las misiones marcadas «no pide NPC» se aceptan y entregan desde `/misiones`, estés donde estés.
+- Las misiones marcadas «no pide NPC» se aceptan y entregan desde `/misiones`, estés donde estés. También se pueden aceptar en la página: el servidor lo detecta en menos de un minuto y avisa al jugador.
 - Un capítulo con fecha de apertura se ve como «Próximamente» hasta esa fecha.
 - Al entregar la última misión de un capítulo llega su premio (una sola vez por jugador).
 - El avance se cuenta solo mientras juegas. Los objetivos de **obtener** se miran en el inventario y esos objetos se entregan al completar la misión (salvo «queda cumplido al lograrlo» o «no quitar objetos»).

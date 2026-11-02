@@ -389,7 +389,7 @@
     var cap = m.categoria === 'historia' ? d.capitulos.find(function (c) { return c.id === m.capitulo_id; }) : null;
     var reqs = requisitos(m, opciones.vistaPrevia ? Object.assign({}, d, { sesion: null }) : d);
     var html = '<section class="perg entrar"><div class="perg-brillo"></div>' +
-      '<div class="detalle-cab">' + imgIcono(m.icono, '') + '<div><h2>' + esc(m.titulo || 'Misión sin título') + '</h2>' + (m.requiere_npc === false ? '<p class="npc">Se acepta desde /misiones</p>' : npc ? '<p class="npc">Te la da ' + esc(npc.nombre) + (npc.x != null ? ' · ' + esc(textoUbicacion(npc)) : '') + '</p>' : '') + '</div></div>' +
+      '<div class="detalle-cab">' + imgIcono(m.icono, '') + '<div><h2>' + esc(m.titulo || 'Misión sin título') + '</h2>' + (m.requiere_npc === false ? '<p class="npc">No pide NPC: acéptala aquí o con /misiones</p>' : npc ? '<p class="npc">Te la da ' + esc(npc.nombre) + (npc.x != null ? ' · ' + esc(textoUbicacion(npc)) : '') + '</p>' : '') + '</div></div>' +
       '<div class="etiquetas" style="margin-top:12px"><span class="etq ' + m.categoria + '">' + (m.categoria === 'historia' ? ic('libro') + (cap ? 'Capítulo ' + cap.orden + ' · ' + esc(cap.titulo) : 'Historia') : ic('estrella') + 'Independiente') + '</span>' + etiquetaEstado(e) + '</div>' +
       (m.descripcion ? '<p style="margin-top:14px;font-size:1.02rem">' + esc(m.descripcion) + '</p>' : '') +
       '<div class="bloque"><h3>Objetivos</h3>' + (e.clave === 'aceptada' ? '<div class="datos-mision">' + barras(m, e.progreso) + '</div>' :
@@ -406,11 +406,13 @@
     if (!opciones.vistaPrevia) {
       if (e.detalle) html += '<div class="aviso ' + (e.clave === 'limite' ? 'rosa' : e.clave === 'espera' ? 'oro' : '') + '" style="margin-top:16px">' + ic(e.clave === 'bloqueada' ? 'candado' : 'info') + '<span>' + esc(e.detalle) + '</span></div>';
       html += '<div class="acciones">';
-      var conNpc = m.requiere_npc === false
-        ? 'escribe <b>/misiones</b> en el juego, estés donde estés'
-        : (npc ? 've con <b>' + esc(npc.nombre) + '</b>' + (npc.x != null ? ' (' + esc(textoUbicacion(npc)) + ')' : '') + ' y tócalo en el juego' : 've con el NPC de misiones en el juego');
-      if (e.clave === 'sin_sesion') html += '<div class="aviso" style="width:100%">' + ic('persona') + '<span>Para aceptarla, ' + conNpc + '.</span></div>' +
+      var sinNpc = m.requiere_npc === false;
+      var conNpc = npc ? 've con <b>' + esc(npc.nombre) + '</b>' + (npc.x != null ? ' (' + esc(textoUbicacion(npc)) + ')' : '') + ' y tócalo en el juego. Escribe <b>/misiones</b> para ver dónde está'
+        : 've con el NPC de misiones en el juego. Escribe <b>/misiones</b> para ver dónde está';
+      if (e.clave === 'sin_sesion') html += '<div class="aviso" style="width:100%">' + ic('persona') + '<span>' + (sinNpc ? 'Esta misión no pide NPC: vincula tu cuenta para aceptarla desde aquí, o escribe <b>/misiones</b> en el juego.' : 'Para aceptarla, ' + conNpc + '.') + '</span></div>' +
         '<a class="boton magico ancho" href="#aventura">' + ic('enlace') + 'Vincula tu cuenta para ver tu progreso</a>';
+      else if (e.clave === 'disponible' && sinNpc) html += '<button class="boton magico ancho" type="button" data-aceptar="' + esc(m.id) + '">' + ic('destello') + 'Aceptar misión</button>' +
+        '<p class="nota-aceptar">No pide NPC. También puedes aceptarla con <b>/misiones</b> en el juego.</p>';
       else if (e.clave === 'disponible') html += '<div class="aviso" style="width:100%">' + ic('persona') + '<span>¡Está disponible! Para aceptarla, ' + conNpc + '.</span></div>';
       else if (e.clave === 'aceptada') html += '<div class="aviso" style="width:100%">' + ic('destello') + '<span>Esta misión está en curso. Tu avance se actualiza mientras juegas. Al terminar, ' + (m.requiere_npc === false ? 'entrégala con <b>/misiones</b>' : 'entrégala ' + (npc ? 'a <b>' + esc(npc.nombre) + '</b>' : 'al NPC') + ' tocándolo en el juego') + '.</span></div>';
       html += '</div>';

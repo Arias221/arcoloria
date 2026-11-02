@@ -242,9 +242,10 @@
     if (r && r.ok && !(await misCuentas()).length) { try { await sb.auth.signOut(); } catch (e) { aviso(e); } }
     return r;
   }
-  // Las misiones se aceptan en el juego, junto al NPC
-  async function aceptarMision() {
-    return fallo('Las misiones se aceptan en el juego: ve con el NPC y escribe /misiones.');
+  // Solo las misiones que no piden NPC; las demás se aceptan en el juego
+  async function aceptarMision(id) {
+    if (!(await sesionActual())) return fallo('Vincula tu cuenta para aceptar misiones desde la página.');
+    return rpc('aceptar_mision_web', { p_servidor: servidor, p_mision: id });
   }
 
   /* =================== ADMINISTRADOR =================== */
@@ -382,6 +383,29 @@
     var no = await exigirAdmin(); if (no) return no;
     return rpc('admin_copiar_mision', { p_origen: servidor, p_destino: destino, p_id: id });
   }
+  /* ---------- estrellas del cuento (solo administradores) ---------- */
+  async function listarEstrellas() {
+    try {
+      var r = await sb.from('estrellas').select('id, capitulo_id, orden, titulo, texto, mision_id').eq('servidor', servidor).order('orden');
+      if (r.error) { aviso(r.error); return []; }
+      return (r.data || []).map(function (e) { return { id: e.id, capitulo_id: e.capitulo_id, orden: e.orden, titulo: txt(e.titulo), texto: txt(e.texto), mision_id: e.mision_id || '' }; });
+    } catch (e) { aviso(e); return []; }
+  }
+  async function guardarEstrella(estrella, idOriginal) {
+    var e = JSON.parse(JSON.stringify(estrella || {}));
+    if (!ID_VALIDO.test(e.id || '')) return fallo('El id solo puede tener minúsculas, números y guion bajo.');
+    if (!String(e.titulo || '').trim()) return fallo('La estrella necesita un título.');
+    var no = await exigirAdmin(); if (no) return no;
+    return rpc('admin_guardar_estrella', { p_servidor: servidor, p_estrella: e, p_id_original: idOriginal || null });
+  }
+  async function eliminarEstrella(id) {
+    var no = await exigirAdmin(); if (no) return no;
+    return rpc('admin_eliminar_estrella', { p_servidor: servidor, p_id: id });
+  }
+  async function enlazarEstrella(misionId, estrellaId) {
+    var no = await exigirAdmin(); if (no) return no;
+    return rpc('admin_enlazar_estrella', { p_servidor: servidor, p_mision: misionId, p_estrella: estrellaId || null });
+  }
   async function copiarCapitulo(id, destino, conMisiones) {
     var no = await exigirAdmin(); if (no) return no;
     return rpc('admin_copiar_capitulo', { p_origen: servidor, p_destino: destino, p_id: id, p_con_misiones: conMisiones !== false });
@@ -401,6 +425,7 @@
     guardarCapitulo: guardarCapitulo, obtenerHistoriaAdmin: obtenerHistoriaAdmin, obtenerComandosCapitulo: obtenerComandosCapitulo, eliminarCapitulo: eliminarCapitulo,
     guardarNpc: guardarNpc, eliminarNpc: eliminarNpc, guardarConfiguracion: guardarConfiguracion,
     copiarMision: copiarMision, copiarCapitulo: copiarCapitulo,
+    listarEstrellas: listarEstrellas, guardarEstrella: guardarEstrella, eliminarEstrella: eliminarEstrella, enlazarEstrella: enlazarEstrella,
     reiniciarDatosSimulados: reiniciarDatosSimulados
   };
 })();

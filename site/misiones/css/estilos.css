@@ -478,3 +478,14 @@ select.filtro option { background: #2A1D22; }
   .admin-tabs { flex-direction: column; border-radius: 22px; position: sticky; top: 96px; padding: 10px; }
   .admin-tabs button { border-radius: 14px; }
 }
+
+/* ---------- estrellas del cuento (admin) ---------- */
+.lista-estrellas-admin { display: grid; gap: 10px; }
+.estrella-admin { border-radius: 14px; background: rgba(0, 0, 0, .18); border: 1px solid var(--linea-suave); }
+.estrella-admin[open] { border-color: var(--linea); }
+.estrella-admin summary { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px 12px; cursor: pointer; list-style: none; }
+.estrella-admin summary::-webkit-details-marker { display: none; }
+.estrella-admin .ea-txt { display: grid; min-width: 0; }
+.estrella-admin .ea-txt small { color: var(--tinta-suave); }
+.estrella-admin form { padding: 4px 14px 14px; }
+.nota-aceptar { width: 100%; text-align: center; color: var(--tinta-suave); font-size: .88rem; }

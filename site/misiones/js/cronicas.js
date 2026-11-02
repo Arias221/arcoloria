@@ -191,7 +191,7 @@
     var W = esc3.clientWidth, H = esc3.clientHeight, base = Math.min(320, W * 0.66), altoPlat = base * 0.42;
     var cam = document.getElementById('camino'), rel = document.getElementById('relato');
     // El cuento ocupa la parte de arriba; el camino, el espacio que queda debajo
-    var maxRelato = Math.round(H * (W < 600 ? 0.36 : 0.33));
+    var maxRelato = Math.round(H * (W < 600 ? 0.46 : 0.38));
     rel.style.maxHeight = maxRelato + 'px';
     vistaCamino.horizonte = rel.offsetTop + Math.min(maxRelato, rel.offsetHeight) + 30;
     vistaCamino.piso = H - 64 - altoPlat / 2;
@@ -230,24 +230,83 @@
     var c = porId(est.sel), s = c.estrellas[est.cur], el = document.getElementById('relato');
     var anterior = est.cur > 0 ? c.estrellas[est.cur - 1] : null;
     var html;
+    var m = misionDe(s);
     if (legible(s)) {
       html = '<div class="rf-cab"><span class="rf-sub">Estrella ' + s.orden + (s.estado === 'encendida' ? ' · encendida' : est.datos.revision ? ' · revisión' : '') + '</span>' +
-        '<button class="rf-ampliar" type="button" id="leer-grande" aria-label="Leer en grande">' + ic('libro') + '</button></div>' +
+        (m ? '<button class="rf-ampliar" type="button" id="ver-mision" aria-label="Ver la misión de esta estrella" title="Ver la misión">' + ic('pergamino') + '</button>' : '') + '</div>' +
         '<h3>' + esc(s.titulo) + '</h3>' +
         '<div class="rf-texto">' + parrafos(s.texto).map(function (p, k) { return '<p style="--k:' + k + '">' + esc(p) + '</p>'; }).join('') + '</div>' +
-        (s.mision_id && s.estado === 'abierta' && !est.datos.revision ? '<a class="boton peq" href="#mision/' + encodeURIComponent(s.mision_id) + '">' + ic('pergamino') + 'Ver su misión</a>' : '');
+        (m ? tiraMision(m) : '');
     } else {
       html = '<div class="rf-cab"><span class="rf-sub">Estrella ' + s.orden + ' · apagada</span></div><h3>' + esc(s.titulo) + '</h3>' +
         '<p class="rf-pista">' + ic('candado') + '<span>' + esc(!c.abierta ? (fechaApertura(c) ? 'Esta constelación se abre ' + fechaApertura(c) + '.' : 'Esta constelación se abre al completar la anterior.')
           : anterior ? 'Se enciende al completar la misión de «' + anterior.titulo + '».' : est.datos.vinculado ? 'Se abre con la constelación.' : 'Vincula tu cuenta para abrirla.') + '</span></p>';
     }
     var poner = function () {
-      el.innerHTML = html; el.scrollTop = 0;
+      el.innerHTML = html;
       el.classList.remove('saliendo'); void el.offsetWidth; el.classList.add('llegando');
-      var b = document.getElementById('leer-grande');
-      if (b) b.addEventListener('click', function () { abrirLector(s.id, b); });
+      el.querySelectorAll('#ver-mision, .rm-cab b').forEach(function (b) {
+        b.addEventListener('click', function () { abrirMision(m, b); });
+        b.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirMision(m, b); } });
+      });
     };
     if (animar && MOVIMIENTO && el.innerHTML) { el.classList.remove('llegando'); el.classList.add('saliendo'); setTimeout(poner, 380); } else poner();
+  }
+
+  /* ---------- misión de cada estrella ---------- */
+  function misionDe(s) {
+    return s && s.mision_id ? (est.d.misiones || []).filter(function (m) { return m.id === s.mision_id && m.activa; })[0] || null : null;
+  }
+  function npcDe(m) {
+    var id = m.npc_id;
+    var cap = (est.d.capitulos || []).filter(function (c) { return c.id === m.capitulo_id; })[0];
+    if (!id && cap) id = cap.npc_id;
+    return (est.d.npcs || []).filter(function (n) { return id ? n.id === id : n.es_principal; })[0] || null;
+  }
+  // Franja con la misión debajo del cuento: estado y lo que se puede hacer
+  function tiraMision(m) {
+    var e = C.estadoMision(m, est.d), npc = npcDe(m), accion = '';
+    if (e.clave === 'disponible' && m.requiere_npc === false) accion = '<button class="boton magico peq" type="button" data-aceptar="' + esc(m.id) + '">' + ic('destello') + 'Aceptar misión</button>';
+    else if ((e.clave === 'disponible' || e.clave === 'sin_sesion') && m.requiere_npc !== false) accion = '<small class="rm-pista">' + ic('persona') + '<span>Se acepta en el juego con ' + esc(npc ? npc.nombre : 'su NPC') + '. Escribe /misiones para ver dónde está.</span></small>';
+    else if (e.clave === 'sin_sesion') accion = '<small class="rm-pista">' + ic('enlace') + '<span>Vincula tu cuenta para aceptarla desde aquí.</span></small>';
+    return '<div class="rf-mision"><div class="rm-cab"><span class="rm-etq">' + ic('pergamino') + 'Misión</span><b>' + esc(m.titulo) + '</b>' + C.etiquetaEstado(e) + '</div>' +
+      (accion ? '<div class="rm-acciones">' + accion + '</div>' : '') + '</div>';
+  }
+  function abrirMision(m, origen) {
+    var cap = document.createElement('div');
+    cap.className = 'lector modal-mision';
+    cap.setAttribute('role', 'dialog'); cap.setAttribute('aria-modal', 'true'); cap.setAttribute('aria-label', 'Misión ' + m.titulo);
+    cap.innerHTML = '<div class="lector-velo" data-cerrar></div><div class="mm-caja"><button class="lector-cerrar" type="button" data-cerrar aria-label="Cerrar">' + ic('cerrar') + '</button>' +
+      '<div class="mm-scroll">' + C.detalleMision(m, est.d) + '</div></div>';
+    document.body.appendChild(cap);
+    document.body.classList.add('leyendo');
+    est.lector = cap;
+    requestAnimationFrame(function () { cap.classList.add('abierto'); });
+    cap.querySelector('.lector-cerrar').focus();
+    var cerrar = function () {
+      est.lector = null; cap.classList.remove('abierto'); document.body.classList.remove('leyendo');
+      setTimeout(function () { cap.remove(); }, MOVIMIENTO ? 260 : 0);
+      if (origen && document.contains(origen)) origen.focus();
+    };
+    cap.addEventListener('click', async function (e) {
+      if (e.target.closest('[data-cerrar]')) return cerrar();
+      var a = e.target.closest('[data-aceptar]');
+      if (!a) return;
+      a.disabled = true;
+      var r = await D.aceptarMision(a.dataset.aceptar);
+      if (!r.ok) { a.disabled = false; C.toast(r.motivo || 'No se pudo aceptar la misión.', 'error'); return; }
+      C.toast('¡Misión aceptada! Si estás jugando, se activa en unos segundos.', 'magico');
+      cerrar();
+      await est.ctx.recargar();
+    });
+    cap.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') cerrar();
+      if (e.key === 'Tab') {
+        var f = [].slice.call(cap.querySelectorAll('button:not([disabled]), a[href]')); if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    });
   }
 
   function irA(i) {
@@ -395,75 +454,6 @@
       if (astro) astro.classList.add('recien');
       est.cur = destino; colocar(true); pintarRelato(true);
     }, MOVIMIENTO ? 500 : 0);
-  }
-
-  /* =================== lector en grande =================== */
-  function abrirLector(id, origen) {
-    var lista = legibles();
-    var i = lista.map(function (x) { return x.s.id; }).indexOf(id);
-    if (i < 0) return;
-    var cap = document.createElement('div');
-    cap.className = 'lector';
-    cap.setAttribute('role', 'dialog'); cap.setAttribute('aria-modal', 'true'); cap.setAttribute('aria-label', 'Lectura del cuento');
-    cap.innerHTML = '<div class="lector-velo" data-cerrar></div><div class="lector-libro"><button class="lector-cerrar" type="button" data-cerrar aria-label="Cerrar">' + ic('cerrar') + '</button><div class="lector-pagina" id="lector-pagina"></div>' +
-      '<div class="lector-pie"><button class="boton sec peq" type="button" id="lector-ant">' + ic('izq') + '<span>Anterior</span></button><span class="lector-cuenta" id="lector-cuenta"></span><button class="boton sec peq" type="button" id="lector-sig"><span>Siguiente</span>' + ic('der') + '</button></div></div>';
-    document.body.appendChild(cap);
-    document.body.classList.add('leyendo');
-    est.lector = { el: cap, lista: lista, i: i, origen: origen };
-    mostrarPagina(0);
-    requestAnimationFrame(function () { cap.classList.add('abierto'); });
-    cap.querySelector('.lector-cerrar').focus();
-    cap.addEventListener('click', function (e) { if (e.target.closest('[data-cerrar]')) cerrarLector(); });
-    document.getElementById('lector-ant').addEventListener('click', function () { pasar(-1); });
-    document.getElementById('lector-sig').addEventListener('click', function () { pasar(1); });
-    cap.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') cerrarLector();
-      else if (e.key === 'ArrowLeft') pasar(-1);
-      else if (e.key === 'ArrowRight') pasar(1);
-      else if (e.key === 'Tab') {
-        var f = [].slice.call(cap.querySelectorAll('button:not([disabled])'));
-        if (!f.length) return;
-        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
-        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
-      }
-    });
-    var x0 = null;
-    cap.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
-    cap.addEventListener('touchend', function (e) { if (x0 == null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 60) pasar(dx < 0 ? 1 : -1); }, { passive: true });
-  }
-  function pasar(dir) {
-    var L = est.lector; if (!L) return;
-    var j = L.i + dir; if (j < 0 || j >= L.lista.length) return;
-    L.i = j; mostrarPagina(dir);
-  }
-  function mostrarPagina(dir) {
-    var L = est.lector, x = L.lista[L.i], pag = document.getElementById('lector-pagina');
-    var html = '<span class="runa">Constelación ' + x.n + ' · ' + esc(x.c.titulo) + '</span>' +
-      '<h3><span>Estrella ' + x.s.orden + '</span>' + esc(x.s.titulo) + '</h3>' +
-      '<div class="lector-texto">' + parrafos(x.s.texto).map(function (p, k) { return '<p style="--k:' + k + '">' + esc(p) + '</p>'; }).join('') + '</div>' +
-      (x.s.estado === 'encendida' ? '<p class="lector-sello">' + ic('destello') + 'Estrella encendida</p>' : '');
-    var poner = function () {
-      pag.innerHTML = html; pag.scrollTop = 0;
-      pag.classList.remove('girar-izq', 'girar-der', 'salir-izq', 'salir-der');
-      if (dir && MOVIMIENTO) { void pag.offsetWidth; pag.classList.add(dir > 0 ? 'girar-der' : 'girar-izq'); }
-    };
-    if (dir && MOVIMIENTO && pag.innerHTML) { pag.classList.add(dir > 0 ? 'salir-izq' : 'salir-der'); setTimeout(poner, 220); } else poner();
-    document.getElementById('lector-cuenta').textContent = (L.i + 1) + ' / ' + L.lista.length;
-    document.getElementById('lector-ant').disabled = L.i === 0;
-    document.getElementById('lector-sig').disabled = L.i === L.lista.length - 1;
-  }
-  function cerrarLector() {
-    var L = est.lector; if (!L) return;
-    est.lector = null;
-    L.el.classList.remove('abierto');
-    document.body.classList.remove('leyendo');
-    setTimeout(function () { L.el.remove(); }, MOVIMIENTO ? 260 : 0);
-    // Al cerrar, el camino queda en la estrella que estaba leyendo
-    var x = L.lista[L.i];
-    if (x.c.id !== est.sel) { est.sel = x.c.id; history.replaceState(null, '', '#cronicas/' + encodeURIComponent(est.sel)); est.cur = x.c.estrellas.indexOf(x.s); pintar(); }
-    else if (x.c.estrellas.indexOf(x.s) !== est.cur) irA(x.c.estrellas.indexOf(x.s));
-    var t = document.getElementById('leer-grande') || L.origen;
-    if (t && document.contains(t)) t.focus();
   }
 
   /* =================== cielo animado =================== */

@@ -19,4 +19,6 @@
   - Cambiarlo por uno nuevo: `select nuevo_codigo_revision();`
   - Quitar el modo revisión a todos: `select cerrar_revisiones();`
 
+**Misiones en las estrellas: `08_estrellas_misiones.sql`.** Permite poner una misión en cada estrella desde el panel (la misión queda encadenada a la de la estrella anterior), editar las estrellas desde Capítulos, copiar un capítulo con sus estrellas y aceptar desde la página las misiones que no piden NPC.
+
 La carpeta `anteriores/` guarda los scripts de la primera versión (un solo servidor). Ya no se usan; quedan como historial.

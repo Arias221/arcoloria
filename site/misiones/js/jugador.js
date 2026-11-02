@@ -159,7 +159,7 @@
     btn.disabled = true; btn.innerHTML = ic('destello') + 'Aceptando…';
     var r = await D.aceptarMision(btn.dataset.aceptar);
     if (r.ok) {
-      C.toast('Tu misión se activará en el juego en unos segundos.', 'magico');
+      C.toast('¡Misión aceptada! Si estás jugando, se activa en unos segundos.', 'magico');
       await cargar(true); navegar();
     } else {
       C.toast(r.motivo || 'No se pudo aceptar la misión.', 'error');

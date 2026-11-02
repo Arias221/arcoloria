@@ -48,11 +48,16 @@
 .boton-const:hover { background: rgba(60, 38, 76, .7); }
 
 /* el cuento flota sobre la estrella actual */
-.relato-flotante { justify-self: center; width: min(580px, 100%); overflow-y: auto; padding: 14px 18px 16px; border-radius: 18px; overscroll-behavior: contain;
+.relato-flotante { justify-self: center; width: min(580px, 100%); padding: 14px 18px 14px; border-radius: 18px; overscroll-behavior: contain;
   background: linear-gradient(180deg, rgba(30, 20, 46, .62), rgba(22, 14, 34, .52)); border: 1px solid rgba(255, 236, 210, .2);
   -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px); box-shadow: 0 14px 34px rgba(6, 3, 12, .45), inset 0 0 30px rgba(243, 208, 138, .05);
-  scrollbar-width: thin; scrollbar-color: rgba(243, 208, 138, .4) transparent; animation: flotar-panel 7s ease-in-out infinite;
-  padding-bottom: 26px; -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 26px), transparent); mask-image: linear-gradient(180deg, #000 calc(100% - 26px), transparent); }
+  animation: flotar-panel 7s ease-in-out infinite;
+  display: flex; flex-direction: column; overflow: hidden; }
+.relato-flotante > * { flex: none; }
+/* el texto se desliza por dentro; la misión queda siempre a la vista abajo */
+.relato-flotante > .rf-texto { flex: 1 1 auto; min-height: 70px; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 18px;
+  scrollbar-width: thin; scrollbar-color: rgba(243, 208, 138, .4) transparent;
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent); mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent); }
 .relato-flotante.llegando { animation: relato-entra .6s ease both, flotar-panel 7s ease-in-out .6s infinite; }
 .relato-flotante.saliendo { transition: opacity .35s ease, transform .35s ease; opacity: 0; transform: translateY(-10px) scale(.98); }
 .rf-cab { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -219,3 +224,20 @@ body.leyendo { overflow: hidden; }
 @keyframes entrar-der { from { transform: rotateY(-16deg) translateX(30px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes entrar-izq { from { transform: rotateY(16deg) translateX(-30px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes revelar { from { opacity: 0; transform: translateY(8px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+
+/* ---------- misión de la estrella ---------- */
+.rf-mision { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 10px; margin-top: 4px; padding: 9px 12px; border-radius: 14px; background: rgba(243, 208, 138, .07); border: 1px solid rgba(243, 208, 138, .3); }
+.rm-cab { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-width: 0; flex: 1 1 180px; }
+.rm-cab b { font-family: var(--fuente-titulo); font-size: .98rem; color: #FFF4E2; }
+.rm-cab .estado { font-size: .72rem; }
+.rm-etq { display: inline-flex; align-items: center; gap: 5px; font-family: var(--fuente-runa); font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--oro); }
+.rm-etq .icono { width: 15px; height: 15px; }
+.rm-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.rm-pista { display: flex; gap: 6px; align-items: flex-start; flex: 1 1 200px; color: var(--tinta-suave); font-size: .84rem; line-height: 1.4; }
+.rm-pista .icono { width: 15px; height: 15px; flex: none; margin-top: 2px; color: var(--lila); }
+.modal-mision .mm-caja { position: relative; width: min(660px, 100%); max-height: 100%; display: grid; transform: translateY(16px) scale(.98); transition: transform .3s ease; }
+.modal-mision.abierto .mm-caja { transform: none; }
+.modal-mision .mm-scroll { overflow-y: auto; padding: 14px 10px; overscroll-behavior: contain; }
+.modal-mision .lector-cerrar { top: 2px; right: 2px; z-index: 3; background: rgba(36, 22, 50, .85); color: var(--tinta); border-color: rgba(255, 236, 210, .3); }
+.modal-mision .perg { margin: 10px 4px; }
+.rm-cab b[role=button] { cursor: pointer; text-decoration: underline; text-decoration-color: rgba(243, 208, 138, .5); text-underline-offset: 3px; }

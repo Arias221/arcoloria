@@ -2,9 +2,9 @@
 // Para jugadores: /misiones (nombre completo: /arcoloria:misiones) o tocar un NPC de misiones.
 
 import { world, system, Player, CommandPermissionLevel, CustomCommandStatus } from "@minecraft/server";
-import { iniciarApi } from "./api.js";
+import { iniciarApi, rpc } from "./api.js";
 import { contenido, cargarCache, sincronizar, vigilarNpcs } from "./contenido.js";
-import { cargarJugador, quitarJugador, guardarJugador, iniciarCiclos } from "./progreso.js";
+import { cargarJugador, quitarJugador, guardarJugador, iniciarCiclos, estadoDe, recontarConstruccion } from "./progreso.js";
 import { escucharEventos } from "./eventos.js";
 import { abrirMenu, menuNpc, disponibles } from "./menu.js";
 import { NOMBRE_COMANDO, PREFIJO, SEG_SINCRONIZAR, SEG_NPCS } from "./config.js";
@@ -60,13 +60,35 @@ world.beforeEvents.playerLeave.subscribe((e) => {
   });
 });
 
+/* ---------- misiones aceptadas en la página ---------- */
+// Las misiones que no piden NPC se pueden aceptar en la página: el servidor las trae aquí
+let desdeWeb = null;
+async function revisarAceptadasWeb() {
+  const r = await rpc("_aceptadas_web", { p_desde: desdeWeb });
+  if (!r || !r.ahora) return;
+  desdeWeb = r.ahora;
+  for (const a of r.aceptadas || []) {
+    const jugador = world.getAllPlayers().find((j) => j.id === a.jugador);
+    if (!jugador) continue; // al entrar al juego ya la verá
+    const p = estadoDe(jugador)?.progreso.get(a.mision);
+    if (p && p.estado === "aceptada") continue;
+    await cargarJugador(jugador);
+    recontarConstruccion(jugador);
+    jugador.sendMessage(`${PREFIJO}§aAceptaste §e${a.titulo}§a desde la página. ¡Buena suerte!`);
+    try { jugador.playSound("random.orb"); } catch {}
+  }
+}
+
 /* ---------- arranque ---------- */
 world.afterEvents.worldLoad.subscribe(() => {
   const listo = iniciarApi();
   if (cargarCache()) console.warn("[Misiones] Usando copia local mientras se conecta con la base.");
   if (!listo) return;
 
-  const sync = () => sincronizar().catch((e) => console.warn("[Misiones] Sin conexión con la base: " + e));
+  const sync = () => {
+    sincronizar().catch((e) => console.warn("[Misiones] Sin conexión con la base: " + e));
+    revisarAceptadasWeb().catch((e) => console.warn("[Misiones] " + e));
+  };
   system.runTimeout(async () => {
     try { await sincronizar(true); } catch (e) { console.warn("[Misiones] Sin conexión con la base: " + e); }
     for (const j of world.getAllPlayers()) cargarJugador(j);
