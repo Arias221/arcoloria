@@ -13,7 +13,15 @@ const DEFAULT_DATA = {
       name: "NUBELIA", tagline: "Reino de las nubes", ip: "172.93.110.62", port: "2092", version: "",
       addons: [
         { name: "Crops & Farms", desc: "Cultivos, cocina y animales", img: "img/addons/crops-farms.jpg", link: "guias/guia-crops-farms.html" },
-        { name: "Actions & Stuff", desc: "Texturas con nombre", img: "img/addons/actions-stuff.jpg", link: "guias/guia-actions-and-stuff.html" }
+        { name: "Actions & Stuff", desc: "Texturas con nombre", img: "img/addons/actions-stuff.jpg", link: "guias/guia-actions-and-stuff.html" },
+        { name: "Land Claims", desc: "Protege tu terreno", img: "img/addons/land-claims.jpg", link: "guias/guia-land-claims.html" },
+        { name: "Waystones", desc: "Viaja al instante", img: "img/addons/waystones.jpg", link: "guias/guia-waystones.html" },
+        { name: "World Utilities", desc: "Herramientas y utilidades", img: "img/addons/world-utilities.jpg", link: "guias/guia-world-utilities.html" },
+        { name: "Fabulous Furniture", desc: "Más de 150 muebles", img: "img/addons/fabulous-furniture.jpg", link: "guias/guia-fabulous-furniture.html" },
+        { name: "Backpacks & Stuff", desc: "Mochilas y accesorios", img: "img/addons/backpacks-stuff.jpg", link: "guias/guia-mochilas.html" },
+        { name: "Simply Backpacks", desc: "Mochilas de varios tamaños", img: "img/addons/simply-backpacks.jpg", link: "guias/guia-simply-backpacks.html" },
+        { name: "Animal Armor+", desc: "Armaduras con poderes", img: "img/addons/animal-armor.jpg", link: "guias/guia-animal-armor.html" },
+        { name: "Block Furniture", desc: "Muebles y decoración", img: "img/addons/block-furniture.jpg", link: "guias/guia-block-furniture.html" }
       ],
       systems: [], kits: []
     },
@@ -21,7 +29,15 @@ const DEFAULT_DATA = {
       name: "SOLUNE", tagline: "Reino entre el sol y la luna", ip: "172.93.110.62", port: "2054", version: "",
       addons: [
         { name: "Crops & Farms", desc: "Cultivos, cocina y animales", img: "img/addons/crops-farms.jpg", link: "guias/guia-crops-farms.html" },
-        { name: "Actions & Stuff", desc: "Texturas con nombre", img: "img/addons/actions-stuff.jpg", link: "guias/guia-actions-and-stuff.html" }
+        { name: "Actions & Stuff", desc: "Texturas con nombre", img: "img/addons/actions-stuff.jpg", link: "guias/guia-actions-and-stuff.html" },
+        { name: "Land Claims", desc: "Protege tu terreno", img: "img/addons/land-claims.jpg", link: "guias/guia-land-claims.html" },
+        { name: "Waystones", desc: "Viaja al instante", img: "img/addons/waystones.jpg", link: "guias/guia-waystones.html" },
+        { name: "World Utilities", desc: "Herramientas y utilidades", img: "img/addons/world-utilities.jpg", link: "guias/guia-world-utilities.html" },
+        { name: "Fabulous Furniture", desc: "Más de 150 muebles", img: "img/addons/fabulous-furniture.jpg", link: "guias/guia-fabulous-furniture.html" },
+        { name: "Backpacks & Stuff", desc: "Mochilas y accesorios", img: "img/addons/backpacks-stuff.jpg", link: "guias/guia-mochilas.html" },
+        { name: "Simply Backpacks", desc: "Mochilas de varios tamaños", img: "img/addons/simply-backpacks.jpg", link: "guias/guia-simply-backpacks.html" },
+        { name: "Animal Armor+", desc: "Armaduras con poderes", img: "img/addons/animal-armor.jpg", link: "guias/guia-animal-armor.html" },
+        { name: "Block Furniture", desc: "Muebles y decoración", img: "img/addons/block-furniture.jpg", link: "guias/guia-block-furniture.html" }
       ],
       systems: [], kits: []
     }

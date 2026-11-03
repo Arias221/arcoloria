@@ -877,7 +877,7 @@ body.on-cover main { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px
   .feat-strip li { border: 0 !important; border-left: 1px solid rgba(255, 222, 200, .18) !important; padding-top: 6px; }
   .feat-strip li:first-child { border-left: 0 !important; }
   .feat-strip li:last-child { grid-column: auto; }
-  .content-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .content-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ccard { grid-template-columns: minmax(0, 1fr); align-content: start; gap: 12px; padding: 20px; position: relative; }
   .ccard .cc-go { position: absolute; right: 16px; top: 20px; }
 }
@@ -902,7 +902,9 @@ body.on-cover main { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px
 .feat-strip li { text-shadow: 0 1px 8px rgba(0, 0, 0, .6); }
 
 /* ---------- Celular: barra con menú lateral ---------- */
-.bar-tag, .burger, .orn-under, .orn-end { display: none; }
+.bar-tag, .burger, .orn-under { display: none; }
+.orn-end { display: flex; margin-top: 30px; }
+.orn-end svg { width: 22px; height: 22px; }
 .burger {
   flex: none; width: 46px; height: 46px; margin-left: auto;
   border: 0; border-radius: 16px; background: transparent; cursor: pointer;
@@ -950,7 +952,7 @@ body.on-cover main { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px
 }
 .drawer-close svg { width: 20px; height: 20px; }
 .drawer-tag { margin: 12px 0 0; font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-style: italic; font-size: .98rem; color: #F8DCCB; }
-.drawer-orn { margin-top: 14px; }
+.drawer-orn { margin-top: 18px; }
 .drawer-links { display: grid; gap: 8px; margin-top: 18px; }
 .drawer-links a {
   display: flex; align-items: center; gap: 14px;
@@ -989,7 +991,7 @@ body.on-cover main { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px
 @media (max-width: 899px) {
   .menu { border-radius: 26px; padding: 8px 8px 8px 14px; justify-content: flex-start; }
   .menu-links { display: none; }
-  .brand { display: inline-flex; gap: 8px; padding: 2px 4px; margin-right: 0; flex: none; }
+  .brand { display: inline-flex; gap: 8px; padding: 2px 4px; margin-right: auto; flex: none; }
   .brand svg { width: 32px; height: 26px; }
   .brand b { font-size: 1.5rem; }
   .bar-tag {
@@ -1026,6 +1028,8 @@ body.on-cover main { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px
 .cc-thumbs { display: flex; margin-top: 8px; }
 .cc-thumbs img { width: 62px; height: 38px; object-fit: cover; border-radius: 9px; border: 2px solid rgba(36, 24, 21, .9); box-shadow: 0 4px 10px rgba(0, 0, 0, .3); }
 .cc-thumbs img + img { margin-left: -14px; transform: rotate(4deg); }
+.cc-thumbs img:nth-child(3) { transform: rotate(-3deg); }
+.cc-thumbs img:nth-child(4) { transform: rotate(5deg); }
 .addons-page { padding-top: 22px; }
 .ad-head { text-align: center; padding: 8px 0 4px; }
 .ad-head .kicker { margin-top: 6px; letter-spacing: .3em; }
@@ -1638,10 +1642,105 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
   .ip-kits { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .ip-card { scroll-margin-top: 100px; }
 }
+
+@media (min-width: 900px) {
+  .menu-links a { padding: 10px 13px; }
+  .brand { padding-right: 10px; }
+}
+@media (min-width: 900px) and (max-width: 1150px) {
+  .menu-links { gap: 4px; }
+  .menu-links a { padding: 10px 12px; gap: 7px; }
+  .menu-links .lbl-full { display: none; }
+  .menu-links .lbl-short { display: inline; }
+  .brand { padding-right: 8px; }
+}
+@media (min-width: 900px) and (max-width: 1000px) { .sprig { display: none; } .topbar { padding-left: var(--gutter-l); padding-right: var(--gutter-r); } }
+/* Portada provisional de addons (hasta tener su imagen) */
+.ad-img.sin-portada {
+  position: relative; display: grid; place-items: center; align-content: center; gap: 8px;
+  aspect-ratio: 840 / 482; padding: 16px; text-align: center; overflow: hidden;
+  background:
+    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, .22), transparent 45%),
+    radial-gradient(circle at 80% 90%, rgba(0, 0, 0, .25), transparent 50%),
+    linear-gradient(135deg, color-mix(in srgb, var(--tono) 85%, #fff 15%), var(--tono));
+  color: #fff; text-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+}
+.ad-img.sin-portada::before {
+  content: ""; position: absolute; inset: 0; opacity: .14;
+  background-image: linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.ad-img.sin-portada svg { position: relative; width: 54px; height: 54px; stroke-width: 1.5; filter: drop-shadow(0 3px 8px rgba(0,0,0,.3)); }
+.ad-img.sin-portada b { position: relative; font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-size: clamp(1.3rem, 5vw, 1.7rem); font-weight: 600; line-height: 1.1; }
+
+/* Guía de sistemas en la información del servidor */
+.ip-sysguide {
+  display: grid; grid-template-columns: 46px minmax(0, 1fr) 22px; gap: 12px; align-items: center;
+  text-decoration: none; color: var(--t-ink);
+  transition: transform .18s var(--ease-spring), border-color .2s;
+}
+.ip-sysguide:hover { transform: translateY(-2px); border-color: var(--t); }
+.ip-sysguide .sg-ic { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: var(--t-soft); color: var(--t); }
+.ip-sysguide .sg-ic svg { width: 24px; height: 24px; }
+.ip-sysguide b { display: block; font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-size: 1.12rem; font-weight: 600; color: #fff; }
+.ip-sysguide small { display: block; font-size: .86rem; color: var(--t-muted); line-height: 1.4; margin-top: 2px; }
+.ip-sysguide > svg { width: 20px; height: 20px; color: var(--t); }
+
+/* ---------- Redes de la comunidad ---------- */
+.social { max-width: 880px; margin: 26px auto 0; text-align: center; }
+.social-title {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: clamp(1.3rem, 5vw, 1.7rem); font-weight: 600; color: #FFF1E0; text-shadow: 0 2px 12px rgba(0, 0, 0, .55);
+}
+.social-title svg { width: 18px; height: 18px; }
+.social-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 14px; }
+.soc {
+  display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; align-items: center;
+  padding: 10px 16px 10px 10px; border-radius: 999px; text-align: left; text-decoration: none; color: #fff;
+  background: var(--soc-bg); border: 1px solid var(--soc-line);
+  -webkit-backdrop-filter: blur(12px) saturate(150%); backdrop-filter: blur(12px) saturate(150%);
+  box-shadow: 0 0 20px var(--soc-glow), 0 10px 24px rgba(0, 0, 0, .3), inset 2px 2px 5px -2px rgba(255, 255, 255, .35);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .18s var(--ease-spring), box-shadow .25s;
+}
+.soc:hover { transform: translateY(-2px); box-shadow: 0 0 30px var(--soc-glow), 0 12px 28px rgba(0, 0, 0, .34), inset 2px 2px 5px -2px rgba(255, 255, 255, .35); }
+.soc:active { transform: scale(.98); }
+.soc.discord { --soc-bg: rgba(88, 101, 242, .42); --soc-line: rgba(160, 170, 255, .55); --soc-glow: rgba(88, 101, 242, .3); --soc-ic: #5865F2; }
+.soc.wsp { --soc-bg: rgba(37, 160, 90, .38); --soc-line: rgba(140, 230, 170, .5); --soc-glow: rgba(37, 211, 102, .22); --soc-ic: #25A35A; }
+.soc-ic { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--soc-ic); box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18); }
+.soc-ic svg { width: 26px; height: 26px; color: #fff; }
+.soc-t b { display: block; font-size: 1.02rem; line-height: 1.2; }
+.soc-t small { display: block; font-size: .82rem; opacity: .85; line-height: 1.3; }
+@media (min-width: 760px) { .social-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.drawer-social { display: grid; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--glass-border); }
+.ds { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-radius: 999px; text-decoration: none; color: #fff; font-weight: 700; }
+.ds svg { width: 22px; height: 22px; flex: none; }
+.ds.discord { background: rgba(88, 101, 242, .38); border: 1px solid rgba(160, 170, 255, .45); }
+.ds.wsp { background: rgba(37, 160, 90, .34); border: 1px solid rgba(140, 230, 170, .42); }
+
+.ip-add .icon { width: 20px; height: 20px; }
+.ip-soc { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.ip-soc-btn { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 0 10px; border-radius: 999px; color: #fff; font-weight: 800; font-size: .86rem; text-decoration: none; text-shadow: none; text-align: center; line-height: 1.15; }
+.ip-soc-btn svg { width: 20px; height: 20px; flex: none; }
+.ip-soc-btn.wsp { background: rgba(37, 160, 90, .5); border: 1px solid rgba(140, 230, 170, .5); }
+.ip-soc-btn.discord { background: rgba(88, 101, 242, .5); border: 1px solid rgba(160, 170, 255, .5); }
+
+/* ---------- Fondos por sección ---------- */
+.scene-alt { opacity: 0; transition: opacity .7s ease; background: 50% 45% / cover no-repeat; }
+.bg-reglas { background-image: url(img/fondos/reglas.jpg); }
+.bg-addons { background-image: url(img/fondos/addons.jpg); }
+.bg-nubelia { background-image: url(img/fondos/nubelia.jpg); }
+.bg-solune { background-image: url(img/fondos/solune.jpg); }
+body.theme-rules .bg-reglas, body.theme-addons .bg-addons, body.theme-nubelia .bg-nubelia, body.theme-solune .bg-solune { opacity: 1; }
+body.theme-rules { --bg-blur: url(img/fondos/reglas-blur.jpg); }
+body.theme-addons { --bg-blur: url(img/fondos/addons-blur.jpg); }
+body.theme-nubelia { --bg-blur: url(img/fondos/nubelia-blur.jpg); }
+body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
 </style>
 </head>
 <body>
-<div class="scene" aria-hidden="true"><div class="scene-sharp"></div><div class="scene-blur"></div><div class="scene-dim"></div><div class="scene-tint violet"></div><div class="scene-tint green"></div><div class="scene-shade"></div></div>
+<div class="scene" aria-hidden="true"><div class="scene-sharp"></div><div class="scene-alt bg-reglas"></div><div class="scene-alt bg-addons"></div><div class="scene-alt bg-nubelia"></div><div class="scene-alt bg-solune"></div><div class="scene-blur"></div><div class="scene-dim"></div><div class="scene-tint violet"></div><div class="scene-tint green"></div><div class="scene-shade"></div></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <symbol id="cloud" viewBox="0 0 120 62">
@@ -1684,6 +1783,9 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
     <symbol id="i-chat" viewBox="0 0 24 24"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h8A2.5 2.5 0 0 1 16 6.5v4.8a2.5 2.5 0 0 1-2.5 2.5H9.2L5.5 16.8v-3H5.5A2.5 2.5 0 0 1 3 11.3z"/><path d="M19 8.5h.3a1.7 1.7 0 0 1 1.7 1.7v4.9a1.7 1.7 0 0 1-1.7 1.7H19v2.9l-3.4-2.9h-3.4a1.7 1.7 0 0 1-1.6-1.2"/></symbol>
     <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.8l7.5 3v5.5c0 4.6-3.1 8.3-7.5 10-4.4-1.7-7.5-5.4-7.5-10V5.8l7.5-3z"/><path d="M8.8 12.1l2.2 2.2 4.3-4.4"/></symbol>
     <symbol id="i-scroll" viewBox="0 0 24 24"><path d="M8 4h10.5A2.5 2.5 0 0 1 21 6.5V7h-4.5"/><path d="M8 4a2.5 2.5 0 0 0-2.5 2.5V17"/><path d="M8 4a2.5 2.5 0 0 1 2.5 2.5v11a2.5 2.5 0 0 1-2.5 2.5H5.5A2.5 2.5 0 0 1 3 17.5V17h2.5"/><path d="M8 20h8a2.5 2.5 0 0 0 2.5-2.5V7"/><path d="M13 10h3M13 13.5h3"/></symbol>
+    <symbol id="i-discord" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M19.3 5.4A16.6 16.6 0 0 0 15.2 4l-.5 1a15.4 15.4 0 0 0-5.4 0L8.8 4a16.5 16.5 0 0 0-4.1 1.4C2.1 9.2 1.4 13 1.7 16.7a16.7 16.7 0 0 0 5 2.6l1.1-1.7a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.9 11.9 0 0 0 11 0l.4.3c-.5.3-1.1.6-1.7.8l1.1 1.7a16.6 16.6 0 0 0 5-2.6c.4-4.3-.7-8.1-3-11.3zM8.7 14.5c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm6.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 2.2a9.7 9.7 0 0 0-8.4 14.6L2.2 21.8l5.1-1.3A9.7 9.7 0 1 0 12 2.2zm0 17.7c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 19.9zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1l-.6-.4z"/></symbol>
+    <symbol id="i-quest" viewBox="0 0 24 24"><path d="M7 4.5h10.5a2.5 2.5 0 0 1 0 5H17v8a2.5 2.5 0 0 1-2.5 2.5H6"/><path d="M7 4.5A2.5 2.5 0 0 0 4.5 7v1.5H7M7 4.5v13a2.5 2.5 0 0 1-2.5 2.5"/><path d="M11.5 10.5l.9 1.9 2.1.3-1.5 1.5.4 2.1-1.9-1-1.9 1 .4-2.1-1.5-1.5 2.1-.3z"/></symbol>
     <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5.5 21V3.5"/><path d="M5.5 4.5c3-1.7 5.6 1.7 8.6 0 2.2-1.2 3.9-.8 4.9-.2v8.4c-1-.6-2.7-1-4.9.2-3 1.7-5.6-1.7-8.6 0"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.6"/><path d="M15.7 15.7l4.8 4.8"/></symbol>
     <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle cx="4.6" cy="6.5" r="1.1"/><circle cx="4.6" cy="12" r="1.1"/><circle cx="4.6" cy="17.5" r="1.1"/></symbol>
@@ -1719,13 +1821,13 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
   <nav class="menu" aria-label="Menú principal">
     <svg class="sprig sprig-l" viewBox="0 0 40 24" aria-hidden="true"><use href="#sprig"/></svg>
     <a class="brand" href="#inicio" aria-label="Arcoloria, inicio"><svg viewBox="0 0 40 32" aria-hidden="true"><use href="#lotus"/></svg><b>Arcoloria</b></a>
-    <p class="bar-tag" aria-hidden="true"><svg class="bt-lotus" viewBox="0 0 40 32"><use href="#lotus"/></svg><span><svg viewBox="0 0 24 16"><use href="#leaf"/></svg>Arcoloria, nacida de hermosas melodías<svg class="flip" viewBox="0 0 24 16"><use href="#leaf"/></svg></span></p>
     <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
     <div class="menu-links">
       <a href="#inicio" data-sec="inicio"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg><span>Inicio</span></a>
       <a href="#servidor" data-sec="reglas"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg><span>Reglas</span></a>
       <a href="#addons" data-sec="addons"><svg class="icon" aria-hidden="true"><use href="#i-cube"/></svg><span>Addons</span></a>
-      <a href="#galeria" data-soon="La galería de recuerdos"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span class="lbl-full">Galería de recuerdos</span><span class="lbl-short">Galería</span></a>
+      <a href="misiones/"><svg class="icon" aria-hidden="true"><use href="#i-quest"/></svg><span>Misiones</span></a>
+      <a href="#galeria" data-soon="La galería de recuerdos" hidden><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span class="lbl-full">Galería de recuerdos</span><span class="lbl-short">Galería</span></a>
     </div>
     <svg class="sprig sprig-r" viewBox="0 0 40 24" aria-hidden="true"><use href="#sprig"/></svg>
   </nav>
@@ -1737,14 +1839,19 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
     <a class="drawer-brand" href="#inicio"><svg viewBox="0 0 40 32" aria-hidden="true"><use href="#lotus"/></svg><b>Arcoloria</b></a>
     <button class="drawer-close" id="drawer-close" type="button" aria-label="Cerrar menú"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
-  <p class="drawer-tag">Arcoloria, nacida de hermosas melodías</p>
   <div class="orn-line drawer-orn" aria-hidden="true"><span></span><svg viewBox="0 0 40 32"><use href="#lotus"/></svg><span></span></div>
   <nav class="drawer-links" aria-label="Secciones">
     <a href="#inicio" data-sec="inicio"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg><span>Inicio</span></a>
     <a href="#servidor" data-sec="reglas"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg><span>Reglas</span></a>
     <a href="#addons" data-sec="addons"><svg class="icon" aria-hidden="true"><use href="#i-cube"/></svg><span>Addons</span></a>
-    <a href="#galeria" data-soon="La galería de recuerdos"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Galería de recuerdos</span></a>
+    <a href="misiones/"><svg class="icon" aria-hidden="true"><use href="#i-quest"/></svg><span>Misiones</span></a>
+    <a href="#galeria" data-soon="La galería de recuerdos" hidden><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Galería de recuerdos</span></a>
   </nav>
+  <div class="drawer-social">
+    <a href="https://discord.gg/3YX8y5gcd9" target="_blank" rel="noopener" class="ds discord"><svg aria-hidden="true"><use href="#i-discord"/></svg>Discord</a>
+    <a href="https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP" target="_blank" rel="noopener" class="ds wsp"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Nubelia</a>
+    <a href="https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai" target="_blank" rel="noopener" class="ds wsp"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Solune</a>
+  </div>
   <div class="drawer-foot"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg><span>Comunidad de Minecraft</span><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg></div>
 </aside>
 
@@ -1760,7 +1867,7 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
           <svg class="title-deco flip" viewBox="0 0 60 40" aria-hidden="true"><use href="#title-deco"/></svg>
         </div>
         <div class="orn-line orn-under" aria-hidden="true"><span></span><svg viewBox="0 0 40 40"><use href="#flower"/></svg><span></span></div>
-        <p class="subtitle">Reglamento oficial de la comunidad <br>y del servidor</p>
+        <p class="subtitle">Nacida de hermosas melodías,<br>donde cada amistad se vuelve memoria<br>y cada aventura, una nueva historia.</p>
 
         <div class="servers">
           <section class="server nubelia" aria-labelledby="sv-nubelia">
@@ -1792,7 +1899,14 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
           </section>
         </div>
 
-        <p class="ribbon"><svg class="spk" viewBox="0 0 20 20" aria-hidden="true"><use href="#spark"/></svg><svg class="lt" viewBox="0 0 40 32" aria-hidden="true"><use href="#lotus"/></svg><span>Arcoloria, nacida de hermosas melodías</span><svg class="lt" viewBox="0 0 40 32" aria-hidden="true"><use href="#lotus"/></svg><svg class="spk" viewBox="0 0 20 20" aria-hidden="true"><use href="#spark"/></svg></p>
+        <section class="social" aria-labelledby="t-social">
+          <h2 class="social-title" id="t-social"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg>Únete a la comunidad<svg viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg></h2>
+          <div class="social-row">
+            <a class="soc discord" href="https://discord.gg/3YX8y5gcd9" target="_blank" rel="noopener"><span class="soc-ic"><svg aria-hidden="true"><use href="#i-discord"/></svg></span><span class="soc-t"><b>Discord</b><small>Servidor de la comunidad</small></span></a>
+            <a class="soc wsp nub" href="https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP" target="_blank" rel="noopener"><span class="soc-ic"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></span><span class="soc-t"><b>WhatsApp Nubelia</b><small>Grupo del reino de las nubes</small></span></a>
+            <a class="soc wsp sol" href="https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai" target="_blank" rel="noopener"><span class="soc-ic"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></span><span class="soc-t"><b>WhatsApp Solune</b><small>Grupo del reino del sol y la luna</small></span></a>
+          </div>
+        </section>
         <div class="orn-line orn-end" aria-hidden="true"><span></span><svg viewBox="0 0 40 40"><use href="#flower"/></svg><span></span></div>
       </div>
     </header>
@@ -1825,10 +1939,10 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
           </a>
           <a class="ccard" href="#addons" style="--sec:var(--rose);--sec-soft:var(--rose-soft)">
             <span class="cc-icon"><svg class="icon" aria-hidden="true"><use href="#i-cube"/></svg></span>
-            <span class="cc-text"><span class="cc-title">Addons</span><span class="cc-sub">Guías sencillas para usar los addons del servidor</span><span class="cc-thumbs" aria-hidden="true"><img src="img/addons/crops-farms.jpg" alt="" loading="lazy" width="840" height="482"><img src="img/addons/actions-stuff.jpg" alt="" loading="lazy" width="840" height="489"></span><span class="cc-meta">2 guías disponibles</span></span>
+            <span class="cc-text"><span class="cc-title">Addons</span><span class="cc-sub">Guías sencillas para usar los addons del servidor</span><span class="cc-thumbs" aria-hidden="true"><img src="img/addons/crops-farms.jpg" alt="" loading="lazy" width="840" height="482"><img src="img/addons/actions-stuff.jpg" alt="" loading="lazy" width="840" height="489"><img src="img/addons/land-claims.jpg" alt="" loading="lazy" width="840" height="469"><img src="img/addons/waystones.jpg" alt="" loading="lazy" width="840" height="506"></span><span class="cc-meta">10 guías disponibles</span></span>
             <span class="cc-go" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>
           </a>
-          <a class="ccard" href="#galeria" data-soon="La galería de recuerdos" style="--sec:var(--olive);--sec-soft:var(--olive-soft)">
+          <a class="ccard" href="#galeria" data-soon="La galería de recuerdos" hidden style="--sec:var(--olive);--sec-soft:var(--olive-soft)">
             <span class="cc-icon"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg></span>
             <span class="cc-text"><span class="cc-title">Galería de recuerdos</span><span class="cc-sub">Fotos y momentos que vivimos en Arcoloria</span><span class="cc-meta">Muy pronto</span></span>
             <span class="cc-go" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>
@@ -1921,9 +2035,88 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
           <span class="guide-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Abrir guía</span>
         </span>
       </a>
+      <a class="addon-card" href="guias/guia-land-claims.html">
+        <span class="ad-img"><img src="img/addons/land-claims.jpg" alt="Portada del addon Land Claims" loading="lazy" width="840" height="470"></span>
+        <span class="ad-body">
+          <span class="ad-tag">Protección</span>
+          <b class="ad-title">Land Claims</b>
+          <span class="ad-sub">Protege tu terreno: nadie entra, rompe bloques ni abre tus cofres sin tu permiso.</span>
+          <span class="ad-chips"><span>Terrenos</span><span>Amigos y roles</span><span>Cofres seguros</span></span>
+          <span class="guide-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Abrir guía</span>
+        </span>
+      </a>
+      <a class="addon-card" href="guias/guia-waystones.html">
+        <span class="ad-img"><img src="img/addons/waystones.jpg" alt="Portada del addon Waystones" loading="lazy" width="840" height="470"></span>
+        <span class="ad-body">
+          <span class="ad-tag">Viajes</span>
+          <b class="ad-title">Waystones</b>
+          <span class="ad-sub">Piedras mágicas para viajar al instante por el mundo, con pergaminos y placas.</span>
+          <span class="ad-chips"><span>Teletransporte</span><span>Pergaminos</span><span>Placas</span></span>
+          <span class="guide-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Abrir guía</span>
+        </span>
+      </a>
+      <a class="addon-card" href="guias/guia-world-utilities.html">
+        <span class="ad-img"><img src="img/addons/world-utilities.jpg" alt="Portada del addon World Utilities" loading="lazy" width="840" height="470"></span>
+        <span class="ad-body">
+          <span class="ad-tag">Herramientas</span>
+          <b class="ad-title">World Utilities</b>
+          <span class="ad-sub">Herramientas que rompen muchos bloques de golpe, cofres privados, ascensores y más.</span>
+          <span class="ad-chips"><span>Herramientas</span><span>Ascensores</span><span>Cofres privados</span></span>
+          <span class="guide-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Abrir guía</span>
+        </span>
+      </a>
+      <a class="addon-card" href="guias/guia-fabulous-furniture.html">
+        <span class="ad-img"><img src="img/addons/fabulous-furniture.jpg" alt="Portada del addon Fabulous Furniture" loading="lazy" width="840" height="470"></span>
+        <span class="ad-body">
+          <span class="ad-tag">Decoración</span>
+          <b class="ad-title">Fabulous Furniture</b>
+          <span class="ad-sub">Más de 150 muebles que se usan de verdad: te sientas, cocinas, prendes la tele y pintas tus sofás.</span>
+          <span class="ad-chips"><span>150+ muebles</span><span>14 maderas</span><span>16 colores</span></span>
+          <span class="guide-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Abrir guía</span>
+        </span>
+      </a>
+      <a class="addon-card" href="guias/guia-mochilas.html">
+        <span class="ad-img"><img src="img/addons/backpacks-stuff.jpg" alt="Portada del addon Backpacks &amp; Stuff" loading="lazy" width="840" height="470"></span>
+        <span class="ad-body">
+          <span class="ad-tag">Aventura</span>
+          <b class="ad-title">Backpacks &amp; Stuff</b>
+          <span class="ad-sub">Una mochila en la espalda con espacio de sobra, accesorios útiles y 34 aspectos para darle tu estilo.</span>
+          <span class="ad-chips"><span>Mochila</span><span>Accesorios</span><span>34 aspectos</span></span>
+          <span class="guide-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Abrir guía</span>
+        </span>
+      </a>
+      <a class="addon-card" href="guias/guia-simply-backpacks.html">
+        <span class="ad-img"><img src="img/addons/simply-backpacks.jpg" alt="Portada del addon Simply Backpacks" loading="lazy" width="840" height="470"></span>
+        <span class="ad-body">
+          <span class="ad-tag">Almacenamiento</span>
+          <b class="ad-title">Simply Backpacks</b>
+          <span class="ad-sub">Mochilas de distintos tamaños, una que abre tu cofre de Ender desde cualquier lugar y otra que guarda agua, lava y hasta peces.</span>
+          <span class="ad-chips"><span>Varios tamaños</span><span>Mochila de Ender</span><span>Porta-Tank</span></span>
+          <span class="guide-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Abrir guía</span>
+        </span>
+      </a>
+      <a class="addon-card" href="guias/guia-animal-armor.html">
+        <span class="ad-img"><img src="img/addons/animal-armor.jpg" alt="Portada del addon Animal Armor+" loading="lazy" width="840" height="470"></span>
+        <span class="ad-body">
+          <span class="ad-tag">Armaduras</span>
+          <b class="ad-title">Animal Armor+</b>
+          <span class="ad-sub">Armaduras inspiradas en animales: vuela como un águila, escóndete en un caparazón o excava como un topo.</span>
+          <span class="ad-chips"><span>16 armaduras</span><span>Poderes</span><span>Mezcla piezas</span></span>
+          <span class="guide-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Abrir guía</span>
+        </span>
+      </a>
+      <a class="addon-card" href="guias/guia-block-furniture.html">
+        <span class="ad-img"><img src="img/addons/block-furniture.jpg" alt="Portada del addon Block Furniture" loading="lazy" width="840" height="470"></span>
+        <span class="ad-body">
+          <span class="ad-tag">Decoración</span>
+          <b class="ad-title">Block Furniture</b>
+          <span class="ad-sub">Muebles, luces, cortinas, peluches, estatuas y cuadros para dejar tu casa preciosa.</span>
+          <span class="ad-chips"><span>Cientos de muebles</span><span>12 maderas</span><span>Cámara y álbum</span></span>
+          <span class="guide-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Abrir guía</span>
+        </span>
+      </a>
     </div>
     <div class="orn-line ad-end" aria-hidden="true"><span></span><svg viewBox="0 0 40 40"><use href="#flower"/></svg><span></span></div>
-    <p class="ad-more">Pronto llegarán más guías.</p>
   </div>
 </article>
 <article class="page info-page sv-nubelia" id="info-nubelia" data-sec="inicio" data-server="nubelia" data-label="Información de Nubelia" data-nopager hidden><div class="wrap-wide"><div class="info-root" data-server="nubelia"></div></div></article>
@@ -1994,6 +2187,8 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
     var inRules = cur >= 1 && cur <= bookLast;
     document.body.classList.toggle('theme-rules', inRules);
     document.body.classList.toggle('theme-addons', p.id === 'addons');
+    document.body.classList.toggle('theme-nubelia', p.dataset.server === 'nubelia');
+    document.body.classList.toggle('theme-solune', p.dataset.server === 'solune');
     if (p.dataset.server && typeof loadStatus === 'function' && siteData) loadStatus(p.dataset.server);
     prevBtn.disabled = cur === 0;
     nextBtn.disabled = cur >= bookLast;
@@ -2310,7 +2505,7 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
     if (!a) return;
     var h = a.getAttribute('href') || '';
     var inPage = h.charAt(0) === '#' && !a.hasAttribute('data-soon') && document.getElementById(h.slice(1));
-    closeDrawer(!!inPage); /* si va a otra sección, esa navegación reemplaza la entrada del menú */
+    closeDrawer(!!inPage || h.charAt(0) !== '#'); /* si va a otra sección o a otra página, no se vuelve atrás en el historial */
   });
   window.addEventListener('resize', function () { if (window.innerWidth >= 900) closeDrawer(); });
 
@@ -2335,10 +2530,26 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
     servers: {
       nubelia: { name: 'NUBELIA', tagline: 'Reino de las nubes', ip: '172.93.110.62', port: '2092', version: '', addons: [
         { name: 'Crops & Farms', desc: 'Cultivos, cocina y animales', img: 'img/addons/crops-farms.jpg', link: 'guias/guia-crops-farms.html' },
-        { name: 'Actions & Stuff', desc: 'Texturas con nombre', img: 'img/addons/actions-stuff.jpg', link: 'guias/guia-actions-and-stuff.html' }], systems: [], kits: [] },
+        { name: 'Actions & Stuff', desc: 'Texturas con nombre', img: 'img/addons/actions-stuff.jpg', link: 'guias/guia-actions-and-stuff.html' },
+        { name: 'Land Claims', desc: 'Protege tu terreno', img: 'img/addons/land-claims.jpg', link: 'guias/guia-land-claims.html' },
+        { name: 'Waystones', desc: 'Viaja al instante', img: 'img/addons/waystones.jpg', link: 'guias/guia-waystones.html' },
+        { name: 'World Utilities', desc: 'Herramientas y utilidades', img: 'img/addons/world-utilities.jpg', link: 'guias/guia-world-utilities.html' },
+        { name: 'Fabulous Furniture', desc: 'Más de 150 muebles', img: 'img/addons/fabulous-furniture.jpg', link: 'guias/guia-fabulous-furniture.html' },
+        { name: 'Backpacks & Stuff', desc: 'Mochilas y accesorios', img: 'img/addons/backpacks-stuff.jpg', link: 'guias/guia-mochilas.html' },
+        { name: 'Simply Backpacks', desc: 'Mochilas de varios tamaños', img: 'img/addons/simply-backpacks.jpg', link: 'guias/guia-simply-backpacks.html' },
+        { name: 'Animal Armor+', desc: 'Armaduras con poderes', img: 'img/addons/animal-armor.jpg', link: 'guias/guia-animal-armor.html' },
+        { name: 'Block Furniture', desc: 'Muebles y decoración', img: 'img/addons/block-furniture.jpg', link: 'guias/guia-block-furniture.html' }], systems: [], kits: [] },
       solune: { name: 'SOLUNE', tagline: 'Reino entre el sol y la luna', ip: '172.93.110.62', port: '2054', version: '', addons: [
         { name: 'Crops & Farms', desc: 'Cultivos, cocina y animales', img: 'img/addons/crops-farms.jpg', link: 'guias/guia-crops-farms.html' },
-        { name: 'Actions & Stuff', desc: 'Texturas con nombre', img: 'img/addons/actions-stuff.jpg', link: 'guias/guia-actions-and-stuff.html' }], systems: [], kits: [] }
+        { name: 'Actions & Stuff', desc: 'Texturas con nombre', img: 'img/addons/actions-stuff.jpg', link: 'guias/guia-actions-and-stuff.html' },
+        { name: 'Land Claims', desc: 'Protege tu terreno', img: 'img/addons/land-claims.jpg', link: 'guias/guia-land-claims.html' },
+        { name: 'Waystones', desc: 'Viaja al instante', img: 'img/addons/waystones.jpg', link: 'guias/guia-waystones.html' },
+        { name: 'World Utilities', desc: 'Herramientas y utilidades', img: 'img/addons/world-utilities.jpg', link: 'guias/guia-world-utilities.html' },
+        { name: 'Fabulous Furniture', desc: 'Más de 150 muebles', img: 'img/addons/fabulous-furniture.jpg', link: 'guias/guia-fabulous-furniture.html' },
+        { name: 'Backpacks & Stuff', desc: 'Mochilas y accesorios', img: 'img/addons/backpacks-stuff.jpg', link: 'guias/guia-mochilas.html' },
+        { name: 'Simply Backpacks', desc: 'Mochilas de varios tamaños', img: 'img/addons/simply-backpacks.jpg', link: 'guias/guia-simply-backpacks.html' },
+        { name: 'Animal Armor+', desc: 'Armaduras con poderes', img: 'img/addons/animal-armor.jpg', link: 'guias/guia-animal-armor.html' },
+        { name: 'Block Furniture', desc: 'Muebles y decoración', img: 'img/addons/block-furniture.jpg', link: 'guias/guia-block-furniture.html' }], systems: [], kits: [] }
     }, events: [], news: [], team: []
   };
   function h(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -2426,9 +2637,12 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
         '<div class="ip-field"><span class="ip-lbl">Nombre</span><b>' + h(s.name) + '</b><span></span></div>' +
         '<div class="ip-field"><span class="ip-lbl">IP</span><b>' + h(s.ip) + '</b><button type="button" class="ip-copy" data-copy="' + h(s.ip) + '" data-what="IP" aria-label="Copiar IP" title="Copiar">' + useI('i-copy') + '</button></div>' +
         '<div class="ip-field"><span class="ip-lbl">Puerto</span><b>' + h(s.port) + '</b><button type="button" class="ip-copy" data-copy="' + h(s.port) + '" data-what="Puerto" aria-label="Copiar puerto" title="Copiar">' + useI('i-copy') + '</button></div>' +
-        '<a class="ip-add" href="' + h(addUri) + '">Agregar servidor en Minecraft</a>' +
-        '<ol class="ip-steps"><li><span>1</span><p>Abre Minecraft y ve a <b>Jugar → Servidores</b>.</p></li><li><span>2</span><p>Toca <b>Agregar servidor</b>.</p></li><li><span>3</span><p>Escribe el nombre, la IP y el puerto, y guarda.</p></li>' + (s.kits && s.kits.length ? '<li><span>4</span><p>Entra y canjea tu <b>código de kit</b>.</p></li>' : '') + '</ol></section>' +
-        (sections.length ? '<nav class="ip-card ip-nav" aria-label="Secciones">' + tabs + '</nav>' : '') + '</aside>' +
+        '<a class="ip-add" href="' + h(addUri) + '">' + useI('i-arrow') + 'Unirse al servidor</a>' +
+        '<div class="ip-soc"><a class="ip-soc-btn wsp" href="' + (id === 'nubelia' ? 'https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP' : 'https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai') + '" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a>' +
+        '<a class="ip-soc-btn discord" href="https://discord.gg/3YX8y5gcd9" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-discord"/></svg>Discord</a></div></section>' +
+        (sections.length ? '<nav class="ip-card ip-nav" aria-label="Secciones">' + tabs + '</nav>' : '') +
+        '<a class="ip-card ip-sysguide" href="guias/guia-sistemas.html?desde=' + id + '"><span class="sg-ic">' + useI('i-scroll') + '</span><span><b>Guía de sistemas</b><small>Viajar entre servidores, objetos en el suelo, explosiones y más. Sirve para los dos reinos.</small></span>' + useI('i-right') + '</a>' +
+        '</aside>' +
       '<div class="ip-content">' + (sections.length ? '<nav class="ip-tabs" aria-label="Secciones">' + tabs + '</nav>' + sections.map(function (x) { return x[2]; }).join('') : '<section class="ip-card ip-empty-all">Pronto habrá más información de este servidor.</section>') + '</div></div>';
   }
   function renderAllInfo() {
