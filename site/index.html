@@ -3,13 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Reglamento oficial de la comunidad Arcoloria, válido para los servidores Nubelia y Solune.">
+<meta name="description" content="Información y normas de los servidores de Arcoloria.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Reglamento de Arcoloria">
-<meta property="og:description" content="Normas oficiales de la comunidad y de los servidores Nubelia y Solune.">
+<meta property="og:title" content="Arcoloria">
+<meta property="og:site_name" content="Arcoloria">
+<meta property="og:url" content="https://arcoloria.netlify.app/">
+<meta property="og:image" content="https://arcoloria.netlify.app/img/vista-previa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:description" content="Información y normas de los servidores de Arcoloria.">
 <meta name="theme-color" content="#1E1411">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23F2E1BC'/%3E%3Ccircle cx='30' cy='34' r='16' fill='%23F0B04A'/%3E%3Ccircle cx='38' cy='28' r='13' fill='%2384461E'/%3E%3C/svg%3E">
-<title>Reglamento de Arcoloria</title>
+<title>Arcoloria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,0..100&family=Nunito:wght@400;600;700;800&family=Kalam:wght@400;700&display=swap">
@@ -1737,6 +1743,58 @@ body.theme-rules { --bg-blur: url(img/fondos/reglas-blur.jpg); }
 body.theme-addons { --bg-blur: url(img/fondos/addons-blur.jpg); }
 body.theme-nubelia { --bg-blur: url(img/fondos/nubelia-blur.jpg); }
 body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
+
+/* ---------- Estado en las tarjetas de la portada ---------- */
+.sv-status { margin: 12px 0 0; }
+.sv-status .st {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px;
+  background: rgba(0, 0, 0, .32); border: 1px solid var(--sv-line);
+  font-size: .9rem; font-weight: 800; color: #FFF1E0;
+}
+.sv-status .st i { width: 10px; height: 10px; border-radius: 50%; background: #9A9A9A; }
+.sv-status .st.on i { background: #8FE07A; box-shadow: 0 0 10px #8FE07A; animation: latido 2s ease-in-out infinite; }
+.sv-status .st.off i { background: #E07A7A; }
+@keyframes latido { 50% { box-shadow: 0 0 3px #8FE07A; } }
+
+/* ---------- Comandos ---------- */
+.ip-cmds { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.ip-cmd { padding: 12px 14px; border-radius: 16px; background: rgba(0, 0, 0, .2); border: 1px solid var(--t-line2); }
+.ip-cmd-top { display: flex; align-items: center; gap: 10px; }
+.ip-cmd code { flex: 1; min-width: 0; overflow-wrap: anywhere; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 1rem; font-weight: 700; color: var(--t); }
+.ip-cmd .ip-copy { width: 36px; padding: 0; justify-content: center; flex: none; }
+.ip-cmd p { margin: 6px 0 0; font-size: .92rem; line-height: 1.5; color: var(--t-ink); }
+@media (min-width: 640px) { .ip-cmds { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---------- Marca de agua (acceso de administración) ---------- */
+.sello-admin {
+  display: block; margin: 26px auto 0; padding: 8px; border: 0; background: none; cursor: pointer;
+  opacity: .22; transition: opacity .3s ease, transform .3s ease, filter .3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.sello-admin svg { display: block; width: 56px; height: 45px; fill: #F4B6CC; filter: drop-shadow(0 0 10px rgba(244, 182, 204, .5)); }
+.sello-admin:hover, .sello-admin:focus-visible { opacity: .6; transform: scale(1.06); }
+.adm-fondo { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 16px; background: rgba(16, 8, 14, .6); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.adm-panel {
+  width: 100%; max-width: 420px; padding: 24px 20px 18px; border-radius: 26px; text-align: center;
+  background: linear-gradient(180deg, rgba(70, 40, 58, .92), rgba(44, 26, 38, .94));
+  border: 1px solid rgba(244, 182, 204, .4); box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+  animation: sheetUp .3s cubic-bezier(.2, .7, .2, 1);
+}
+.adm-lotus { width: 52px; height: 42px; fill: #F4B6CC; filter: drop-shadow(0 0 12px rgba(244, 182, 204, .6)); }
+.adm-panel h2 { margin-top: 6px; font-size: 1.6rem; color: #FFF1E0; }
+.adm-panel > p { margin: 4px 0 16px; color: var(--muted); }
+.adm-op {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) 20px; gap: 12px; align-items: center; text-align: left;
+  margin-top: 10px; padding: 12px; border-radius: 18px; text-decoration: none; color: var(--ink);
+  background: rgba(255, 236, 220, .07); border: 1px solid var(--line-strong); transition: background .2s, border-color .2s;
+}
+.adm-op:hover { background: rgba(255, 236, 220, .13); border-color: rgba(244, 182, 204, .55); }
+.adm-ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: rgba(244, 182, 204, .16); color: #F6C3D6; }
+.adm-op b { display: block; font-size: 1rem; }
+.adm-op small { display: block; font-size: .82rem; color: var(--muted); line-height: 1.35; }
+.adm-op .icon { width: 22px; height: 22px; }
+.adm-op > .icon { width: 18px; height: 18px; color: #F6C3D6; }
+.adm-cerrar { margin-top: 16px; min-height: 42px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font: inherit; font-weight: 800; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -1848,9 +1906,9 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
     <a href="#galeria" data-soon="La galería de recuerdos" hidden><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Galería de recuerdos</span></a>
   </nav>
   <div class="drawer-social">
-    <a href="https://discord.gg/3YX8y5gcd9" target="_blank" rel="noopener" class="ds discord"><svg aria-hidden="true"><use href="#i-discord"/></svg>Discord</a>
-    <a href="https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP" target="_blank" rel="noopener" class="ds wsp"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Nubelia</a>
-    <a href="https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai" target="_blank" rel="noopener" class="ds wsp"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Solune</a>
+    <a href="https://discord.gg/3YX8y5gcd9" data-soc="discord" target="_blank" rel="noopener" class="ds discord"><svg aria-hidden="true"><use href="#i-discord"/></svg>Discord</a>
+    <a href="https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP" data-soc="wsp_nubelia" target="_blank" rel="noopener" class="ds wsp"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Nubelia</a>
+    <a href="https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai" data-soc="wsp_solune" target="_blank" rel="noopener" class="ds wsp"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Solune</a>
   </div>
   <div class="drawer-foot"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg><span>Comunidad de Minecraft</span><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg></div>
 </aside>
@@ -1881,6 +1939,7 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
               <li><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span>IP: 172.93.110.62</span></li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-plug"/></svg><span>Puerto: 2092</span></li>
             </ul>
+            <p class="sv-status"><span class="st" data-status="nubelia"><i></i>Consultando estado…</span></p>
             <a class="info-btn" href="#info-nubelia"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Información del servidor</a>
           </section>
 
@@ -1895,6 +1954,7 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
               <li><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span>IP: 172.93.110.62</span></li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-plug"/></svg><span>Puerto: 2054</span></li>
             </ul>
+            <p class="sv-status"><span class="st" data-status="solune"><i></i>Consultando estado…</span></p>
             <a class="info-btn" href="#info-solune"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Información del servidor</a>
           </section>
         </div>
@@ -1902,9 +1962,9 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
         <section class="social" aria-labelledby="t-social">
           <h2 class="social-title" id="t-social"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg>Únete a la comunidad<svg viewBox="0 0 40 40" aria-hidden="true"><use href="#flower"/></svg></h2>
           <div class="social-row">
-            <a class="soc discord" href="https://discord.gg/3YX8y5gcd9" target="_blank" rel="noopener"><span class="soc-ic"><svg aria-hidden="true"><use href="#i-discord"/></svg></span><span class="soc-t"><b>Discord</b><small>Servidor de la comunidad</small></span></a>
-            <a class="soc wsp nub" href="https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP" target="_blank" rel="noopener"><span class="soc-ic"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></span><span class="soc-t"><b>WhatsApp Nubelia</b><small>Grupo del reino de las nubes</small></span></a>
-            <a class="soc wsp sol" href="https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai" target="_blank" rel="noopener"><span class="soc-ic"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></span><span class="soc-t"><b>WhatsApp Solune</b><small>Grupo del reino del sol y la luna</small></span></a>
+            <a class="soc discord" href="https://discord.gg/3YX8y5gcd9" data-soc="discord" target="_blank" rel="noopener"><span class="soc-ic"><svg aria-hidden="true"><use href="#i-discord"/></svg></span><span class="soc-t"><b>Discord</b><small>Servidor de la comunidad</small></span></a>
+            <a class="soc wsp nub" href="https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP" data-soc="wsp_nubelia" target="_blank" rel="noopener"><span class="soc-ic"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></span><span class="soc-t"><b>WhatsApp Nubelia</b><small>Grupo del reino de las nubes</small></span></a>
+            <a class="soc wsp sol" href="https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai" data-soc="wsp_solune" target="_blank" rel="noopener"><span class="soc-ic"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></span><span class="soc-t"><b>WhatsApp Solune</b><small>Grupo del reino del sol y la luna</small></span></a>
           </div>
         </section>
         <div class="orn-line orn-end" aria-hidden="true"><span></span><svg viewBox="0 0 40 40"><use href="#flower"/></svg><span></span></div>
@@ -1975,6 +2035,10 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
           <p>Prueba con otra palabra o revisa cómo está escrita.</p>
         </div>
       </section>
+
+      <button type="button" class="sello-admin" id="sello-admin" aria-label="Administración" title="Arcoloria">
+        <svg viewBox="0 0 40 32" aria-hidden="true"><use href="#lotus"/></svg>
+      </button>
     </div>
   </article>
 
@@ -2147,6 +2211,16 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
   </div>
 </div>
 
+<div class="adm-fondo" id="adm-menu" hidden>
+  <div class="adm-panel" role="dialog" aria-modal="true" aria-labelledby="adm-t">
+    <svg class="adm-lotus" viewBox="0 0 40 32" aria-hidden="true"><use href="#lotus"/></svg>
+    <h2 id="adm-t">Administración</h2>
+    <p>¿A qué panel quieres entrar?</p>
+    <a class="adm-op" href="panel/"><span class="adm-ic"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg></span><span><b>Panel de Arcoloria</b><small>Servidores, eventos, novedades, equipo, redes y comandos</small></span><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg></a>
+    <a class="adm-op" href="misiones/admin.html"><span class="adm-ic"><svg class="icon" aria-hidden="true"><use href="#i-quest"/></svg></span><span><b>Panel de misiones</b><small>Misiones, capítulos, NPCs y crónicas</small></span><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg></a>
+    <button type="button" class="adm-cerrar" id="adm-cerrar">Cerrar</button>
+  </div>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <p class="sr" id="announce" aria-live="polite"></p>
 
@@ -2550,7 +2624,8 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
         { name: 'Simply Backpacks', desc: 'Mochilas de varios tamaños', img: 'img/addons/simply-backpacks.jpg', link: 'guias/guia-simply-backpacks.html' },
         { name: 'Animal Armor+', desc: 'Armaduras con poderes', img: 'img/addons/animal-armor.jpg', link: 'guias/guia-animal-armor.html' },
         { name: 'Block Furniture', desc: 'Muebles y decoración', img: 'img/addons/block-furniture.jpg', link: 'guias/guia-block-furniture.html' }], systems: [], kits: [] }
-    }, events: [], news: [], team: []
+    }, events: [], news: [], team: [], commands: [],
+    social: { discord: 'https://discord.gg/3YX8y5gcd9', wsp_nubelia: 'https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP', wsp_solune: 'https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai' }
   };
   function h(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function safeUrl(u) { u = String(u || ''); return /^(\/api\/img\/[a-z0-9]+|img\/[\w./-]+|guias\/[\w.-]+\.html|https:\/\/[^\s"'<>]+)$/i.test(u) ? u : ''; }
@@ -2597,6 +2672,13 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
             (k.code ? '<div class="ip-code"><span>Código</span><b>' + h(k.code) + '</b><button type="button" class="ip-copy" data-copy="' + h(k.code) + '" data-what="Código" aria-label="Copiar código">' + useI('i-copy') + '</button></div>' : '') + '</div>';
         }).join('') + '</div></section>']);
     }
+    var cmds = forServer(data.commands, id);
+    if (cmds.length) {
+      sections.push(['comandos', 'Comandos', '<section class="ip-card" id="ip-' + id + '-comandos"><div class="ip-head"><h3>' + svgI('<path d="M4 6.5l5 5.5-5 5.5M11 18h9"/>') + 'Comandos</h3><span class="ip-count">' + cmds.length + '</span></div><div class="ip-cmds">' +
+        cmds.map(function (c) {
+          return '<div class="ip-cmd"><div class="ip-cmd-top"><code>' + h(c.cmd) + '</code><button type="button" class="ip-copy" data-copy="' + h(c.cmd) + '" data-what="Comando" aria-label="Copiar comando" title="Copiar">' + useI('i-copy') + '</button></div>' + (c.desc ? '<p>' + h(c.desc) + '</p>' : '') + '</div>';
+        }).join('') + '</div></section>']);
+    }
     var today = todayStr();
     var evs = forServer(data.events, id).filter(function (e) { return !e.end || e.end.slice(0, 10) >= today; });
     if (evs.length) {
@@ -2627,6 +2709,7 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
         }).join('') + '</div></section>']);
     }
 
+    var soc = data.social || FALLBACK.social;
     var tabs = sections.map(function (x, i) { return '<a href="#ip-' + id + '-' + x[0] + '" data-jump' + (i === 0 ? ' class="on"' : '') + '>' + x[1] + '</a>'; }).join('');
     var addUri = 'minecraft://?addExternalServer=' + encodeURIComponent(s.name || name) + '|' + s.ip + ':' + s.port;
     root.innerHTML =
@@ -2638,8 +2721,8 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
         '<div class="ip-field"><span class="ip-lbl">IP</span><b>' + h(s.ip) + '</b><button type="button" class="ip-copy" data-copy="' + h(s.ip) + '" data-what="IP" aria-label="Copiar IP" title="Copiar">' + useI('i-copy') + '</button></div>' +
         '<div class="ip-field"><span class="ip-lbl">Puerto</span><b>' + h(s.port) + '</b><button type="button" class="ip-copy" data-copy="' + h(s.port) + '" data-what="Puerto" aria-label="Copiar puerto" title="Copiar">' + useI('i-copy') + '</button></div>' +
         '<a class="ip-add" href="' + h(addUri) + '">' + useI('i-arrow') + 'Unirse al servidor</a>' +
-        '<div class="ip-soc"><a class="ip-soc-btn wsp" href="' + (id === 'nubelia' ? 'https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP' : 'https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai') + '" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a>' +
-        '<a class="ip-soc-btn discord" href="https://discord.gg/3YX8y5gcd9" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-discord"/></svg>Discord</a></div></section>' +
+        '<div class="ip-soc"><a class="ip-soc-btn wsp" href="' + h(soc['wsp_' + id] || '') + '" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a>' +
+        '<a class="ip-soc-btn discord" href="' + h(soc.discord || '') + '" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-discord"/></svg>Discord</a></div></section>' +
         (sections.length ? '<nav class="ip-card ip-nav" aria-label="Secciones">' + tabs + '</nav>' : '') +
         '<a class="ip-card ip-sysguide" href="guias/guia-sistemas.html?desde=' + id + '"><span class="sg-ic">' + useI('i-scroll') + '</span><span><b>Guía de sistemas</b><small>Viajar entre servidores, objetos en el suelo, explosiones y más. Sirve para los dos reinos.</small></span>' + useI('i-right') + '</a>' +
         '</aside>' +
@@ -2647,6 +2730,9 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
   }
   function renderAllInfo() {
     $$('.info-root').forEach(function (r) { renderInfo(r, siteData); });
+    var soc = siteData.social || FALLBACK.social;
+    $$('[data-soc]').forEach(function (a) { if (soc[a.dataset.soc]) a.href = soc[a.dataset.soc]; });
+    ['nubelia', 'solune'].forEach(function (id) { if (statusDone[id]) paintStatus(id, statusDone[id]); });
     // tarjetas de la portada
     ['nubelia', 'solune'].forEach(function (id) {
       var s = siteData.servers[id]; if (!s) return;
@@ -2655,19 +2741,31 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
     });
   }
   var statusDone = {};
-  function loadStatus(id) {
-    if (statusDone[id]) return paintStatus(id, statusDone[id]);
+  function loadStatus(id, forzar) {
+    if (statusDone[id] && !forzar) return paintStatus(id, statusDone[id]);
     if (location.protocol === 'file:') return paintStatus(id, { ok: false });
     fetch('/api/status/' + id).then(function (r) { return r.json(); }).then(function (st) { statusDone[id] = st; paintStatus(id, st); }, function () { paintStatus(id, { ok: false }); });
   }
   function paintStatus(id, st) {
     $$('[data-status="' + id + '"]').forEach(function (el) {
-      if (!st || !st.ok) { el.hidden = true; return; }
+      if (!st || !st.ok) {
+        if (el.closest('.sv-status')) { el.hidden = false; el.className = 'st'; el.innerHTML = '<i></i>Estado no disponible'; }
+        else el.hidden = true;
+        return;
+      }
       el.hidden = false;
       el.className = 'st ' + (st.online ? 'on' : 'off');
       var txt = st.online ? 'En línea' + (st.players && st.players.online != null ? ' · ' + st.players.online + (st.players.online === 1 ? ' jugador' : ' jugadores') : '') : 'Fuera de línea';
       el.innerHTML = '<i></i>' + h(txt);
     });
+  }
+  /* estado en las tarjetas de la portada: al cargar y cada 2 minutos si la página está a la vista */
+  if (location.protocol !== 'file:') {
+    ['nubelia', 'solune'].forEach(function (id) { loadStatus(id); });
+    setInterval(function () {
+      if (document.hidden) return;
+      ['nubelia', 'solune'].forEach(function (id) { loadStatus(id, true); });
+    }, 120000);
   }
   document.addEventListener('click', function (e) {
     var c = e.target.closest && e.target.closest('.ip-copy');
@@ -2705,6 +2803,14 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
       if (d && d.servers) { siteData = d; renderAllInfo(); var p = pages[cur]; if (p && p.dataset.server) loadStatus(p.dataset.server); }
     }, function () {});
   }
+
+  /* ---- Marca de agua: acceso de administración ---- */
+  var admMenu = $('#adm-menu');
+  $('#sello-admin').addEventListener('click', function () { admMenu.hidden = false; document.body.classList.add('locked'); });
+  function cerrarAdm() { admMenu.hidden = true; document.body.classList.remove('locked'); }
+  $('#adm-cerrar').addEventListener('click', cerrarAdm);
+  admMenu.addEventListener('click', function (e) { if (e.target === admMenu) cerrarAdm(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !admMenu.hidden) cerrarAdm(); });
 
   /* ---- Aviso de deslizar (celular, una vez) ---- */
   var hintShown = false;

@@ -44,7 +44,13 @@ const DEFAULT_DATA = {
   },
   events: [],
   news: [],
-  team: []
+  team: [],
+  social: {
+    discord: "https://discord.gg/3YX8y5gcd9",
+    wsp_nubelia: "https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP",
+    wsp_solune: "https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai"
+  },
+  commands: []
 };
 
 /* ---------- utilidades ---------- */
@@ -78,6 +84,11 @@ const okImg = (v) => {
 const okLink = (v) => {
   const s = str(v, 300);
   return /^(guias\/[\w.-]+\.html|https:\/\/[^\s"'<>]+)$/i.test(s) ? s : "";
+};
+const okSocial = (v, hosts, fallback) => {
+  const t = str(v, 200);
+  try { const u = new URL(t); if (u.protocol === "https:" && hosts.includes(u.hostname)) return u.href; } catch {}
+  return fallback;
 };
 const okServer = (v) => (SERVER_IDS.includes(v) ? v : "ambos");
 
@@ -118,6 +129,19 @@ const CLEAN = {
       server: okServer(n.server), date: isDate(n.date) ? n.date : new Date().toISOString().slice(0, 10)
     })).filter((n) => n.title);
   },
+  social(v) {
+    const d = DEFAULT_DATA.social, o = v || {};
+    return {
+      discord: okSocial(o.discord, ["discord.gg", "discord.com", "www.discord.com"], d.discord),
+      wsp_nubelia: okSocial(o.wsp_nubelia, ["chat.whatsapp.com"], d.wsp_nubelia),
+      wsp_solune: okSocial(o.wsp_solune, ["chat.whatsapp.com"], d.wsp_solune)
+    };
+  },
+  commands(v) {
+    return (Array.isArray(v) ? v : []).slice(0, 80).map((c) => ({
+      id: str(c.id, 20) || uid(), cmd: str(c.cmd, 60), desc: str(c.desc, 300), server: okServer(c.server)
+    })).filter((c) => c.cmd);
+  },
   team(v) {
     return (Array.isArray(v) ? v : []).slice(0, 40).map((t) => ({
       id: str(t.id, 20) || uid(), gamertag: str(t.gamertag, 40), role: str(t.role, 30),
@@ -130,7 +154,8 @@ async function readData(store) {
   const d = (await store.get("data", { type: "json" })) || {};
   return {
     servers: CLEAN.servers(d.servers || DEFAULT_DATA.servers),
-    events: CLEAN.events(d.events), news: CLEAN.news(d.news), team: CLEAN.team(d.team)
+    events: CLEAN.events(d.events), news: CLEAN.news(d.news), team: CLEAN.team(d.team),
+    social: CLEAN.social(d.social), commands: CLEAN.commands(d.commands)
   };
 }
 
