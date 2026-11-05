@@ -1579,7 +1579,7 @@ main { padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
 .ip-tabs::-webkit-scrollbar { display: none; }
 .ip-tabs a, .ip-nav a { flex: none; padding: 8px 14px; border-radius: 999px; color: var(--t-muted); font-weight: 700; font-size: .92rem; text-decoration: none; white-space: nowrap; }
 .ip-tabs a.on, .ip-nav a.on { background: var(--t-soft); color: var(--t-ink); }
-.ip-content { display: grid; gap: 16px; min-width: 0; }
+.ip-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; min-width: 0; }
 
 .ip-addons { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(150px, 46%); gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; scrollbar-width: thin; }
 .ip-ad { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 8px; border-radius: 16px; background: rgba(0, 0, 0, .2); border: 1px solid var(--t-line2); color: inherit; text-decoration: none; scroll-snap-align: start; transition: transform .18s var(--ease-spring), border-color .2s; }
@@ -1765,36 +1765,23 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
 .ip-cmd p { margin: 6px 0 0; font-size: .92rem; line-height: 1.5; color: var(--t-ink); }
 @media (min-width: 640px) { .ip-cmds { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-/* ---------- Marca de agua (acceso de administración) ---------- */
-.sello-admin {
-  display: block; margin: 26px auto 0; padding: 8px; border: 0; background: none; cursor: pointer;
-  opacity: .22; transition: opacity .3s ease, transform .3s ease, filter .3s ease;
-  -webkit-tap-highlight-color: transparent;
+
+/* ---------- Información del servidor en celular: más compacta y deslizable ---------- */
+@media (max-width: 639px) {
+  .ip-card { padding: 14px; border-radius: 20px; }
+  .ip-head { margin-bottom: 10px; }
+  .ip-card h3 { font-size: 1.15rem; }
+  .ip-addons { grid-auto-columns: 42%; gap: 10px; }
+  .ip-kits { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 84%; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; scrollbar-width: none; }
+  .ip-kits:has(> :only-child) { grid-auto-columns: 100%; }
+  .ip-kit { padding: 12px; scroll-snap-align: start; }
+  .ip-kit-items { margin: 8px 0 10px; font-size: .9rem; }
+  .ip-cmds { gap: 8px; }
+  .ip-cmd { padding: 10px 12px; }
+  .ip-team { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .ip-mem b { overflow-wrap: normal; word-break: normal; }
+  .ip-sys { padding: 10px; }
 }
-.sello-admin svg { display: block; width: 56px; height: 45px; fill: #F4B6CC; filter: drop-shadow(0 0 10px rgba(244, 182, 204, .5)); }
-.sello-admin:hover, .sello-admin:focus-visible { opacity: .6; transform: scale(1.06); }
-.adm-fondo { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 16px; background: rgba(16, 8, 14, .6); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-.adm-panel {
-  width: 100%; max-width: 420px; padding: 24px 20px 18px; border-radius: 26px; text-align: center;
-  background: linear-gradient(180deg, rgba(70, 40, 58, .92), rgba(44, 26, 38, .94));
-  border: 1px solid rgba(244, 182, 204, .4); box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
-  animation: sheetUp .3s cubic-bezier(.2, .7, .2, 1);
-}
-.adm-lotus { width: 52px; height: 42px; fill: #F4B6CC; filter: drop-shadow(0 0 12px rgba(244, 182, 204, .6)); }
-.adm-panel h2 { margin-top: 6px; font-size: 1.6rem; color: #FFF1E0; }
-.adm-panel > p { margin: 4px 0 16px; color: var(--muted); }
-.adm-op {
-  display: grid; grid-template-columns: 44px minmax(0, 1fr) 20px; gap: 12px; align-items: center; text-align: left;
-  margin-top: 10px; padding: 12px; border-radius: 18px; text-decoration: none; color: var(--ink);
-  background: rgba(255, 236, 220, .07); border: 1px solid var(--line-strong); transition: background .2s, border-color .2s;
-}
-.adm-op:hover { background: rgba(255, 236, 220, .13); border-color: rgba(244, 182, 204, .55); }
-.adm-ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: rgba(244, 182, 204, .16); color: #F6C3D6; }
-.adm-op b { display: block; font-size: 1rem; }
-.adm-op small { display: block; font-size: .82rem; color: var(--muted); line-height: 1.35; }
-.adm-op .icon { width: 22px; height: 22px; }
-.adm-op > .icon { width: 18px; height: 18px; color: #F6C3D6; }
-.adm-cerrar { margin-top: 16px; min-height: 42px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font: inherit; font-weight: 800; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -2035,10 +2022,6 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
           <p>Prueba con otra palabra o revisa cómo está escrita.</p>
         </div>
       </section>
-
-      <button type="button" class="sello-admin" id="sello-admin" aria-label="Administración" title="Arcoloria">
-        <svg viewBox="0 0 40 32" aria-hidden="true"><use href="#lotus"/></svg>
-      </button>
     </div>
   </article>
 
@@ -2211,16 +2194,6 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
   </div>
 </div>
 
-<div class="adm-fondo" id="adm-menu" hidden>
-  <div class="adm-panel" role="dialog" aria-modal="true" aria-labelledby="adm-t">
-    <svg class="adm-lotus" viewBox="0 0 40 32" aria-hidden="true"><use href="#lotus"/></svg>
-    <h2 id="adm-t">Administración</h2>
-    <p>¿A qué panel quieres entrar?</p>
-    <a class="adm-op" href="panel/"><span class="adm-ic"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg></span><span><b>Panel de Arcoloria</b><small>Servidores, eventos, novedades, equipo, redes y comandos</small></span><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg></a>
-    <a class="adm-op" href="misiones/admin.html"><span class="adm-ic"><svg class="icon" aria-hidden="true"><use href="#i-quest"/></svg></span><span><b>Panel de misiones</b><small>Misiones, capítulos, NPCs y crónicas</small></span><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg></a>
-    <button type="button" class="adm-cerrar" id="adm-cerrar">Cerrar</button>
-  </div>
-</div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <p class="sr" id="announce" aria-live="polite"></p>
 
@@ -2804,13 +2777,6 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
     }, function () {});
   }
 
-  /* ---- Marca de agua: acceso de administración ---- */
-  var admMenu = $('#adm-menu');
-  $('#sello-admin').addEventListener('click', function () { admMenu.hidden = false; document.body.classList.add('locked'); });
-  function cerrarAdm() { admMenu.hidden = true; document.body.classList.remove('locked'); }
-  $('#adm-cerrar').addEventListener('click', cerrarAdm);
-  admMenu.addEventListener('click', function (e) { if (e.target === admMenu) cerrarAdm(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !admMenu.hidden) cerrarAdm(); });
 
   /* ---- Aviso de deslizar (celular, una vez) ---- */
   var hintShown = false;
@@ -2902,5 +2868,6 @@ body.theme-solune { --bg-blur: url(img/fondos/solune-blur.jpg); }
   try { history.replaceState({ page: pages[cur].id }, '', '#' + pages[cur].id); } catch (e) {}
 })();
 </script>
+<script src="sello.js" defer></script>
 </body>
 </html>
