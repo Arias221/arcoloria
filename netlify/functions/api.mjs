@@ -120,7 +120,8 @@ const CLEAN = {
   events(v) {
     return (Array.isArray(v) ? v : []).slice(0, 60).map((e) => ({
       id: str(e.id, 20) || uid(), title: str(e.title, 90), desc: str(e.desc, 1200), img: okImg(e.img),
-      server: okServer(e.server), start: isDate(e.start) ? e.start : "", end: isDate(e.end) ? e.end : ""
+      server: okServer(e.server), start: isDate(e.start) ? e.start : "", end: isDate(e.end) ? e.end : "",
+      home: e.home === "no" ? "no" : "si"
     })).filter((e) => e.title);
   },
   news(v) {
