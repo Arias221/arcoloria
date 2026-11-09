@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E1411">
+<meta name="robots" content="noindex">
+<title>Página no encontrada · Arcoloria</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;700;800&display=swap">
+<style>
+  :root { --ink: #F7EADB; --muted: #CDB39E; --petal: #F4BCCB; --line: rgba(255, 222, 190, .24); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px;
+    background: #1E1411; color: var(--ink); font-family: Nunito, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+  }
+  .fondo { position: fixed; inset: 0; z-index: -2; background: url(/img/fondo.jpg) 50% 40% / cover no-repeat; }
+  @supports (background-image: image-set(url("a.webp") type("image/webp"))) {
+    .fondo { background-image: image-set(url(/img/fondo.webp) type("image/webp"), url(/img/fondo.jpg) type("image/jpeg")); }
+  }
+  .velo { position: fixed; inset: 0; z-index: -1; background: radial-gradient(ellipse 70% 60% at 50% 45%, rgba(30, 14, 24, .35), rgba(20, 10, 14, .78)); }
+  .caja {
+    width: 100%; max-width: 460px; padding: 34px 26px 28px; border-radius: 30px; text-align: center;
+    background: linear-gradient(180deg, rgba(52, 32, 40, .72), rgba(32, 20, 24, .78));
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+    animation: subir .6s cubic-bezier(.2, .7, .2, 1);
+  }
+  @keyframes subir { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .nube { width: 132px; height: 84px; margin: 0 auto 4px; position: relative; animation: flotar 5s ease-in-out infinite; }
+  .nube svg { width: 100%; height: 100%; filter: drop-shadow(0 0 12px rgba(255, 176, 210, .55)); }
+  .nube .loto { position: absolute; left: 50%; top: 46%; width: 44px; height: 35px; transform: translate(-50%, -50%); filter: none; }
+  @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .num { margin: 6px 0 0; font: 700 3.4rem/1 Fraunces, Georgia, serif; letter-spacing: .04em; color: #FFE6D2; text-shadow: 0 0 22px rgba(244, 188, 203, .45); }
+  h1 { margin: 10px 0 0; font: 600 1.6rem/1.25 Fraunces, Georgia, serif; color: #FFF1E0; }
+  p { margin: 10px auto 0; max-width: 34ch; line-height: 1.55; color: var(--muted); }
+  .botones { display: grid; gap: 10px; margin-top: 22px; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 18px;
+    border-radius: 999px; text-decoration: none; font-weight: 800; color: #3A1F28;
+    background: linear-gradient(180deg, #FFD8C2, #F2A9BE); box-shadow: 0 8px 20px rgba(242, 169, 190, .3);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(242, 169, 190, .4); }
+  .fila { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .btn.sec { min-height: 44px; padding: 0 10px; font-size: .92rem; color: var(--ink); background: rgba(255, 236, 220, .08); border: 1px solid var(--line); box-shadow: none; }
+  .btn.sec:hover { background: rgba(255, 236, 220, .14); }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+  @media (max-width: 380px) { .fila { grid-template-columns: minmax(0, 1fr); } }
+  @media (prefers-reduced-motion: reduce) { .nube, .caja { animation: none; } }
+</style>
+</head>
+<body>
+<div class="fondo" aria-hidden="true"></div>
+<div class="velo" aria-hidden="true"></div>
+
+<main class="caja">
+  <div class="nube" aria-hidden="true">
+    <svg viewBox="0 0 140 76"><g fill="#FFF4F8"><circle cx="34" cy="46" r="24"/><circle cx="64" cy="30" r="27"/><circle cx="98" cy="36" r="24"/><circle cx="118" cy="52" r="18"/><rect x="12" y="42" width="120" height="30" rx="15"/></g></svg>
+    <svg class="loto" viewBox="0 0 40 32"><g fill="#E58AAE"><path d="M20 3C25 9 25.5 17 20 24C14.5 17 15 9 20 3Z"/><path d="M20 24C12 23 6.5 17 5.5 9C13 10 18.5 15 20 24Z" opacity=".85"/><path d="M20 24C28 23 33.5 17 34.5 9C27 10 21.5 15 20 24Z" opacity=".85"/><path d="M7 27C13 24.5 27 24.5 33 27C27 29.5 13 29.5 7 27Z" fill="#F0C27A"/></g></svg>
+  </div>
+  <p class="num">404</p>
+  <h1>Esta página se perdió entre las nubes</h1>
+  <p>Puede que el enlace esté mal escrito o que la página ya no exista. Vuelve al inicio para seguir tu camino por Arcoloria.</p>
+  <div class="botones">
+    <a class="btn" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6.5 8 6.5M6 9.5V19h12V9.5"/></svg>Volver al inicio</a>
+    <div class="fila">
+      <a class="btn sec" href="/#resumen">Reglas</a>
+      <a class="btn sec" href="/#addons">Addons</a>
+      <a class="btn sec" href="/misiones/">Misiones</a>
+    </div>
+  </div>
+</main>
+<script src="/sello.js" defer></script>
+</body>
+</html>

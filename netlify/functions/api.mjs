@@ -50,6 +50,15 @@ const DEFAULT_DATA = {
     wsp_nubelia: "https://chat.whatsapp.com/L1Ubo5MOadRB4hAnHtanlP",
     wsp_solune: "https://chat.whatsapp.com/BWZQAxKBx2PGxt9kHK41ai"
   },
+  faq: [
+    { id: "faq1", q: "¿Cómo entro a un servidor?", a: "En el inicio, toca «Información del servidor» en Nubelia o Solune. Ahí están el nombre, la IP y el puerto. En Minecraft ve a Servidores, luego Agregar servidor, y escribe esos datos. También puedes usar el botón «Unirse al servidor»." },
+    { id: "faq2", q: "¿Dónde leo las reglas?", a: "En «Reglas», desde el menú. Si tienes poco tiempo, empieza por el resumen con las 10 reglas de oro. Con el buscador puedes encontrar una norma escribiendo una palabra." },
+    { id: "faq3", q: "¿Cómo canjeo un kit?", a: "Dentro de la información de cada servidor está la sección «Códigos de kits». Copia el código y en el juego usa el comando /redeem con ese código. Cada kit se puede canjear una vez por jugador." },
+    { id: "faq4", q: "¿Qué hago si alguien me molesta o rompe las reglas?", a: "Escríbele por privado a un administrador de tu confianza. En la información de cada servidor, en «Equipo», están los nombres del equipo y cómo contactarlos." },
+    { id: "faq5", q: "¿Cómo aprendo a usar los addons?", a: "En «Addons» hay una guía sencilla para cada addon del servidor, con imágenes y paso a paso." },
+    { id: "faq6", q: "¿Qué es el Libro de Misiones?", a: "Es la página de misiones de Arcoloria. Ahí ves las misiones disponibles, las crónicas y tu aventura en el servidor. Entra desde «Misiones» en el menú." },
+    { id: "faq7", q: "¿Dónde me entero de los eventos?", a: "Los eventos activos aparecen en el inicio y en la información de cada servidor. También se avisan en los grupos de WhatsApp y en Discord." }
+  ],
   commands: []
 };
 
@@ -143,6 +152,11 @@ const CLEAN = {
       id: str(c.id, 20) || uid(), cmd: str(c.cmd, 60), desc: str(c.desc, 300), server: okServer(c.server)
     })).filter((c) => c.cmd);
   },
+  faq(v) {
+    return (Array.isArray(v) ? v : []).slice(0, 40).map((f) => ({
+      id: str(f.id, 20) || uid(), q: str(f.q, 200), a: str(f.a, 1500)
+    })).filter((f) => f.q && f.a);
+  },
   team(v) {
     return (Array.isArray(v) ? v : []).slice(0, 40).map((t) => ({
       id: str(t.id, 20) || uid(), gamertag: str(t.gamertag, 40), role: str(t.role, 30),
@@ -156,7 +170,8 @@ async function readData(store) {
   return {
     servers: CLEAN.servers(d.servers || DEFAULT_DATA.servers),
     events: CLEAN.events(d.events), news: CLEAN.news(d.news), team: CLEAN.team(d.team),
-    social: CLEAN.social(d.social), commands: CLEAN.commands(d.commands)
+    social: CLEAN.social(d.social), commands: CLEAN.commands(d.commands),
+    faq: CLEAN.faq(d.faq !== undefined ? d.faq : DEFAULT_DATA.faq)
   };
 }
 

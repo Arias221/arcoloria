@@ -114,6 +114,9 @@ select option { background: #2A1D19; }
 .toast.err { background: #F2B8B8; color: #4A1717; }
 [hidden] { display: none !important; }
 </style>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -153,6 +156,7 @@ select option { background: #2A1D19; }
       <button class="tab" data-tab="news">Novedades</button>
       <button class="tab" data-tab="team">Equipo</button>
       <button class="tab" data-tab="commands">Comandos</button>
+      <button class="tab" data-tab="faq">Preguntas</button>
       <button class="tab" data-tab="social">Redes</button>
     </nav>
   </header>
@@ -248,6 +252,7 @@ select option { background: #2A1D19; }
     kits: { title: 'Kit', fields: [['name', 'Nombre del kit', 'text', 'Ej.: Kit inicial'], ['note', 'Aviso corto (opcional)', 'text', 'Ej.: Una sola vez por jugador'], ['code', 'Código', 'text', 'Ej.: NUBE-INICIO'], ['items', 'Qué trae', 'textarea']], empty: { name: 'Kit inicial', note: '', code: '', items: '' } },
     events: { title: 'Evento', fields: [['title', 'Título', 'text'], ['img', 'Foto', 'image'], ['desc', 'Descripción', 'textarea'], ['start', 'Fecha de inicio', 'date'], ['end', 'Fecha de fin (se oculta después)', 'date'], ['server', 'Servidor', 'server'], ['home', 'Anunciar en el inicio', 'yesno']], empty: function () { return { title: '', img: '', desc: '', start: today(), end: '', server: 'ambos', home: 'si' }; } },
     news: { title: 'Novedad', fields: [['title', 'Título', 'text'], ['img', 'Foto (opcional)', 'image'], ['text', 'Texto', 'textarea'], ['date', 'Fecha', 'date'], ['server', 'Servidor', 'server']], empty: function () { return { title: '', img: '', text: '', date: today(), server: 'ambos' }; } },
+    faq: { title: 'Pregunta', fields: [['q', 'Pregunta', 'text', 'Ej.: ¿Cómo entro al servidor?'], ['a', 'Respuesta', 'textarea', 'Explícalo con palabras sencillas.']], empty: { q: '', a: '' } },
     commands: { title: 'Comando', fields: [['cmd', 'Comando', 'text', 'Ej.: /spawn'], ['server', 'Servidor', 'server'], ['desc', 'Para qué sirve', 'textarea', 'Ej.: Te lleva al punto de inicio del servidor.']], empty: { cmd: '', desc: '', server: 'ambos' } },
     team: { title: 'Integrante', fields: [['gamertag', 'Nombre en el juego', 'text'], ['role', 'Rol', 'role'], ['discord', 'Discord (opcional)', 'text', 'Usuario de Discord'], ['whatsapp', 'WhatsApp (opcional)', 'text', 'Nombre en el grupo, no el número'], ['server', 'Servidor', 'server']], empty: { gamertag: '', role: 'Ayudante', discord: '', whatsapp: '', server: 'ambos' } }
   };
@@ -280,13 +285,14 @@ select option { background: #2A1D19; }
   function listHtml(kind, arr, path) {
     var sc = SCHEMAS[kind];
     return '<div class="list">' + arr.map(function (it, i) {
-      var title = it.name || it.title || it.gamertag || it.cmd || it.code || (sc.title + ' nuevo');
+      var title = it.name || it.title || it.gamertag || it.cmd || it.q || it.code || (sc.title + ' nuevo');
       var fields = sc.fields.map(function (f) { return fieldHtml(f, it[f[0]], path + '.' + i); });
       var body;
       if (kind === 'events') body = fields[0] + fields[1] + fields[2] + '<div class="grid g3">' + fields[3] + fields[4] + fields[5] + '</div>' + fields[6];
       else if (kind === 'news') body = fields[0] + fields[1] + fields[2] + '<div class="grid g2">' + fields[3] + fields[4] + '</div>';
       else if (kind === 'team') body = '<div class="grid g2">' + fields[0] + fields[1] + fields[2] + fields[3] + '</div>' + fields[4];
       else if (kind === 'kits') body = '<div class="grid g3">' + fields[0] + fields[1] + fields[2] + '</div>' + fields[3];
+      else if (kind === 'faq') body = fields[0] + fields[1];
       else if (kind === 'commands') body = '<div class="grid g2">' + fields[0] + fields[1] + '</div>' + fields[2];
       else if (kind === 'addons') body = '<div class="grid g2">' + fields[0] + fields[1] + '</div>' + fields[2] + fields[3];
       else body = '<div class="grid g2">' + fields[0] + fields[1] + '</div>' + fields[2];
@@ -326,6 +332,9 @@ select option { background: #2A1D19; }
     } else if (tab === 'commands') {
       if (!data.commands) data.commands = [];
       html = '<div class="sec-title"><div><h2>Comandos</h2><p class="muted small">Aparecen en «Información del servidor», en la pestaña Comandos. Elige si el comando es de Nubelia, de Solune o de ambos.</p></div></div>' + listHtml('commands', data.commands, 'commands');
+    } else if (tab === 'faq') {
+      if (!data.faq) data.faq = [];
+      html = '<div class="sec-title"><div><h2>Preguntas frecuentes</h2><p class="muted small">Aparecen al final del inicio. Usa las flechas para cambiar el orden. Si borras todas, la sección se oculta.</p></div></div>' + listHtml('faq', data.faq, 'faq');
     } else if (tab === 'social') {
       if (!data.social) data.social = { discord: '', wsp_nubelia: '', wsp_solune: '' };
       html = '<div class="sec-title"><div><h2>Redes</h2><p class="muted small">Si un enlace caduca o cambia, pega aquí el nuevo. Se actualiza en el inicio, en el menú y dentro de cada servidor.</p></div></div>' +
@@ -344,7 +353,7 @@ select option { background: #2A1D19; }
     var t = e.target; if (!t.dataset || !t.dataset.path || t.type === 'file') return;
     var o = get(t.dataset.path); if (!o) return;
     o[t.dataset.k] = t.value; markDirty(t.dataset.path);
-    if (['name', 'title', 'gamertag', 'cmd'].indexOf(t.dataset.k) >= 0) { var b = t.closest('.item'); if (b) b.querySelector('.item-head b').textContent = t.value || 'Nuevo'; }
+    if (['name', 'title', 'gamertag', 'cmd', 'q'].indexOf(t.dataset.k) >= 0) { var b = t.closest('.item'); if (b) b.querySelector('.item-head b').textContent = t.value || 'Nuevo'; }
     if (t.dataset.k === 'start' || t.dataset.k === 'end') { var it = t.closest('.item'); if (it) { var p = it.querySelector('.pill'); if (p) p.outerHTML = eventPill(o); } }
   });
   main.addEventListener('change', function (e) {
@@ -358,7 +367,7 @@ select option { background: #2A1D19; }
     if (b.dataset.icon) { var o = get(b.dataset.path); o.icon = b.dataset.icon; markDirty(b.dataset.path); b.parentNode.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); }); return; }
     if (b.hasAttribute('data-clear-img')) { var o2 = get(b.dataset.path); o2[b.dataset.k] = ''; markDirty(b.dataset.path); render(); return; }
     if (b.dataset.add) { var arr = get(b.dataset.path), sc = SCHEMAS[b.dataset.add]; arr.push(typeof sc.empty === 'function' ? sc.empty() : clone(sc.empty)); markDirty(b.dataset.path); render(); var items = main.querySelectorAll('.item'); var last = b.parentNode.querySelectorAll('.item'); last = last[last.length - 1]; if (last) { last.scrollIntoView({ block: 'center' }); var inp = last.querySelector('input[type=text]'); if (inp) inp.focus({ preventScroll: true }); } return; }
-    if (b.hasAttribute('data-del')) { var a2 = get(b.dataset.path), i = +b.dataset.i; var it = a2[i]; var nm = it.name || it.title || it.gamertag || it.cmd || 'este elemento'; if (!window.confirm('¿Eliminar «' + nm + '»?')) return; a2.splice(i, 1); markDirty(b.dataset.path); render(); return; }
+    if (b.hasAttribute('data-del')) { var a2 = get(b.dataset.path), i = +b.dataset.i; var it = a2[i]; var nm = it.name || it.title || it.gamertag || it.cmd || it.q || 'este elemento'; if (!window.confirm('¿Eliminar «' + nm + '»?')) return; a2.splice(i, 1); markDirty(b.dataset.path); render(); return; }
     if (b.dataset.move) { var a3 = get(b.dataset.path), j = +b.dataset.i, k = j + (+b.dataset.move); if (k < 0 || k >= a3.length) return; var tmp = a3[j]; a3[j] = a3[k]; a3[k] = tmp; markDirty(b.dataset.path); render(); return; }
   });
 
