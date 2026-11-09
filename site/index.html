@@ -16,6 +16,7 @@
 <meta name="theme-color" content="#1E1411">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23F2E1BC'/%3E%3Ccircle cx='30' cy='34' r='16' fill='%23F0B04A'/%3E%3Ccircle cx='38' cy='28' r='13' fill='%2384461E'/%3E%3C/svg%3E">
 <title>Arcoloria</title>
+<link rel="preload" as="image" href="img/fondo.webp" type="image/webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,0..100&family=Nunito:wght@400;600;700;800&family=Kalam:wght@400;700&display=swap">
@@ -1734,10 +1735,18 @@ a.ip-ad:hover { transform: translateY(-2px); border-color: var(--t-line); }
 
 /* ---------- Fondos por sección ---------- */
 .scene-alt { opacity: 0; transition: opacity .7s ease; background: 50% 45% / cover no-repeat; }
-.bg-reglas { background-image: url(img/fondos/reglas.jpg); }
-.bg-addons { background-image: url(img/fondos/addons.jpg); }
-.bg-nubelia { background-image: url(img/fondos/nubelia.jpg); }
-.bg-solune { background-image: url(img/fondos/solune.jpg); }
+/* Los fondos de otras secciones se descargan cuando hace falta (o cuando la página ya terminó de cargar) */
+body:is(.bg-ready, .theme-rules) .bg-reglas { background-image: url(img/fondos/reglas.jpg); }
+body:is(.bg-ready, .theme-addons) .bg-addons { background-image: url(img/fondos/addons.jpg); }
+body:is(.bg-ready, .theme-nubelia) .bg-nubelia { background-image: url(img/fondos/nubelia.jpg); }
+body:is(.bg-ready, .theme-solune) .bg-solune { background-image: url(img/fondos/solune.jpg); }
+@supports (background-image: image-set(url("a.webp") type("image/webp"))) {
+  :root { --bg-img: image-set(url(img/fondo.webp) type("image/webp"), url(img/fondo.jpg) type("image/jpeg")); }
+  body:is(.bg-ready, .theme-rules) .bg-reglas { background-image: image-set(url(img/fondos/reglas.webp) type("image/webp"), url(img/fondos/reglas.jpg) type("image/jpeg")); }
+  body:is(.bg-ready, .theme-addons) .bg-addons { background-image: image-set(url(img/fondos/addons.webp) type("image/webp"), url(img/fondos/addons.jpg) type("image/jpeg")); }
+  body:is(.bg-ready, .theme-nubelia) .bg-nubelia { background-image: image-set(url(img/fondos/nubelia.webp) type("image/webp"), url(img/fondos/nubelia.jpg) type("image/jpeg")); }
+  body:is(.bg-ready, .theme-solune) .bg-solune { background-image: image-set(url(img/fondos/solune.webp) type("image/webp"), url(img/fondos/solune.jpg) type("image/jpeg")); }
+}
 body.theme-rules .bg-reglas, body.theme-addons .bg-addons, body.theme-nubelia .bg-nubelia, body.theme-solune .bg-solune { opacity: 1; }
 body.theme-rules { --bg-blur: url(img/fondos/reglas-blur.jpg); }
 body.theme-addons { --bg-blur: url(img/fondos/addons-blur.jpg); }
@@ -2115,7 +2124,7 @@ body:not(.on-home) .ev-corner { display: none; }
           </a>
           <a class="ccard" href="#addons" style="--sec:var(--rose);--sec-soft:var(--rose-soft)">
             <span class="cc-icon"><svg class="icon" aria-hidden="true"><use href="#i-cube"/></svg></span>
-            <span class="cc-text"><span class="cc-title">Addons</span><span class="cc-sub">Guías sencillas para usar los addons del servidor</span><span class="cc-thumbs" aria-hidden="true"><img src="img/addons/crops-farms.jpg" alt="" loading="lazy" width="840" height="482"><img src="img/addons/actions-stuff.jpg" alt="" loading="lazy" width="840" height="489"><img src="img/addons/land-claims.jpg" alt="" loading="lazy" width="840" height="469"><img src="img/addons/waystones.jpg" alt="" loading="lazy" width="840" height="506"></span><span class="cc-meta">10 guías disponibles</span></span>
+            <span class="cc-text"><span class="cc-title">Addons</span><span class="cc-sub">Guías sencillas para usar los addons del servidor</span><span class="cc-thumbs" aria-hidden="true"><img src="img/addons/mini/crops-farms.jpg" alt="" loading="lazy" width="320" height="184"><img src="img/addons/mini/actions-stuff.jpg" alt="" loading="lazy" width="320" height="186"><img src="img/addons/mini/land-claims.jpg" alt="" loading="lazy" width="320" height="179"><img src="img/addons/mini/waystones.jpg" alt="" loading="lazy" width="320" height="192"></span><span class="cc-meta">10 guías disponibles</span></span>
             <span class="cc-go" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>
           </a>
           <a class="ccard" href="#galeria" data-soon="La galería de recuerdos" hidden style="--sec:var(--olive);--sec-soft:var(--olive-soft)">
@@ -2207,7 +2216,7 @@ body:not(.on-home) .ev-corner { display: none; }
     </header>
     <div class="addon-grid">
       <a class="addon-card" href="guias/guia-crops-farms.html">
-        <span class="ad-img"><img src="img/addons/crops-farms.jpg" alt="Portada del addon Crops &amp; Farms" loading="lazy" width="840" height="482"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/crops-farms.webp" type="image/webp"><img src="img/addons/crops-farms.jpg" alt="Portada del addon Crops &amp; Farms" loading="lazy" width="840" height="482"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Granja y cocina</span>
           <b class="ad-title">Crops &amp; Farms</b>
@@ -2217,7 +2226,7 @@ body:not(.on-home) .ev-corner { display: none; }
         </span>
       </a>
       <a class="addon-card" href="guias/guia-actions-and-stuff.html">
-        <span class="ad-img"><img src="img/addons/actions-stuff.jpg" alt="Portada del addon Actions &amp; Stuff" loading="lazy" width="840" height="489"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/actions-stuff.webp" type="image/webp"><img src="img/addons/actions-stuff.jpg" alt="Portada del addon Actions &amp; Stuff" loading="lazy" width="840" height="489"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Texturas con nombre</span>
           <b class="ad-title">Actions &amp; Stuff</b>
@@ -2227,7 +2236,7 @@ body:not(.on-home) .ev-corner { display: none; }
         </span>
       </a>
       <a class="addon-card" href="guias/guia-land-claims.html">
-        <span class="ad-img"><img src="img/addons/land-claims.jpg" alt="Portada del addon Land Claims" loading="lazy" width="840" height="470"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/land-claims.webp" type="image/webp"><img src="img/addons/land-claims.jpg" alt="Portada del addon Land Claims" loading="lazy" width="840" height="470"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Protección</span>
           <b class="ad-title">Land Claims</b>
@@ -2237,7 +2246,7 @@ body:not(.on-home) .ev-corner { display: none; }
         </span>
       </a>
       <a class="addon-card" href="guias/guia-waystones.html">
-        <span class="ad-img"><img src="img/addons/waystones.jpg" alt="Portada del addon Waystones" loading="lazy" width="840" height="470"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/waystones.webp" type="image/webp"><img src="img/addons/waystones.jpg" alt="Portada del addon Waystones" loading="lazy" width="840" height="470"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Viajes</span>
           <b class="ad-title">Waystones</b>
@@ -2247,7 +2256,7 @@ body:not(.on-home) .ev-corner { display: none; }
         </span>
       </a>
       <a class="addon-card" href="guias/guia-world-utilities.html">
-        <span class="ad-img"><img src="img/addons/world-utilities.jpg" alt="Portada del addon World Utilities" loading="lazy" width="840" height="470"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/world-utilities.webp" type="image/webp"><img src="img/addons/world-utilities.jpg" alt="Portada del addon World Utilities" loading="lazy" width="840" height="470"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Herramientas</span>
           <b class="ad-title">World Utilities</b>
@@ -2257,7 +2266,7 @@ body:not(.on-home) .ev-corner { display: none; }
         </span>
       </a>
       <a class="addon-card" href="guias/guia-fabulous-furniture.html">
-        <span class="ad-img"><img src="img/addons/fabulous-furniture.jpg" alt="Portada del addon Fabulous Furniture" loading="lazy" width="840" height="470"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/fabulous-furniture.webp" type="image/webp"><img src="img/addons/fabulous-furniture.jpg" alt="Portada del addon Fabulous Furniture" loading="lazy" width="840" height="470"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Decoración</span>
           <b class="ad-title">Fabulous Furniture</b>
@@ -2267,7 +2276,7 @@ body:not(.on-home) .ev-corner { display: none; }
         </span>
       </a>
       <a class="addon-card" href="guias/guia-mochilas.html">
-        <span class="ad-img"><img src="img/addons/backpacks-stuff.jpg" alt="Portada del addon Backpacks &amp; Stuff" loading="lazy" width="840" height="470"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/backpacks-stuff.webp" type="image/webp"><img src="img/addons/backpacks-stuff.jpg" alt="Portada del addon Backpacks &amp; Stuff" loading="lazy" width="840" height="470"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Aventura</span>
           <b class="ad-title">Backpacks &amp; Stuff</b>
@@ -2277,7 +2286,7 @@ body:not(.on-home) .ev-corner { display: none; }
         </span>
       </a>
       <a class="addon-card" href="guias/guia-simply-backpacks.html">
-        <span class="ad-img"><img src="img/addons/simply-backpacks.jpg" alt="Portada del addon Simply Backpacks" loading="lazy" width="840" height="470"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/simply-backpacks.webp" type="image/webp"><img src="img/addons/simply-backpacks.jpg" alt="Portada del addon Simply Backpacks" loading="lazy" width="840" height="470"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Almacenamiento</span>
           <b class="ad-title">Simply Backpacks</b>
@@ -2287,7 +2296,7 @@ body:not(.on-home) .ev-corner { display: none; }
         </span>
       </a>
       <a class="addon-card" href="guias/guia-animal-armor.html">
-        <span class="ad-img"><img src="img/addons/animal-armor.jpg" alt="Portada del addon Animal Armor+" loading="lazy" width="840" height="470"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/animal-armor.webp" type="image/webp"><img src="img/addons/animal-armor.jpg" alt="Portada del addon Animal Armor+" loading="lazy" width="840" height="470"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Armaduras</span>
           <b class="ad-title">Animal Armor+</b>
@@ -2297,7 +2306,7 @@ body:not(.on-home) .ev-corner { display: none; }
         </span>
       </a>
       <a class="addon-card" href="guias/guia-block-furniture.html">
-        <span class="ad-img"><img src="img/addons/block-furniture.jpg" alt="Portada del addon Block Furniture" loading="lazy" width="840" height="470"></span>
+        <span class="ad-img"><picture><source srcset="img/addons/block-furniture.webp" type="image/webp"><img src="img/addons/block-furniture.jpg" alt="Portada del addon Block Furniture" loading="lazy" width="840" height="470"></picture></span>
         <span class="ad-body">
           <span class="ad-tag">Decoración</span>
           <b class="ad-title">Block Furniture</b>
@@ -2777,7 +2786,7 @@ body:not(.on-home) .ev-corner { display: none; }
       sections.push(['addons', 'Addons', '<section class="ip-card" id="ip-' + id + '-addons"><div class="ip-head"><h3>' + useI('i-cube') + 'Addons del servidor</h3><span class="ip-count">' + s.addons.length + (s.addons.length === 1 ? ' addon' : ' addons') + '</span></div><div class="ip-addons">' +
         s.addons.map(function (a) {
           var img = safeUrl(a.img), link = safeUrl(a.link), tag = link ? 'a' : 'div';
-          return '<' + tag + ' class="ip-ad"' + (link ? ' href="' + h(link) + '"' : '') + '><span class="ip-ad-img"' + (img ? ' style="background-image:url(\'' + h(img) + '\')"' : '') + '>' + (img ? '' : useI('i-cube')) + '</span><b>' + h(a.name) + '</b>' + (a.desc ? '<small>' + h(a.desc) + '</small>' : '') + (link ? '<em>Ver guía →</em>' : '') + '</' + tag + '>';
+          return '<' + tag + ' class="ip-ad"' + (link ? ' href="' + h(link) + '"' : '') + '><span class="ip-ad-img"' + (img ? ' style="background-image:url(\'' + h(img.replace(/^img\/addons\/([a-z0-9-]+)\.jpg$/, 'img/addons/mini/$1.jpg')) + '\')"' : '') + '>' + (img ? '' : useI('i-cube')) + '</span><b>' + h(a.name) + '</b>' + (a.desc ? '<small>' + h(a.desc) + '</small>' : '') + (link ? '<em>Ver guía →</em>' : '') + '</' + tag + '>';
         }).join('') + '</div></section>']);
     }
     if (s.systems && s.systems.length) {
@@ -3005,6 +3014,11 @@ body:not(.on-home) .ev-corner { display: none; }
     }, function () {});
   }
 
+
+  /* ---- Fondos de las otras secciones: se piden cuando la página ya terminó de cargar ---- */
+  function bgReady() { document.body.classList.add('bg-ready'); }
+  function bgLater() { if ('requestIdleCallback' in window) requestIdleCallback(bgReady, { timeout: 4000 }); else setTimeout(bgReady, 1500); }
+  if (document.readyState === 'complete') bgLater(); else window.addEventListener('load', bgLater);
 
   /* ---- Aviso de deslizar (celular, una vez) ---- */
   var hintShown = false;

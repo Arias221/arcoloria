@@ -51,6 +51,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .escena { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
 .escena > div { position: absolute; inset: 0; }
 .escena .nitido { background: url(../img/fondo.jpg) 50% 40% / cover no-repeat; }
+@supports (background-image: image-set(url("a.webp") type("image/webp"))) {
+  .escena .nitido { background-image: image-set(url(../img/fondo.webp) type("image/webp"), url(../img/fondo.jpg) type("image/jpeg")); }
+}
 .escena .borroso { inset: -4%; background: url(../img/fondo-blur.jpg) 50% 40% / cover no-repeat; opacity: var(--niebla); transition: opacity .35s ease; }
 .escena .velo { background: linear-gradient(180deg, rgba(24, 12, 20, .55) 0%, rgba(24, 12, 20, .12) 22%, rgba(24, 12, 20, .2) 55%, rgba(24, 12, 20, .62) 100%); }
 .escena .bruma { background: #1A0F16; opacity: calc(var(--niebla) * .45); transition: opacity .35s ease; }
