@@ -113,6 +113,31 @@ select option { background: #2A1D19; }
 .toast { position: fixed; left: 50%; top: 80px; z-index: 30; transform: translateX(-50%); max-width: calc(100% - 32px); padding: 12px 18px; border-radius: 14px; background: var(--btn); color: var(--btn-ink); font-weight: 800; box-shadow: 0 10px 30px rgba(0, 0, 0, .35); }
 .toast.err { background: #F2B8B8; color: #4A1717; }
 [hidden] { display: none !important; }
+
+/* ---- Vista previa ---- */
+.pv { display: grid; gap: 10px; padding: 14px; border-radius: 16px; border: 1px dashed rgba(244, 201, 162, .45); background: rgba(255, 255, 255, .03); }
+.pv-lbl { margin: 0; display: flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 800; color: var(--accent); }
+.pv-lbl .icon { width: 16px; height: 16px; flex: none; }
+.pv-lbl.warn { color: var(--bad); }
+.pv b { display: block; color: #FFF1E0; line-height: 1.25; }
+.pv p { margin: 4px 0 0; font-size: .88rem; line-height: 1.45; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; }
+.pv small { display: block; font-size: .78rem; font-weight: 800; color: var(--accent); }
+.pv-news, .pv-ev { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; padding: 12px; border-radius: 14px; background: rgba(0, 0, 0, .28); border: 1px solid var(--line2); }
+.pv-news:not(:has(img)) { grid-template-columns: minmax(0, 1fr); }
+.pv-news img, .pv-ev img { width: 96px; height: 72px; object-fit: cover; border-radius: 10px; }
+.pv-noimg { width: 64px; height: 64px; border-radius: 12px; display: grid; place-items: center; background: rgba(255, 255, 255, .08); color: var(--accent); font-size: 1.6rem; }
+.pv-sv { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; max-width: 420px; padding: 10px; border-radius: 16px; background: rgba(0, 0, 0, .3); border: 1px solid rgba(169, 219, 140, .45); }
+.pv-sv.solune { border-color: rgba(200, 170, 255, .5); }
+.pv-sv img { width: 64px; height: 64px; object-fit: cover; border-radius: 12px; }
+.pv-sv .pv-tag { color: #A9DB8C; letter-spacing: .08em; text-transform: uppercase; font-size: .68rem; }
+.pv-sv.solune .pv-tag { color: #D3B8FF; }
+.pv-sv p { -webkit-line-clamp: 2; }
+.pv-cloud { max-width: 300px; padding: 16px 18px 18px; border-radius: 26px; background: linear-gradient(180deg, #FFF7FA, #FBE2EB); color: #4A2338; box-shadow: 0 0 0 1px rgba(255, 176, 210, .5), 0 0 18px rgba(255, 176, 210, .45); }
+.pv-cloud .pv-tag { display: block; font-size: .66rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #B4497A; }
+.pv-cloud b { color: #4A2338; font-size: 1.1rem; margin-top: 4px; }
+.pv-cloud small { color: #B4497A; }
+.pv-cloud img { display: block; width: 100%; height: 110px; margin-top: 8px; object-fit: cover; border-radius: 14px; }
+.pv-cloud p { color: #5C3549; }
 </style>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -282,6 +307,34 @@ select option { background: #2A1D19; }
     if (e.start && e.start > t) return '<span class="pill soon">Próximo</span>';
     return '<span class="pill ok">Visible</span>';
   }
+  /* ---- Vista previa: así se verá en la página ---- */
+  var MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  function fechaTxt(d) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ''); return m ? (+m[3]) + ' de ' + MESES[+m[2] - 1] : ''; }
+  function imgSrc(u) { u = String(u || ''); if (!u) return ''; return /^(https?:|\/|data:)/.test(u) ? u : '/' + u; }
+  var SV = { nubelia: 'Nubelia', solune: 'Solune', ambos: 'los dos servidores' };
+  function previewHtml(kind, it) {
+    var img = imgSrc(it.img), t = today();
+    if (kind === 'news') {
+      return '<p class="pv-lbl"><svg class="icon"><use href="#eye"/></svg>Así se verá en «Información del servidor» de ' + (SV[it.server] || 'los dos servidores') + '</p>' +
+        '<div class="pv-news">' + (img ? '<img src="' + esc(img) + '" alt="">' : '') + '<div><small>' + esc(fechaTxt(it.date) || 'Sin fecha') + '</small><b>' + esc(it.title || 'Título de la novedad') + '</b><p>' + esc(it.text || 'Aquí va el texto de la novedad.') + '</p></div></div>';
+    }
+    if (it.end && it.end < t) return '<p class="pv-lbl warn">Este evento ya terminó: no se muestra en la página.</p>';
+    var live = !it.start || it.start <= t;
+    var when = live ? (it.end ? 'Hasta el ' + fechaTxt(it.end) : 'En curso') : 'Empieza el ' + fechaTxt(it.start) + (it.end ? ' · hasta el ' + fechaTxt(it.end) : '');
+    var donde, html;
+    if (it.home === 'no') {
+      donde = 'Solo en «Información del servidor» de ' + (SV[it.server] || 'los dos servidores') + ' (no sale en el inicio)';
+      html = '<div class="pv-ev">' + (img ? '<img src="' + esc(img) + '" alt="">' : '<span class="pv-noimg">★</span>') + '<div><small>' + esc(when) + '</small><b>' + esc(it.title || 'Nombre del evento') + '</b><p>' + esc(it.desc || 'Descripción del evento.') + '</p></div></div>';
+    } else if (it.server === 'ambos' || !it.server) {
+      donde = 'En el inicio, como nube en la esquina (y en la información de los dos servidores)';
+      html = '<div class="pv-cloud"><span class="pv-tag">★ ' + (live ? 'Evento en los dos reinos' : 'Próximo evento · los dos reinos') + '</span><b>' + esc(it.title || 'Nombre del evento') + '</b><small>' + esc(when) + '</small>' +
+        (img ? '<img src="' + esc(img) + '" alt="">' : '') + '<p>' + esc(it.desc || 'Descripción del evento.') + '</p></div>';
+    } else {
+      donde = 'En el inicio, dentro del cuadro de ' + SV[it.server] + ' (y en su información)';
+      html = '<div class="pv-sv ' + esc(it.server) + '">' + (img ? '<img src="' + esc(img) + '" alt="">' : '<span class="pv-noimg">★</span>') + '<div><small class="pv-tag">' + (live ? '● Evento en curso' : 'Próximo evento') + '</small><b>' + esc(it.title || 'Nombre del evento') + '</b><small>' + esc(when) + '</small><p>' + esc(it.desc || 'Descripción del evento.') + '</p></div></div>';
+    }
+    return '<p class="pv-lbl"><svg class="icon"><use href="#eye"/></svg>Así se verá: ' + esc(donde) + '</p>' + html;
+  }
   function listHtml(kind, arr, path) {
     var sc = SCHEMAS[kind];
     return '<div class="list">' + arr.map(function (it, i) {
@@ -299,7 +352,8 @@ select option { background: #2A1D19; }
       return '<div class="item"><div class="item-head"><b>' + esc(title) + '</b>' + (kind === 'events' ? eventPill(it) : '') +
         '<button class="icon-btn" type="button" title="Subir" data-move="-1" data-path="' + path + '" data-i="' + i + '"' + (i === 0 ? ' disabled' : '') + '><svg class="icon"><use href="#up"/></svg></button>' +
         '<button class="icon-btn" type="button" title="Bajar" data-move="1" data-path="' + path + '" data-i="' + i + '"' + (i === arr.length - 1 ? ' disabled' : '') + '><svg class="icon"><use href="#down"/></svg></button>' +
-        '<button class="icon-btn" type="button" title="Eliminar" data-del data-path="' + path + '" data-i="' + i + '" style="color:var(--bad)"><svg class="icon"><use href="#trash"/></svg></button></div>' + body + '</div>';
+        '<button class="icon-btn" type="button" title="Eliminar" data-del data-path="' + path + '" data-i="' + i + '" style="color:var(--bad)"><svg class="icon"><use href="#trash"/></svg></button></div>' + body +
+        (kind === 'events' || kind === 'news' ? '<div class="pv" data-pv="' + kind + '">' + previewHtml(kind, it) + '</div>' : '') + '</div>';
     }).join('') + '<button class="btn add" type="button" data-add="' + kind + '" data-path="' + path + '"><svg class="icon"><use href="#plus"/></svg>Agregar ' + sc.title.toLowerCase() + '</button></div>';
   }
 
@@ -355,11 +409,13 @@ select option { background: #2A1D19; }
     o[t.dataset.k] = t.value; markDirty(t.dataset.path);
     if (['name', 'title', 'gamertag', 'cmd', 'q'].indexOf(t.dataset.k) >= 0) { var b = t.closest('.item'); if (b) b.querySelector('.item-head b').textContent = t.value || 'Nuevo'; }
     if (t.dataset.k === 'start' || t.dataset.k === 'end') { var it = t.closest('.item'); if (it) { var p = it.querySelector('.pill'); if (p) p.outerHTML = eventPill(o); } }
+    refreshPv(t, o);
   });
+  function refreshPv(t, o) { var it = t.closest('.item'), pv = it && it.querySelector('.pv'); if (pv) pv.innerHTML = previewHtml(pv.dataset.pv, o); }
   main.addEventListener('change', function (e) {
     var t = e.target;
     if (t.type === 'file' && t.files && t.files[0]) upload(t, t.files[0]);
-    else if (t.tagName === 'SELECT' && t.dataset.path) { var o = get(t.dataset.path); o[t.dataset.k] = t.value; markDirty(t.dataset.path); }
+    else if (t.tagName === 'SELECT' && t.dataset.path) { var o = get(t.dataset.path); o[t.dataset.k] = t.value; markDirty(t.dataset.path); refreshPv(t, o); }
   });
   main.addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;

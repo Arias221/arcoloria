@@ -1943,6 +1943,40 @@ body:not(.on-home) .ev-corner { display: none; }
 .faq-a p { margin: 0; }
 .faq-a p + p { margin-top: 8px; }
 @keyframes faqIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Índice por bloques ---------- */
+.ix-head { flex-wrap: wrap; }
+.ix-find { position: relative; flex: 1 0 100%; display: block; }
+.ix-find .icon { position: absolute; left: 14px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.ix-find input {
+  width: 100%; min-height: 44px; padding: 0 14px 0 42px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: rgba(0, 0, 0, .22); color: var(--ink); font: inherit; font-size: .95rem;
+}
+.ix-find input:focus { outline: none; border-color: var(--sec, var(--petal)); }
+.ix-empty { margin: 10px 4px; color: var(--muted); }
+.ix-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: stretch; }
+.ix-tog {
+  display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; border-radius: 14px; cursor: pointer;
+  border: 1px solid transparent; background: var(--sec-soft); color: var(--sec); font: inherit; font-size: .78rem; font-weight: 800; white-space: nowrap;
+}
+.ix-tog .icon { width: 16px; height: 16px; transition: transform .25s ease; }
+.ix-tog[aria-expanded="true"] .icon { transform: rotate(90deg); }
+.ix-tog:hover { border-color: var(--sec); }
+.ix-sub { display: grid; gap: 4px; padding: 4px 0 2px 10px; margin-left: 14px; border-left: 2px solid var(--sec-soft); animation: faqIn .25s ease; }
+.ix-acc .ix-link.chap { margin: 0; }
+@media (max-width: 420px) { .ix-tog span { display: none; } .ix-tog { padding: 0 10px; } }
+
+/* ---------- Agregar a Minecraft (tarjetas del inicio) ---------- */
+.add-mc {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 10px; min-height: 40px; padding: 0 18px; border-radius: 999px;
+  border: 1px dashed var(--sv-line); background: rgba(0, 0, 0, .18); color: #FFF1E0;
+  font-size: .9rem; font-weight: 800; text-decoration: none; -webkit-tap-highlight-color: transparent;
+  transition: background .2s ease, transform .18s var(--ease-spring);
+}
+.add-mc .icon { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.add-mc:hover { background: rgba(0, 0, 0, .3); }
+.add-mc:active { transform: scale(.97); }
 </style>
 </head>
 <body>
@@ -2090,6 +2124,7 @@ body:not(.on-home) .ev-corner { display: none; }
             <p class="sv-status"><span class="st" data-status="nubelia"><i></i>Consultando estado…</span></p>
             <div class="sv-event" data-sv-event="nubelia" hidden></div>
             <a class="info-btn" href="#info-nubelia"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Información del servidor</a>
+            <a class="add-mc" data-add-server="nubelia" href="minecraft://?addExternalServer=NUBELIA|172.93.110.62:2092"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar a Minecraft</a>
           </section>
 
           <section class="server solune" aria-labelledby="sv-solune">
@@ -2106,6 +2141,7 @@ body:not(.on-home) .ev-corner { display: none; }
             <p class="sv-status"><span class="st" data-status="solune"><i></i>Consultando estado…</span></p>
             <div class="sv-event" data-sv-event="solune" hidden></div>
             <a class="info-btn" href="#info-solune"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Información del servidor</a>
+            <a class="add-mc" data-add-server="solune" href="minecraft://?addExternalServer=SOLUNE|172.93.110.62:2054"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar a Minecraft</a>
           </section>
         </div>
 
@@ -2387,7 +2423,9 @@ body:not(.on-home) .ev-corner { display: none; }
     <div class="ix-head">
       <h2 id="ix-title">Índice</h2>
       <button class="ix-close" id="ix-close" type="button">Cerrar</button>
+      <label class="ix-find"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="ix-q" type="search" placeholder="Buscar un tema…" aria-label="Buscar un tema del índice" autocomplete="off" enterkeyhint="search"></label>
     </div>
+    <p class="ix-empty" id="ix-empty" hidden>No hay temas con esa palabra. Prueba con el buscador del reglamento.</p>
 <div class="ix-group" style="--sec:var(--amber);--sec-soft:var(--amber-soft)"><a class="ix-link chap" href="#inicio"><span class="ix-num"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg></span><span class="ix-t">Portada y buscador</span><span class="ix-p"></span></a></div>
 <div class="ix-group" style="--sec:var(--amber);--sec-soft:var(--amber-soft)"><a class="ix-link chap" href="#resumen"><span class="ix-num"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg></span><span class="ix-t">Resumen: las 10 reglas de oro</span><span class="ix-p">p. 1</span></a></div>
 <div class="ix-group" style="--sec:var(--amber);--sec-soft:var(--amber-soft)"><a class="ix-link chap" href="#generales"><span class="ix-num">I</span><span class="ix-t">Normas generales</span><span class="ix-p">p. 2</span></a><a class="ix-link" href="#i-1"><span class="ix-num">1</span><span class="ix-t">Edad mínima</span><span class="ix-p">p. 3</span></a><a class="ix-link" href="#i-2"><span class="ix-num">2</span><span class="ix-t">Privacidad</span><span class="ix-p">p. 4</span></a><a class="ix-link" href="#i-3"><span class="ix-num">3</span><span class="ix-t">Multicuentas</span><span class="ix-p">p. 5</span></a><a class="ix-link" href="#i-4"><span class="ix-num">4</span><span class="ix-t">Publicidad</span><span class="ix-p">p. 6</span></a></div>
@@ -2581,6 +2619,48 @@ body:not(.on-home) .ev-corner { display: none; }
     ix.hidden = true; document.body.classList.remove('locked');
     if (fromPop !== true) popOverlay('index');
   }
+  /* índice por bloques: cada sección se abre y se cierra; la sección actual queda abierta */
+  $$('.ix-group', ix).forEach(function (g) {
+    var links = $$('.ix-link', g), chap = links[0], subs = links.slice(1);
+    if (!chap || !subs.length) return;
+    var row = document.createElement('div'); row.className = 'ix-row';
+    var tog = document.createElement('button'); tog.type = 'button'; tog.className = 'ix-tog';
+    tog.setAttribute('aria-expanded', 'false');
+    tog.setAttribute('aria-label', 'Mostrar los temas de ' + $('.ix-t', chap).textContent);
+    tog.innerHTML = '<span>' + subs.length + ' temas</span>' + useI('i-right');
+    var box = document.createElement('div'); box.className = 'ix-sub'; box.hidden = true;
+    g.insertBefore(row, chap); row.appendChild(chap); row.appendChild(tog);
+    subs.forEach(function (a) { box.appendChild(a); }); g.appendChild(box);
+    g.classList.add('ix-acc');
+    tog.addEventListener('click', function () { ixOpenGroup(g, box.hidden); });
+  });
+  function ixOpenGroup(g, open) {
+    var box = $('.ix-sub', g), tog = $('.ix-tog', g); if (!box) return;
+    box.hidden = !open; tog.setAttribute('aria-expanded', String(open)); g.classList.toggle('open', open);
+  }
+  var ixQ = $('#ix-q'), ixEmpty = $('#ix-empty');
+  function ixNorm(t) { return (t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function ixFilter() {
+    var q = ixNorm(ixQ.value.trim()), any = false;
+    $$('.ix-group', ix).forEach(function (g) {
+      var links = $$('.ix-link', g), hit = false;
+      links.forEach(function (a) {
+        var ok = !q || ixNorm(a.textContent).indexOf(q) !== -1;
+        a.hidden = !ok && !(a.classList.contains('chap') && !q);
+        if (q && ok) hit = true;
+      });
+      if (q) {
+        var chap = $('.ix-link.chap', g); if (chap && hit) chap.hidden = false;
+        g.hidden = !hit; if (hit) { any = true; ixOpenGroup(g, true); }
+      } else {
+        g.hidden = false; links.forEach(function (a) { a.hidden = false; });
+        ixOpenGroup(g, !!$('.ix-link[aria-current="page"]', g));
+      }
+    });
+    ixEmpty.hidden = !q || any;
+  }
+  ixQ.addEventListener('input', ixFilter);
+  openIx.addEventListener('click', function () { ixQ.value = ''; ixFilter(); });
   openIx.addEventListener('click', openIndex);
   closeIx.addEventListener('click', function () { closeIndex(); openIx.focus(); });
   ix.addEventListener('click', function (e) { if (e.target === ix) closeIndex(); });
@@ -3012,6 +3092,8 @@ body:not(.on-home) .ev-corner { display: none; }
       var s = siteData.servers[id]; if (!s) return;
       var spans = $$('.server.' + id + ' .server-info span');
       if (spans.length === 3) { spans[0].textContent = 'Nombre: ' + s.name; spans[1].textContent = 'IP: ' + s.ip; spans[2].textContent = 'Puerto: ' + s.port; }
+      var add = $('[data-add-server="' + id + '"]');
+      if (add) add.href = 'minecraft://?addExternalServer=' + encodeURIComponent(s.name || id) + '|' + s.ip + ':' + s.port;
     });
   }
   var statusDone = {};
@@ -3078,6 +3160,19 @@ body:not(.on-home) .ev-corner { display: none; }
     }, function () {});
   }
 
+
+  /* ---- Agregar a Minecraft: si el juego no se abre, explicamos cómo hacerlo a mano ---- */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="minecraft:"]'); if (!a) return;
+    var salio = false;
+    function fuera() { salio = true; }
+    window.addEventListener('blur', fuera, { once: true });
+    document.addEventListener('visibilitychange', fuera, { once: true });
+    setTimeout(function () {
+      window.removeEventListener('blur', fuera); document.removeEventListener('visibilitychange', fuera);
+      if (!salio && !document.hidden) toast('Si Minecraft no se abrió, ve a Servidores → Agregar servidor y escribe la IP y el puerto.');
+    }, 1800);
+  });
 
   /* ---- Fondos de las otras secciones: se piden cuando la página ya terminó de cargar ---- */
   function bgReady() { document.body.classList.add('bg-ready'); }
