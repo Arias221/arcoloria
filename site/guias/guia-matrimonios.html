@@ -1,0 +1,1060 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guía Matrimonios</title>
+<style>html,body{margin:0;background:#f5ece9}</style>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="description" content="Fabrica un anillo, pide matrimonio y ganen poderes juntos.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Arcoloria">
+<meta property="og:title" content="Guía Matrimonios · Arcoloria">
+<meta property="og:description" content="Fabrica un anillo, pide matrimonio y ganen poderes juntos.">
+<meta property="og:url" content="https://arcoloria.netlify.app/guias/guia-matrimonios.html">
+<meta property="og:image" content="https://arcoloria.netlify.app/img/addons/matrimonios.jpg">
+<meta property="og:image:width" content="840">
+<meta property="og:image:height" content="482">
+<meta name="twitter:card" content="summary_large_image">
+</head><body>
+<!-- ===== INICIO GUÍA MATRIMONIOS (copia desde aquí) ===== -->
+<div class="mtg">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&display=swap');
+.mtg{--bg:#f5ece9;--paper:#fffaf7;--ink:#3d2a3a;--muted:#7b6274;--line:#e7d4d6;--soft:#f9f1ef;
+  --ac:#8c5f86;--ac-d:#5f3d5b;--ac-l:#efe3ee;--rose:#c27e8e;--rose-d:#94586a;--rose-l:#f6e3e5;--gold:#c9a36b;--gold-d:#94743f;
+  --ok:#5c8758;--okbg:#e8f0e2;--bad:#a64e5a;--badbg:#f7e1e1;--warn:#a5733a;--warnbg:#f8ebda;
+  --slot:#8b8b8b;--slot-d:#373737;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;font-size:16px;
+  max-width:1100px;margin:0 auto;padding:0 16px 40px;box-sizing:border-box;-webkit-text-size-adjust:100%;overflow-wrap:break-word}
+.mtg *,.mtg *::before,.mtg *::after{box-sizing:border-box}
+.mtg [hidden]{display:none !important}
+.mtg h1,.mtg h2,.mtg h3,.mtg h4{font-family:"Pixelify Sans",system-ui,sans-serif;line-height:1.2;margin:0;color:var(--ink);text-wrap:balance}
+.mtg p{margin:.4em 0;text-wrap:pretty}
+.mtg button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mtg button:focus-visible,.mtg input:focus-visible,.mtg summary:focus-visible,.mtg a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.mtg a{color:var(--ac-d);text-decoration-color:var(--rose);text-underline-offset:2px}
+.mtg code{font:600 14px/1 "Pixelify Sans",monospace;background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+.mtg .mtg-ic{display:inline-block;width:32px;height:32px;background:center/contain no-repeat;image-rendering:pixelated;vertical-align:middle;flex:none;font-style:normal}
+.mtg .mtg-ic.mtg-sm{width:22px;height:22px}.mtg .mtg-ic.mtg-lg{width:44px;height:44px}.mtg .mtg-ic.mtg-xl{width:72px;height:72px}
+.mtg .mtg-emo{display:inline-block;font-size:22px;line-height:1;flex:none;width:30px;text-align:center}
+
+/* Portada */
+.mtg-hero{color:#fff;border-radius:0 0 22px 22px;padding:30px 20px 28px;margin:0 -16px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#6e4669 0%,#8f5f86 45%,#b47c8b 100%)}
+.mtg-hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.14) 1.5px,transparent 1.6px);background-size:22px 22px;opacity:.7}
+.mtg-petal{position:absolute;top:-20px;font-size:18px;opacity:.55;animation:mtg-fall linear infinite;pointer-events:none}
+@keyframes mtg-fall{to{transform:translateY(260px) rotate(200deg)}}
+.mtg-hrow{display:flex;gap:18px;align-items:center;position:relative;z-index:1}
+.mtg-hero h1{color:#fff;font-size:clamp(32px,7vw,52px);font-weight:700;text-shadow:0 3px 0 rgba(60,25,55,.35)}
+.mtg-hero p{color:#f7e6ec;margin:.3em 0 .8em;max-width:60ch;font-size:17px}
+.mtg-tag{display:inline-block;background:rgba(50,20,45,.28);border-radius:999px;padding:2px 10px;font-size:13px;margin:0 6px 4px 0}
+.mtg-hero .mtg-ic.mtg-xl{width:88px;height:88px;filter:drop-shadow(0 4px 0 rgba(50,20,45,.35));animation:mtg-bob 3s ease-in-out infinite alternate}
+@keyframes mtg-bob{to{transform:translateY(-6px) rotate(-8deg)}}
+
+/* Navegación */
+.mtg-nav{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding:10px 0;border-bottom:2px solid var(--line);scrollbar-width:thin}
+.mtg-nav a{display:flex;align-items:center;gap:6px;white-space:nowrap;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 6px;font-size:14px;font-weight:600}
+.mtg-nav a:hover,.mtg-nav a:focus-visible{border-color:var(--ac);color:var(--ac-d)}
+.mtg-nav .mtg-ic{width:24px;height:24px}
+
+/* Secciones */
+.mtg-sec{padding-top:34px;scroll-margin-top:64px}
+.mtg-sec>h2{display:flex;align-items:center;gap:10px;font-size:clamp(24px,4.5vw,32px);padding-bottom:8px;border-bottom:3px solid var(--rose);margin-bottom:12px}
+.mtg-sec>h2 .mtg-ic{width:40px;height:40px}
+.mtg-sec h3{font-size:21px;margin:26px 0 8px;color:var(--ac-d);display:flex;align-items:center;gap:8px}
+.mtg-lead{font-size:17px;color:var(--muted)}
+.mtg-box{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px}
+.mtg-tip{border-radius:12px;padding:10px 14px;margin:12px 0;background:var(--rose-l);border-left:5px solid var(--rose)}
+.mtg-ojo{background:var(--warnbg);border-left-color:var(--warn)}
+.mtg-info{background:var(--ac-l);border-left-color:var(--ac)}
+.mtg-hint{font-size:13px;color:var(--muted);margin:6px 0 0}
+.mtg-btn{display:inline-flex;align-items:center;gap:6px;background:var(--ac);color:#fff !important;border:0;border-radius:10px;padding:8px 14px;font-weight:700;box-shadow:0 3px 0 var(--ac-d)}
+.mtg-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ac-d)}
+.mtg-btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.mtg-btn.mtg-rosebtn{background:var(--rose);box-shadow:0 3px 0 var(--rose-d)}
+.mtg-btn.mtg-ghost{background:var(--paper);color:var(--ink) !important;border:1px solid var(--line);box-shadow:0 3px 0 var(--line)}
+.mtg-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mtg-two{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:760px){.mtg-two{grid-template-columns:minmax(0,1fr)}}
+
+/* Pasos rápidos */
+.mtg-quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:12px 0}
+.mtg-q{display:flex;gap:12px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px;text-decoration:none;color:var(--ink);transition:transform .15s,border-color .15s}
+.mtg-q:hover,.mtg-q:focus-visible{transform:translateY(-2px);border-color:var(--rose)}
+.mtg-q b{display:block;font-family:"Pixelify Sans",sans-serif;font-size:18px;font-weight:500}
+.mtg-q small{color:var(--muted);font-size:14px}
+.mtg-qn{flex:none;width:30px;height:30px;border-radius:9px;background:var(--rose);color:#fff;font:700 18px/30px "Pixelify Sans",sans-serif;text-align:center;box-shadow:0 3px 0 var(--rose-d)}
+
+/* Tarjetas */
+.mtg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
+.mtg-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;gap:12px;align-items:flex-start}
+.mtg-card h4{font-size:17px;margin-bottom:2px}
+.mtg-card p{margin:0;font-size:15px}
+
+/* Pestañas y chips */
+.mtg-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.mtg-tab,.mtg-chip{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:5px 12px 5px 6px;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.mtg-chip{padding:5px 12px}
+.mtg-tab .mtg-ic,.mtg-chip .mtg-ic{width:24px;height:24px}
+.mtg-tab:hover,.mtg-chip:hover{border-color:var(--rose)}
+.mtg-tab[aria-selected="true"],.mtg-chip[aria-pressed="true"]{background:var(--ac-d);color:#fff;border-color:var(--ac-d)}
+
+/* Mesa estilo Minecraft */
+.mtg-craftwrap{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.mtg-table{background:#c6c6c6;border:3px solid #1e1e1e;box-shadow:inset 3px 3px 0 #fff,inset -3px -3px 0 #555;border-radius:6px;padding:14px;max-width:100%}
+.mtg-table h4{font-size:16px;color:#3f3f3f;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.mtg-craft{display:flex;align-items:center;gap:12px}
+.mtg-cgrid{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,52px)}
+.mtg-slot{width:52px;height:52px;background:var(--slot);border:3px solid;border-color:var(--slot-d) #fff #fff var(--slot-d);display:flex;align-items:center;justify-content:center;position:relative;padding:0;flex:none}
+.mtg-slot .mtg-ic{width:38px;height:38px;animation:mtg-pop .25s ease-out}
+.mtg-out{width:66px;height:66px;background:#b9a3b5}.mtg-out .mtg-ic{width:48px;height:48px}
+.mtg-cnt{position:absolute;right:3px;bottom:1px;font:700 15px/1 "Pixelify Sans",monospace;color:#fff;text-shadow:2px 2px 0 #3f3f3f}
+.mtg-arrow{width:34px;height:24px;flex:none;background:linear-gradient(#8b8b8b,#8b8b8b) left center/20px 9px no-repeat;position:relative}
+.mtg-arrow::after{content:"";position:absolute;right:0;top:0;border:12px solid transparent;border-left:14px solid #8b8b8b;border-right:0}
+.mtg-craftside{flex:1;min-width:240px}
+.mtg-legend{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:5px;font-size:15px}
+.mtg-legend li{display:flex;align-items:center;gap:8px}
+.mtg-subchips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 2px}
+@keyframes mtg-pop{from{transform:scale(.3)}to{transform:scale(1)}}
+
+/* Taller de anillos */
+.mtg-lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"pick show" "near show";grid-template-rows:auto 1fr;gap:14px;align-items:start}
+.mtg-lab>.mtg-pickers{grid-area:pick}.mtg-lab>.mtg-show{grid-area:show}.mtg-lab>.mtg-near{grid-area:near}
+@media (max-width:760px){.mtg-lab{grid-template-columns:minmax(0,1fr);grid-template-areas:"pick" "show" "near"}}
+.mtg-pick{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.mtg-pk{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:4px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .12s,border-color .12s}
+.mtg-pk .mtg-ic{width:38px;height:38px}
+.mtg-pk:hover{transform:translateY(-2px);border-color:var(--rose)}
+.mtg-pk[aria-pressed="true"]{border-color:var(--ac);background:var(--ac-l);box-shadow:0 0 0 2px var(--ac)}
+.mtg-pk .mtg-dot{position:absolute;right:3px;top:3px;width:9px;height:9px;border-radius:50%;border:1px solid rgba(0,0,0,.2)}
+.mtg-label{font-weight:700;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.mtg-show{background:linear-gradient(160deg,#fffaf7,#f6e6ea);border:2px solid var(--line);border-radius:18px;padding:16px;text-align:center;position:relative;overflow:hidden}
+.mtg .mtg-show .mtg-ic.mtg-big{width:120px;height:120px;margin:0 auto;display:block;filter:drop-shadow(0 6px 0 rgba(95,61,91,.18));animation:mtg-pop .3s ease-out}
+.mtg-glow{width:170px;height:150px;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(rgba(255,255,255,.95) 0 35%,rgba(239,227,238,.6) 55%,transparent 72%);animation:mtg-breathe 3s ease-in-out infinite alternate}
+@keyframes mtg-breathe{to{transform:scale(1.05)}}
+
+.mtg-rname{font:500 20px/1.25 "Pixelify Sans",sans-serif;color:#7a5410;background:#2a1f29;display:inline-block;padding:4px 10px;border-radius:6px;color:#ffd166}
+.mtg-badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0 4px}
+.mtg-bdg{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700;background:var(--ac-l);color:var(--ac-d)}
+.mtg-bdg.mtg-auto{background:var(--okbg);color:var(--ok)}
+.mtg-bdg.mtg-use{background:var(--rose-l);color:var(--rose-d)}
+.mtg-t-common{background:#e7efe2;color:#4f7a49}.mtg-t-valuable{background:#e0ecf3;color:#3d6a86}.mtg-t-rare{background:#efe3f3;color:#7a4b8a}.mtg-t-legendary{background:#f8ecd6;color:#93681f}
+.mtg-effect{font-size:15px;text-align:left;background:var(--paper);border-radius:12px;padding:10px 12px;margin-top:8px;border:1px solid var(--line)}
+.mtg-effect b{color:var(--ac-d)}
+.mtg-meter{margin-top:10px;text-align:left}
+.mtg-bar{height:12px;border-radius:999px;background:#ecdfe3;overflow:hidden;margin-top:4px}
+.mtg-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--rose),var(--ac));border-radius:999px;transition:width .35s}
+.mtg-near{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px}
+.mtg-range{width:100%;accent-color:var(--ac)}
+.mtg-pair{position:relative;height:64px;margin:6px 0 4px;background:linear-gradient(#e9f1df 0 70%,#cfe0bd 70%);border-radius:10px;overflow:hidden}
+.mtg-ppl{position:absolute;bottom:10px;font-size:30px;line-height:1;transition:left .25s}
+.mtg-aura{position:absolute;bottom:6px;height:50px;border-radius:50%;background:rgba(194,126,142,.16);border:2px dashed rgba(140,95,134,.55);transition:width .3s,left .3s}
+.mtg-pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-weight:700;font-size:14px}
+.mtg-pill.mtg-on{background:var(--okbg);color:var(--ok)}.mtg-pill.mtg-off{background:var(--badbg);color:var(--bad)}
+.mtg-check{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;margin:6px 0;cursor:pointer}
+.mtg-check input{width:20px;height:20px;accent-color:var(--ac)}
+.mtg-cost{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:15px;text-align:left}
+.mtg-cost li{display:flex;align-items:center;gap:8px}
+
+/* Gemas */
+.mtg-gems{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin:10px 0}
+.mtg-gem{display:flex;gap:10px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-align:left;width:100%;transition:border-color .15s,transform .15s}
+.mtg-gem:hover{border-color:var(--rose);transform:translateY(-2px)}
+.mtg-gem .mtg-ic{width:40px;height:40px}
+.mtg-gem b{display:block;font-size:15px}
+.mtg-gem small{display:block;color:var(--muted);font-size:14px;line-height:1.35}
+.mtg-gem .mtg-bdg{font-size:11px;padding:1px 7px;margin-top:4px}
+
+/* Formularios estilo Bedrock */
+.mtg-form{background:#c6c6c6;border:3px solid #1e1e1e;box-shadow:inset 3px 3px 0 #ececec,inset -3px -3px 0 #7a7a7a;border-radius:6px;padding:0 0 12px;max-width:460px;animation:mtg-pop .18s ease-out}
+.mtg-ftitle{background:#8b8b8b;color:#fff;font:500 18px/1.2 "Pixelify Sans",sans-serif;text-align:center;padding:10px 12px;border-bottom:3px solid #1e1e1e;text-shadow:2px 2px 0 #3f3f3f}
+.mtg-fbody{color:#2b2b2b;font-size:15px;padding:10px 12px 4px}
+.mtg-fbody .mtg-quote{display:block;margin:6px 0;color:#7a5410;font-style:italic}
+.mtg-fbtns{display:flex;flex-direction:column;gap:6px;padding:8px 12px 0}
+.mtg-fbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#d0d1d4;border:2px solid #1e1e1e;border-bottom-width:5px;border-bottom-color:#58585a;border-radius:3px;padding:8px 10px;font:500 15px/1.25 "Pixelify Sans",system-ui,sans-serif;color:#1e1e1e;text-align:center}
+.mtg-fbtn:hover{background:#e3e4e7}
+.mtg-fbtn.mtg-left{justify-content:flex-start;text-align:left}
+.mtg-fbtn.mtg-on{background:#fbe9ef;border-bottom-color:var(--rose-d)}
+.mtg-fbtn.mtg-yes{color:#1f6f8b}.mtg-fbtn.mtg-no{color:#9b2c2c}
+.mtg-fempty{border:2px dashed #d9c4ca;border-radius:12px;padding:18px;color:var(--muted);text-align:center;font-size:15px}
+
+/* Chat */
+.mtg-chat{background:rgba(32,22,30,.9);border-radius:10px;padding:8px 10px;min-height:120px;max-height:250px;overflow:auto;font:500 15px/1.4 "Pixelify Sans",system-ui,sans-serif;color:#fff}
+.mtg-chat p{margin:2px 0;animation:mtg-in .3s ease-out}
+.mtg-chat .mtg-sys{color:#aaa;font-style:italic}
+.mtg-c6{color:#ffaa00}.mtg-ce{color:#ffff55}.mtg-cd{color:#ff77ff}.mtg-cc{color:#ff5555}.mtg-c9{color:#7f8cff}.mtg-ca{color:#55ff55}.mtg-cb{color:#55ffff}.mtg-c7{color:#bbbbbb}.mtg-c8{color:#888}.mtg-cf{color:#fff}
+@keyframes mtg-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.mtg-who{display:flex;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.mtg-avatar{display:inline-flex;align-items:center;gap:6px;font-weight:700;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 4px}
+.mtg-avatar span{font-size:22px}
+.mtg-presets{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.mtg-preset{text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:15px}
+.mtg-preset:hover{border-color:var(--rose)}
+.mtg-preset[aria-pressed="true"]{border-color:var(--ac);background:var(--ac-l);box-shadow:0 0 0 1px var(--ac)}
+.mtg-confetti{position:fixed;top:-20px;font-size:22px;pointer-events:none;z-index:50;animation:mtg-conf 1.8s ease-in forwards}
+@keyframes mtg-conf{to{transform:translateY(105vh) rotate(360deg);opacity:.2}}
+
+/* Infidelidad */
+.mtg-strikes{display:flex;gap:8px;margin:8px 0}
+.mtg-strike{width:42px;height:42px;border-radius:12px;border:2px dashed #d7b9c1;display:flex;align-items:center;justify-content:center;font-size:22px;background:var(--paper);transition:all .25s}
+.mtg-strike.mtg-hit{border-style:solid;border-color:var(--bad);background:var(--badbg);animation:mtg-pop .3s}
+.mtg-status{font-weight:600;min-height:1.5em}
+
+/* Comerciantes */
+.mtg-shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:10px 0}
+.mtg-offer{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.mtg-offer .mtg-ic{width:36px;height:36px}
+.mtg-offer b{display:block;font-size:15px;line-height:1.25}
+.mtg-price{display:inline-flex;align-items:center;gap:3px;font-size:13px;font-weight:700;color:var(--ok)}
+.mtg-price .mtg-ic{width:16px;height:16px}
+
+/* Estilos de pastel */
+.mtg-styles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:10px 0}
+.mtg-style{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .15s}
+.mtg-style:hover{transform:translateY(-3px) rotate(-1deg)}
+.mtg-style .mtg-ic{width:48px;height:48px}
+.mtg-style b{font-family:"Pixelify Sans",sans-serif;font-weight:500;font-size:18px}
+.mtg-style small{color:var(--muted);font-size:13px;line-height:1.3}
+
+/* Trajes */
+.mtg-outfits{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:10px 0}
+.mtg-outfit{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px}
+.mtg-outfit h4{font-size:17px;margin-bottom:6px}
+.mtg-pieces{display:flex;gap:6px}
+.mtg-pieces .mtg-ic{width:40px;height:40px;background-color:#f4e9ec;border-radius:8px;padding:4px;background-origin:content-box}
+
+/* Qué pasa si */
+.mtg-flips{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:10px 0}
+.mtg-flip{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left;min-height:120px;display:flex;flex-direction:column;gap:6px;transition:background .2s,border-color .2s,transform .15s}
+.mtg-flip:hover{transform:translateY(-2px);border-color:var(--rose)}
+.mtg-flip .mtg-fq{display:flex;gap:8px;align-items:flex-start;font-weight:700}
+.mtg-flip .mtg-fa{display:none;font-size:15px}
+.mtg-flip .mtg-fh{margin-top:auto;font-size:12px;color:var(--muted)}
+.mtg-flip[aria-expanded="true"]{background:var(--rose-l);border-color:var(--rose)}
+.mtg-flip[aria-expanded="true"] .mtg-fa{display:block;animation:mtg-in .25s}
+.mtg-flip[aria-expanded="true"] .mtg-fh{display:none}
+
+/* Mensaje de cariño */
+.mtg-letter{background:#fffaf2;border:2px solid #ead8c6;border-radius:14px;padding:16px;position:relative;min-height:120px;box-shadow:0 4px 0 #ead8c6}
+.mtg-letter::before{content:"❤";position:absolute;right:12px;top:8px;color:var(--rose);font-size:22px}
+.mtg-letter p{font-family:"Pixelify Sans",sans-serif;font-size:18px;color:var(--ac-d)}
+.mtg-letter small{color:var(--muted)}
+
+.mtg details{background:var(--paper);border:1px solid var(--line);border-radius:12px;margin:8px 0}
+.mtg summary{cursor:pointer;padding:10px 14px;font-weight:700;list-style-position:inside}
+.mtg details>div{padding:0 14px 12px}
+.mtg-steps{counter-reset:s;list-style:none;margin:10px 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.mtg-steps li{display:flex;gap:12px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.mtg-steps li::before{counter-increment:s;content:counter(s);flex:none;width:30px;height:30px;border-radius:9px;background:var(--ac);color:#fff;font:700 18px/30px "Pixelify Sans",sans-serif;text-align:center;box-shadow:0 3px 0 var(--ac-d)}
+.mtg-tbl{width:100%;border-collapse:separate;border-spacing:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:15px}
+.mtg-tbl th,.mtg-tbl td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.mtg-tbl tr:last-child td{border-bottom:0}
+.mtg-tbl th{background:var(--ac-l);color:var(--ac-d);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.mtg-tblwrap{overflow-x:auto}
+.mtg-foot{margin-top:34px;padding-top:12px;border-top:2px solid var(--line);font-size:13px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:reduce){.mtg *{animation:none !important;transition:none !important}}
+@media (max-width:520px){
+  .mtg-cgrid{grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px)}
+  .mtg-slot{width:44px;height:44px}.mtg-slot .mtg-ic{width:32px;height:32px}
+  .mtg-out{width:56px;height:56px}
+  .mtg-hero .mtg-ic.mtg-xl{width:64px;height:64px}
+  .mtg-pk{width:46px;height:46px}.mtg-pk .mtg-ic{width:32px;height:32px}
+}
+.mtg .mtg-i-bouquet{background-image:url(data:image/webp;base64,UklGRvgAAABXRUJQVlA4TOwAAAAvD8ADEN/ANgCAJHTDDJNOzv7tRXiATHb3G2wCAEwy3253fk7qEJQGlLAKrh+MY9tKg7PydiiXZiDSQVa2cvfMzH+kc3psrYVQ39pan009FrplUHHnnBvtkEvFk83HpVewVC450mNljRRO8kKIuxXbSXO/hufWvZ///w3fIesCVpXAMJKtNOiXuODQf6HxdBDRf7Vt2zCS06b80b5KbxtVfqEg8nwnRCZB2zbfcUHsalvWh/ig5nV9GNGHkKZxJL7hQhr7ibBcY5w/GBDrBQCdXNclvh4WpDEuu+QuFaPWYG0+Pck+AbRHzy8/bA==)}
+.mtg .mtg-i-burnt_memory{background-image:url(data:image/webp;base64,UklGRowAAABXRUJQVlA4TIAAAAAvD8ADEJUwjSRZlX+fmZnZ//xTe5zAumcZtm0bOQzUUvps0PtPYSTJ0GGG/OP8CUD1fwKgbVnyBEmDuslsGfmQr5UM2M7ir/aKr4WwtDKVM8WMSgKDS7mg0wgfiKMH+bNpmPaKqA2aRqt7gLXWVF/orwfm/p9RUnt3cPrre8KjMA==)}
+.mtg .mtg-i-certificate_separation{background-image:url(data:image/webp;base64,UklGRpYAAABXRUJQVlA4TIkAAAAvD8ADEHUwiG0rSjlCaAJr0MilCgHoYAR2SPD/vM8bRW0bsbm2N56HYCpo28hN3sjBOBr3s/1X2LYNorZj+EPW4QqsF0UAa0Y/PViAsEZEv8e9zp7MOorAvYIF0l6i5QdftXsBfg/ICO7ADKB77Rxl7SNLlEgpC6mKiIIkUUWZrajiLqMWVZZBAAA=)}
+.mtg .mtg-i-certificate_wedding{background-image:url(data:image/webp;base64,UklGRpYAAABXRUJQVlA4TIoAAAAvD8ADEHU4iiTJqryh4ntHASdE4YITtxXwPDwJ/EHBTPRMhZpGUqD7QDkVLQpwqrZtG8ZpU0/+fzVA/w0mbUPbzVvsuwylcacfVHGpP6mYq3MUF2IVUntPKub+b9zbzipoawgylaKYQXNphER1Pk2LRc++rNvMEYjD3M3MBaCT9l7p1Dzqqm6fxQA=)}
+.mtg .mtg-i-guide{background-image:url(data:image/webp;base64,UklGRuQAAABXRUJQVlA4TNgAAAAvD8ADEKfAJgCANBHwmxTUISlN3OaXu9RQI9s2879c6q3BJo2t6rIqoza2bWh+tCB95WibPmhARLwv2fzH+8upO8frco+u8wyTjWNBpFlX96isaZUu3++JC5OzAIwjuMc0SJdwCioGBoaRbDURc/YTfv/FAtbwLqL/E+AYRMCA83AsoJ9nZxwyEGRV1Jgv0gi9dI1cGgnRiUJl5P2kjukq472yfL3xKs+9/OLiudcvmGOK0gg89/ujfzpGxCCCocOJO2yw11t0bGOaBUhqhK2516dDNCA2dTg=)}
+.mtg .mtg-i-new_ring{background-image:url(data:image/webp;base64,UklGRv4AAABXRUJQVlA4TPEAAAAvD8ADEB6ntbVHCv2mhLGRI3859peRkbGRKQE7kiKysFTwVwH6WTZLFYPFUQsLAWwD7c+H0+HhMBoMFqvBYvG0eF9gWttOGCQSiUVGRmIjv4yMrUQiswIjdAVkZWxX6QjI9n8C7DJ3KwFDCDl/0OAr0CHnWOClX9USqL8Q9SDQST2Lv3X+dc60Pbhp1pltvp2KCC2tn1LHn1gQMylaYs79v4JAFcKirdR9E4Q/IZDcAAFhhpA0ODUrR4qt3O5x1YW17l9NibZgUdgf6yQjWKnN2DAzQlWshijFKo/idqHeflgT9+YJ+S3qh3myHaxL004NAA==)}
+.mtg .mtg-i-registry{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ0AAAAvD8ADEHW4iSRJcmCct6bM9Y/BuSIhGKInAr9EQhxmXwZz0dN9SgMATeMHYA0SzCWSUBpJknKP+ed37plB7cn+T4CPXFSUHHWjNaPy39iKAZzmP0rBiEAA+e8C47L0temyzqZN6H48/+ItWaK077sklZQcW3EEgPy30zD/vag4iq4OPwoqUraAG4cftBdWEIC8kBxrRiAsaFyWsoXJAA==)}
+.mtg .mtg-i-separation_application{background-image:url(data:image/webp;base64,UklGRp4AAABXRUJQVlA4TJIAAAAvD8ADEJWwiWy7iiQExABeMIGBVBigihhKqnQIoMRC3uOjgLl3Xpg/ChtJSt5xp15K4FtW2LZtk/+P3Ttpgf5PwL7FurlclRS6ixND8pGA2MOXyaHlCc0Y/lCHhIa+TD77qVT8j5nxV1hT+vRlco49FKeZ2QMFyZMAFaFlO+h9WX51rtIDEHCuxXPhSx+fIB77sg==)}
+.mtg .mtg-i-widow_certificate{background-image:url(data:image/webp;base64,UklGRpIAAABXRUJQVlA4TIUAAAAvD8ADEHU4iGzbaWziAHkMCnAAKQK6gkigg4J357x/o6BtG6bd44/mD5zaNlKYDzB8KulYtv8K27ZBVBxcEueh9sit9kCQq+1H3lWYXGmm/23zJy7b90qTMTIx+l4BRTaNRyYY/vpeeVKpIkPGxjNJESE8vrFoE93N9b+LtmCZtVij4jQEAA==)}
+.mtg .mtg-i-cake_piece_a{background-image:url(data:image/webp;base64,UklGRroAAABXRUJQVlA4TK0AAAAvD8ADEJUwqrVtRhIJ/gSGlaWVvQaqWJLC+TOIIIUk/5l/BcbXzMdEkiTFkh6yTGoVeZZwbFGfO0WNJCkLx6/zr4IFnCiGpP8K27ZBUsHgk2k0ZYcr/pl/yuB22eeZVL/pXL0IoEu9PHHT+HmA59oUrwCui4dQl7YpX2lCr6vMLSYeAkCk0rQ0YwD5o48QmsvUlyD6xCX195U9bSRdAor7Pkkw9d//lS8KEBd7TQA=)}
+.mtg .mtg-i-cake_piece_b{background-image:url(data:image/webp;base64,UklGRrgAAABXRUJQVlA4TKsAAAAvD8ADEHUwqm2rSjAzWMGxBnBOCGzhIoAhTODQEoz++C0Ad8F7aiLZapjvgC6nkqHMGQN4RAX+FEWS1CxJDgJwnU3k8OaJj+2/wrZtkIzxkPybCK3pzjTwwBBaj8TgyurynQaSQVAMuLBaHbUhMcWggUTbswZhPV7e2LuX5L7TgN0XR/yNGgDmhCJvzDh5IibGVGdnfwQzhQ6GcJ3FxJ1ScgzmWRF3EkLnuWQA)}
+.mtg .mtg-i-cake_piece_c{background-image:url(data:image/webp;base64,UklGRrYAAABXRUJQVlA4TKoAAAAvD8ADEIegOJIUheTIv4oU4Fxe7mmwCQAgDS6x6B+BS293JoojSUrOgAwJ3L68CMF9/uP//3omLhlpJwzPGLZkVG+SU1cSeWSqEfRngGKcscVQoLLAMJKkKLcrxw/H5R+uvyYQ0f8J8N+q3lBQ17qgJCDbOlHuKCe6AYDEPg+UgEis+UgBibXmHKi72XslQyKbHeTAkMk2zPdK1taGmfnhbKWZmZ9PM/MXAQ==)}
+.mtg .mtg-i-cake_piece_d{background-image:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4TKQAAAAvD8ADEH+gJpIk5ej9q8ToKHu0oaZtJObG4w/rufS6Ko4kRYH88+TncC41/wEAV27rJqbzdhrf3yUxlEeuU/i0+MSpe1MtMofBTbVty3Jv/6YN3EYhArsX0F1D/LC5FXB68EegAzRwp0FE/yeAvxZfZYK28JTS1RaQCY2gDqR1VUsgY6ian4CldnrTPXT9Wik+wtwbLQ4izOPV+QrstlcJ4HTlcw==)}
+.mtg .mtg-i-cake_piece_e{background-image:url(data:image/webp;base64,UklGRsYAAABXRUJQVlA4TLkAAAAvD8ADEK+gtpGk5r3B0xw5/WfEFMIoAMBCs60S6x+JDXZ4KI4kKTnB3SEk8k+FL4/5j5ChcSelx0RSpoVwjDvOnfdXLjNXjZoH4VFKk605vdqhuPeCA/744AVjLnAYSW7bPDMhAhBz/71Kcmwgov8TsP+W6A0SppxfID5F9MgPxMxysj7QUUVEizM3xCKqJcQ7EtESQoyrz4txLrS+0ugeN3G1NXr3FvtKfQQ/LIB9a3zwAPazAbC/CAA=)}
+.mtg .mtg-i-blob_bone{background-image:url(data:image/webp;base64,UklGRnIAAABXRUJQVlA4TGYAAAAvD8ADEJU4aiTJkcAulIXk/wtkIXgIfu8AtKqq1f1U2LYNGmoHBYNJ2/T/j0vd6P8E2H8uO9KMxeeMlQwISEBHnOZG1T0SCB0h9/lMePRyEg5HJQgeqRegEvRSCWXHksiQ7Kok+1E=)}
+.mtg .mtg-i-blob_copper{background-image:url(data:image/webp;base64,UklGRnoAAABXRUJQVlA4TG4AAAAvD8ADEJWwCcC2DakQ6HoLoFhCpHhKbQ8A1qVIftREkqQmbd1J4PQE4IOatpEY/hRPt31v0xPo/wTEP3eUQAQK3hGm0GUpQOIe1qz6ATglc0+5wWeqfnh2OWj1Q5DljnKPTbKawdgnCZiMsyTjow==)}
+.mtg .mtg-i-blob_gold{background-image:url(data:image/webp;base64,UklGRnoAAABXRUJQVlA4TG4AAAAvD8ADELW4jSRJitzBMGzCD5xZTxD/H+4MGLmn9Y7oVcw0TBsmXAipCBTwbUYCpiEsCj1LpBe6pUj/JyD+c/snRai5P1O3FqBE+kijNySZYAHCRxy9WSILJPr6pCaTIHTkSoIVchzblmDHVdvxow==)}
+.mtg .mtg-i-blob_iron{background-image:url(data:image/webp;base64,UklGRloAAABXRUJQVlA4TE0AAAAvD8ADEAWbAGzbmKK46BIIQxAaQ/KfdE8AEfM/AeGfmTkExiNWd2Z33ONea9Xurrjnfezdq+aDXL26uvIeZnf1rIxhHxGZFTGcRcTwUQA=)}
+.mtg .mtg-i-blob_light_gold{background-image:url(data:image/webp;base64,UklGRnwAAABXRUJQVlA4TG8AAAAvD8ADEB5GkSRJcYgzFCECKfx43vchYHeBfraTGQf9XV0KApBhUismjwIqsEMkAPHLIC9ExxywxAb9n4DwzCUphaACWFMlNQkkgEvqfu3U3TJgXELu/znDrbZXosNhMC0xAoZoYlgmKRkZtpIMNwUA)}
+.mtg .mtg-i-blob_light_netherite{background-image:url(data:image/webp;base64,UklGRmgAAABXRUJQVlA4TFwAAAAvD8ADENU4CcCIqupBBjQVaEEAgtDwz3sBbinOz05PzSgNgIRNJsCZMDoC/Z+A+s/DT6oywlkmX1yJ5KNsbS3doAQfifsi1ZjPCVstCDkyJYiI69h2Aruu2q4fBQ==)}
+.mtg .mtg-i-blob_netherite{background-image:url(data:image/webp;base64,UklGRnAAAABXRUJQVlA4TGMAAAAvD8ADEJWwjSTJSQzvEwUepozh4yB/V4sAXuzWC9gqsgHKVLGhEEAAFDT9nwD3zs1NyblkYCu1o39MidRasn3uzkEkDKzR9iVJnDu6tPHPnY4g0pp+EvyR5NYlpQTJ7ZXkHgoA)}
+.mtg .mtg-i-blob_rose_gold{background-image:url(data:image/webp;base64,UklGRn4AAABXRUJQVlA4THEAAAAvD8ADEBo2sW1H8YMfzOABT+jABgL2HQQk4X0DKaPg1a//MwoCkGFSKyaPAiqwQyQA8ckPEzS/rHDJDf2fgPDNNSmFoArYUyN1CSSAWxp+/dbMC+DcQhn/pcC8tXeyweBwbTEDjuxi2CYpORmOkgwvBQA=)}
+.mtg .mtg-i-eq_bride_leggings{background-image:url(data:image/webp;base64,UklGRnoAAABXRUJQVlA4TG0AAAAvD8ADEHUwjSRZVf7JPfk8OpTnHmME9EFN2wYszpcOMmmb+Vfcds/8K0zbhlF3T1lTAnzHZr2CnFmJuWanqMEnGrOOj1O+RZq6ve0lksJOW5tMwQdPJt2uTGPvYO+/cqStwbHRuxxTHuvNelcsAA==)}
+.mtg .mtg-i-eq_suit{background-image:url(data:image/webp;base64,UklGRq4AAABXRUJQVlA4TKEAAAAvD8ADENW4jSTZVSL4aA2pUiSHhUcEREACWssIznwetTGs9ar24/Kec99M2zZO7/FnNj6K2kZytveltbjvebDmfwLsoyehfqQ0s350EvbW+FI1m9vqRrOXZhyG6TqA37SWRYI3oA0ZqseoFZum7uLex0I1+/93y7ODKMYjQc9uRhCEQJDgvYja+P+WJBACQUlmKYXsOWbPHlKya0kxRsk+EgA=)}
+.mtg .mtg-i-eq_chef_hat{background-image:url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4TFcAAAAvD8ADEHWwbSRJSv7OpUEA2HjYJLUPXwI7K+2MwrZtUFgcKEjbgPGvuLvQ/wmoX175fgiCECiSd04iesfR29HT09NeEQRBVGYITk5QQpBBYj1uosatfwIA)}
+.mtg .mtg-i-eq_bride_boots{background-image:url(data:image/webp;base64,UklGRmoAAABXRUJQVlA4TF4AAAAvD8ADEJWwbSRJSv7xEAM+PjFABmfxPwHMHfRI4xFI2qx/5u1X2zYSmnrovmac/wnQMwtgHhllB4721nR+y042CnBQEwX+temSb+XjkwT8JEr4gQWJ5YRFlrKsLPW+)}
+.mtg .mtg-i-eq_bridemaid_veil{background-image:url(data:image/webp;base64,UklGRoQAAABXRUJQVlA4THgAAAAvD8ADEB43kW1LkWQUEBK9jAg5eFtmF3CeghvPV3EjhF0FZtq2YderEKoyqQYgXIfBTMM0uggK+FCGmUnYWVP9nwC+teCxu9p5v/+8JV1w4eF2L7aHz9qZpETVuk8KOjpNGljvhiUAKTeAI071HwYS6SDFHHUlfiE=)}
+.mtg .mtg-i-eq_grooms_boots{background-image:url(data:image/webp;base64,UklGRl4AAABXRUJQVlA4TFEAAAAvD8ADEHW4jSRJUozhJH407Dj/zVkNDKiJqO2eADVtG7CYR3vv/id/eN59EyBJAWiT0qQF4IAPntfvY7sPAHRXRe1WVL32MKMqszIrl1px5fcA)}
+.mtg .mtg-i-eq_veil{background-image:url(data:image/webp;base64,UklGRs4AAABXRUJQVlA4TMEAAAAvD8ADEIegOJKk5H54kMRLFjzdHfJQE0kK8/j3ggtqrNDloCCS1OYVIAnLuEBQT4+AoMj/0aK3Sf6gHwB4egOgT+OX34ymhQCQUp2ZEDd5M6YeyQwMa1tpE+RbsIB//3FjyggR/Z8A/j3e2Rx7rGUPtm2N5bbttMzDPaatw1geR/dFcuwRUVppEW4kOTxagbYSto0U92gKRQk3klKiQKtCW7ROiranAt6gUGhV6I3pTT7kAxTpIDlBkCAiPIpcciYJAA==)}
+.mtg .mtg-i-eq_bride_chest{background-image:url(data:image/webp;base64,UklGRpoAAABXRUJQVlA4TI4AAAAvD8ADEHWwiW07int0pIwB+gwtBoIAWjxkZVHw+KuCSLbSeIFvOBRwyUCCnwJFkaQ4btCBAuQha18EHenCs/8EkzRtdQyebCsVh1EjXRD17LHVG2Q6xHrUxhgBrqaYnWZCre9I5zTZrrXGx5OsNdPFUam6fA0qkwQV+Tld4II/cuIrz3YJ5BOo78ig44sB)}
+.mtg .mtg-i-eq_grooms_legs{background-image:url(data:image/webp;base64,UklGRlIAAABXRUJQVlA4TEUAAAAvD8ADEFUoattIIrQABsD+hj+iXd0EOk0SZNuGdLb9/Z8A/dmYLhC53zYLNV3KgZciJLyUk7zEwEpUUvlG5STXCkiwcBcA)}
+.mtg .mtg-i-eq_jeweller_glasses{background-image:url(data:image/webp;base64,UklGRkQAAABXRUJQVlA4TDgAAAAvD8ADEFUwhCRJktH6a6zDmnz3AnTVCGST3V8mjazu/9//CcgvN9WoruxhHKFwMhSEgrg4fcffAg==)}
+.mtg .mtg-i-eq_grooms_hat{background-image:url(data:image/webp;base64,UklGRmAAAABXRUJQVlA4TFMAAAAvD8ADEHUwimxFjqA5zxkBkRD/QlL1IJuBD2SZAAVpG7DYTbvTf4JJmtye0SXWM4U/uPMfbeR3b1f9UEEUNJUlMlt+K/Hs10xqLBNvYcRLHdANBAA=)}
+.mtg .mtg-i-eq_grooms_suit{background-image:url(data:image/webp;base64,UklGRrwAAABXRUJQVlA4TLAAAAAvD8ADEJW4bSTJcRJ676k8rRnTg8nRovcRMAImoLWM4ARuD4M5QSZt0/zz72x+FEWS1JAzPrib04Funsiaf4VJGzB2HKN+zhJGjPafjNglupKsG5Vat/tumk6pMVDGeHPOrRvTrv5mjMInLMl9qcnvSUluK1PVvdn7nsmr/1X3kyWMUUhhSXqhUMb4qkPzk8LJGJ90KACvB0DtS1Iy0zhibeG0zjqTknoEQIwRUP+IAg==)}
+.mtg .mtg-i-eq_bridemaid_leggings{background-image:url(data:image/webp;base64,UklGRnoAAABXRUJQVlA4TG4AAAAvD8ADEA62kWy1aZ9c3sc2o0MQRhV8M3+ekkaSGP8mnvYKj31emYK2bRj+ELv/R2P+J4B+OZg+0d+bZqwpx/pQB1NfjjCe5wgSGpZQaIqe6Grq/ysliVqSBGv7KhBICspYCvt//N7gE40TQAQQIg==)}
+.mtg .mtg-i-eq_suit_legs{background-image:url(data:image/webp;base64,UklGRm4AAABXRUJQVlA4TGEAAAAvD8ADEFUwiiRJChLuYw8JCEAAP/wrYqOJddDdIyAokSho24ZNLQ2ZvfmfgHFtIkGFoQL/u7TberzXwZrjbgLapBPaHjeQsAlVHLcCskgZCjIgfYQ4ISn3SBhkCJFICegLAA==)}
+.mtg .mtg-i-eq_suit_boots{background-image:url(data:image/webp;base64,UklGRnwAAABXRUJQVlA4TG8AAAAvD8ADEFU4jmRbVSL4O8fd2UMa5J/NxyGAM+cICEokCtq2YVNKimV3/idAf/i6txIkAbkXiAK5N4mnnHQoEk+iJDjlSQQE+JRB9Cu2bPryffm+ivO+fF9vLo6KOjivkk7WM0vloF28QSrDKzfH9wAA)}
+.mtg .mtg-i-eq_bridemaid_boots{background-image:url(data:image/webp;base64,UklGRpgAAABXRUJQVlA4TIwAAAAvD8ADEJU4qm3bTcxkiABk/MWY8RcRDzGAAObxSAcBh3ZTDkVB2zZsqqWwvyiNJLdV1IcqCFxMTlD4obM9/xPACbflug7tQqXjolcW///CDJimaQZgrvQp/KLJDMBvk227aIjOjQjw+/dhzY4+rFlavVFnK31I7DqqqCaFH5N2USVJsmYr/PhIknB7AQ==)}
+.mtg .mtg-i-eq_suit_hat{background-image:url(data:image/webp;base64,UklGRpAAAABXRUJQVlA4TIMAAAAvD8ADEJW4bmxbVRp4/pBfd3eHAiiB/iu5WsJGnu3kJgoBBEBBo6BtGzalpFx2538CYPxkPTlfg+/L9/bgnjdSWglTy56FqlRWkJq1ykuWVVTMZCX9ayhVQygbQAlXmVkmZBkdAdIxk9KRAEinJCFSEzY9FB1N1QEzcUk6QFjUirqCLgA=)}
+.mtg .mtg-i-eq_bridemaid_chest{background-image:url(data:image/webp;base64,UklGRpQAAABXRUJQVlA4TIgAAAAvD8ADEPU4CgA2jWwPjpn5/Jy3wIGCRM0JiIooGAqIhf7UNJICR9cHP/S4oUIxJEmMx0Icw75OIQfjY+q/2bRt1OCpl8gvbuq5ejEwOFgWi4Vj4SThKmLhTMJVwyOEDpd5JKMO4g7dQyZqqfL02h+iTPq0h2r9c4y6+FV9VVf1n1HjUjWZ/OIE)}
+.mtg .mtg-i-ui_effects{background-image:url(data:image/webp;base64,UklGRn4AAABXRUJQVlA4THIAAAAvF8AFEDUwahtJEol6DYTBNjCW+NnVagQpIm0b1UWnM3OX0X+1bdswLnNJvmCK+4Gk4Vw77WeF+HI5ZcUDXy5f3/Dl8rcvJ3zty/FzoxxQa+RoJapYAxvbUGU3U4DmTGF0pj9dPjanq87f3CKMn27wpQA=)}
+.mtg .mtg-i-ui_furniture{background-image:url(data:image/webp;base64,UklGRsoBAABXRUJQVlA4TL4BAAAvF8AFELXIlbY9bayrYWZmbLFl3nrvYKstXS1vuy2WeAXMu9W2zHhOZQjdwa+ZkGNKhqSJJY3jAADLqI75Kr8627a1bxa4qVjFtq0kAUMKh+okIIrb/cL13Of9Z+C2bSMqvT3+AQ5Vtj8pcCdvb4+mRzPCXjeXW+PFaHnaRBFCHf3F6xJqDFV3JoJmodbB4R4VlHC5j0aHewSgI9Cpq300qg/3SNcBwJVrySjaOHykxNlS7MIEEVuKEZJ4JYLAFGOZqir0MHMt2VaalbCNF6BU1TC+fO3I2pwUle1PQu1ZCeMDmF/PffuOfwL7DowKyrFFXq+knRpB4NxEN/8gHr8w4ZHJZXnt2wTAM5vSjkQimfXHBEHgC7iY1Cdwk0QAAGs7kGmazGSMYQbGBRacc47kDavdLxQrolTy5xpuGEaQA5jHwVqy2POGZ/eqChESCvnIYbAydenur249KVu2EqyUUEoIpYQmU/JXEAg+Y/sF3T3WQXkDJvY5hBOg/rpavvzfscpHGidL32sY/fVSybDsFkkOwO+gUm7C3dfJSiYtS2FPQravodhQQghVPCfhMq48wRgr/5AAp7GEs8DzAA==)}
+.mtg .mtg-i-ui_registry{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ0AAAAvD8ADEHW4iSRJcmCct6bM9Y/BuSIhGKInAr9EQhxmXwZz0dN9SgMATeMHYA0SzCWSUBpJknKP+ed37plB7cn+T4CPXFSUHHWjNaPy39iKAZzmP0rBiEAA+e8C47L0temyzqZN6H48/+ItWaK077sklZQcW3EEgPy30zD/vag4iq4OPwoqUraAG4cftBdWEIC8kBxrRiAsaFyWsoXJAA==)}
+.mtg .mtg-i-ui_rings{background-image:url(data:image/webp;base64,UklGRqABAABXRUJQVlA4TJMBAAAvF8AFEF/BNrJtJS/7H5cGtBZK94iI2N3doQ22AQCWSVIb3/agHtIb7M22wcS2bSVf6k/+I4vM4JkJkebu7jb/AT/4g98HQtNEHN/I/U1wS+n8KepGtgKwUdea2uvMd+Y4Fgus2P7G+tTzbROJajz47egPJ9xVdW2tFrsxQB7Q7Dk60L4G0ETEsF2+Vhm2hmc6ngU6j1M91JZpJ+oLQrVInEFPbBImGCDYtt2kUsm3d4N0CNjjm/8Eie2P4LyI/k+A/MOSL5WDvGQOX8gGVE/8nI8Gt7waPfGT+oOqpBrXOh/7T+bP0bgWmI8ndeihmsDcP2sJaKgp9H7Azj0hH3oUw+Z+PTAf+7nA3DMJ3B96j1MSnfvxdj/3jGvpJ4drnAok88l2Ott38MIeUunF29Xfch+pOWuIkN0vNuthZJT20ottIpBYjrtt5LqTOtMjsXECFu2ioesETq699I6xqkWTzkQnAc6t65FyjFWhi0zIhCAFhE6js4A60754eTburOrQi3zSOsVoy0dcaFEuyBcvgPwWAA==)}
+.mtg .mtg-i-ui_who{background-image:url(data:image/webp;base64,UklGRmoAAABXRUJQVlA4TF4AAAAvD8ADELWwiSTZijPcYAGpmEDG+z8M3FRtdPELNyDStg3yZXyWDk+kbRuEy+C0HL3/ExC/fH5JIUk1fWBbtq3Gq2CAnqsyeyiHEnAtRNWK5r1B4hOdB6zoPlYMKnYF)}
+.mtg .mtg-i-egg_chef{background-image:url(data:image/webp;base64,UklGRtwAAABXRUJQVlA4TNAAAAAvD8ADEJW4bW3tTWYih9ITkNqc2eSvaF3RImqoPYDH4vf3WYzw/ixHqZEkKU1nuEeekzkHKG0jyem/yGe76OHlJPVfYdo2jNL5CgC8cYUvTvKBJUadkEipf3A6b2PUyKlMTmPazFlvvdO8N5MC8PyvADBfXzMCEPlZlbKh69aeJjs12C6K0yTgBeA06Vu6i8KfJr0HwKCIjoQQfiUAxJ2XAACSlra0Mmt5KfWEBPWi4WbiCOvctJnknK1AStlpM621VbSBSg1QPWiUpHmR4K8A)}
+.mtg .mtg-i-egg_jeweller{background-image:url(data:image/webp;base64,UklGRtQAAABXRUJQVlA4TMgAAAAvD8ADEKfANgCAJHQ3nMX/Y66hfuAbiiJJan4XycEAPvAvAgPZAQ81kWw1n5xzhQG0oBsL0Qcl1fxHca3CQkKgsIBt+usngyAc561gjcCA+wZlXrX+VXunxeAoeB8En7Uw7PkYGDSSpOiYnsm/V34J0xH9N5i0jWvYL8fPS8B7dVflo2tvbdqlkh40dAxBLT7+piaVvRHvf1NpIOlBWwbKg3W7MqTSnL0Yz53H3Dg/ppO8u0FuScDyCLSsknhGP06aNfbHywBuAQ==)}
+.mtg .mtg-i-egg_jigllager{background-image:url(data:image/webp;base64,UklGRsoAAABXRUJQVlA4TL4AAAAvD8ADEJW4ra29aWayS0omcGpz9iaawK48hUsmYRwJpRG+oxyAo0SSpDavyUFlj8vcHQ4lkSQ5/sWcgtfybAY9zLGq/waTtrHt9gs00/RujJHvsCQAqlFsqGy/lzOA9S5GQIA23F3dLi79c7flok3h53xbAoEAt2WY+Z9zuC1DAMDr7aJtb40x0nZucd5id24RAIxhjmwP9ur3dk28r53TSn5e/FM0vTPzlCq4TpQxDD+gfn7KBMi5igMqF2gF)}
+.mtg .mtg-i-r_bone_empty{background-image:url(data:image/webp;base64,UklGRo4AAABXRUJQVlA4TIEAAAAvD8ADELW4bSTJcYJlEvRkSAyBwdBkCPJ1BGMMsLj738Vrc6CwbRsUFgcK2rZhzB/w/qT+TwA6evs1sypmL/04Pi+O4CWmN+yjRt3nDlWyjw+wE01UkY07DcDESAUaJwDwYNGoIpVwdABORQFcdHeKCUVBhhhRgpQiGCmhYkopoaMA)}
+.mtg .mtg-i-r_bone_glowstone{background-image:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4TKMAAAAvD8ADELW4aW1bVtT9/nvABN0MhpCACwxQfhyMf1ZwipPc3Pdyb5jpbtREksJmyaFCAy09Fl5R20hO+ENYUPuvBBbA9ZP6PwEYZfmW86qvSIst9DR9WCmuKvmPY40pYXX5fya20FTJj0fs4k2cmpRz2hMyY56MOnn8KACedK2JxxMAzFn3iLpo4MMAGMNrYEEzY1BR56QH3Rug6k5XRUtVVYwUAA==)}
+.mtg .mtg-i-r_bone_redstone{background-image:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4TKMAAAAvD8ADELU4bmzbTUxm5yJZ0QG7WBIlUAxLl0ByruBK/0pfwe/pu4EnBW0kKcdg8zSclkdHb+oVtG3khD/PI7DXv9T/CUCfux7XwRWf8qpz9zzvW+zfpLSpq+jnV+QJkIZ0HFJeZUXfsj3sHZQaOscn4M/ITKvz+Q3QA5ipocbyDACirMtWZw3MAkBoWgMxigiNAXVKqlG1ASGoUkNAyxBCwEgBAA==)}
+.mtg .mtg-i-r_bone_quartz{background-image:url(data:image/webp;base64,UklGRqQAAABXRUJQVlA4TJcAAAAvD8ADELW4bSTJcYJlEvRkGgxChcAwGABNenTl6wgGdwMc7v938dpcqG3bhs3Z6WUMorBt20b/P5uddAL9nwBU8PTiPQ59QwgZXrHpn/K77lG9BpJyX3mD4XjRWWfXeCsnAc65Gwgb0tOSQrcwAOipMcG6HgBEmdRZkqWwEwBC0wSIUURojEhSUo2qKYhRlRojMsYYIyoKAA==)}
+.mtg .mtg-i-r_bone_amethyst{background-image:url(data:image/webp;base64,UklGRsgAAABXRUJQVlA4TLwAAAAvD8ADELW4bWTbVbpBtEBKC4jUUwSRrwhRAsUQUoL9voITHOnpm3u//+GVmki2WkGfDBooY0WVo4DvAEWRJDWr6gQgIFtIXyzwwkLymaGq/xOASCfZjCyFKA+Ydr+nV3Od8ytnM94en7+cvuivnnrsAeKVLrBMU9gU+wZUVtldvq2AB8aOldUD4I4ENc3LVQMdgJqaelhVA4AovSrzMh9WAkBo6gExigiNKbyUVKOqD9JUlZqmCJimaYqEAg==)}
+.mtg .mtg-i-r_bone_prismarine_crystal{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ4AAAAvD8ADELW4bW3tTYaFIejiKmzACIgd2MCiYoToPMErnvQr+PvkbFefFEeSAa2b/NNSIvCVgrfCtm2Q/H/uGKX+TwBqeRlrzrXOuRzNY+Xe8uJv2yRjBySteb7a+gZtktHa1W9jpGyv1rW9gXPtnuhoaa6d6QB0VJ9ibQcAokxrLc0y2AoAoWkKxCgiNHqkKalG1Qx4r0r1Hjm99x41BQ==)}
+.mtg .mtg-i-r_bone_obsidian{background-image:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4TKMAAAAvD8ADELW4bWxbTtwHkRsgpCGaIFtLogSKIXQJbN4ruMGVvr7t9/Qcrk+K2kZyY9nefsfgFLWN5ITKIujfY3D8ofQ7qf8TgFp3yFxhTq8sQe9zQyia968dfl+nTL+9epxAitb0asr0u/kj3zHImaZpekI4CyM9L9gbGACM1JjjNgKAKPPM87yAJgCErjkQp4jQGZGnpDpVCxCjKjVGlIwxRrQUAA==)}
+.mtg .mtg-i-r_bone_ender{background-image:url(data:image/webp;base64,UklGRroAAABXRUJQVlA4TK4AAAAvD8ADENW4qbXZUVysByRQU2Mhm6DLJtCBBMRQIiFuVvCTp3vnTDln07x+q22nUBMASMMe/U8uKhCAz9MCVrCEwrZtG/3/bHbSCfR/ApDH4VbXe/uzzetc1Gdwpn9XF/x/pq+n6AUgEfuSXetoolVTO9ibKyHt59MeAbdEPFmY0wtADoCngkNMPQBIQWFqYRZBKgCErAiBGIkIGTHCCqLCqCgiwFwUVDAjJjMzcgo=)}
+.mtg .mtg-i-r_bone_emerald{background-image:url(data:image/webp;base64,UklGRq4AAABXRUJQVlA4TKEAAAAvD8ADELW4rbXtSYZkBJfIeSRHcA5rSzvbSJ7gLV7CD3zfIZffURXZBnW9qaSfP1U0EkZRJKnRmEcGEnhjivedVPV/ApDGzeg8z5e6ogia7y2vdXpnT/7tI3MJJOD9wdI7a621q7+F4SOb0VluoDgQHc2vaN+ABYCO6nys7QBgCZR+rflZAFsBIDT1gRhFhEYHPyXVqBoA51SpziGkc84hpQA=)}
+.mtg .mtg-i-r_bone_diamond{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ4AAAAvD8ADELU4jiTJUYw9D3jxkxZgCyZgDC8CA7Q4bUE/+sTu3UygNROK2kiBdrkRiSJE8EOnGkkyoAn5/zdJb6r6PwHI5Xj1/R71VlWM+djy/do5WcifZhVdIGHv6xY865OdbBIXOCH1+11PQdUjZ1pYdXqwAnCmuhA7nQFAlGEnC7MIngSA0DQEYhQRGh3ClFSjagScU6U6h5jOOYecAg==)}
+.mtg .mtg-i-r_bone_echo_shard{background-image:url(data:image/webp;base64,UklGRroAAABXRUJQVlA4TK4AAAAvD8ADENW4qa3pUYTgAAeUOMADJuiiA6wgASGUlEiImxV85XRzzuads2n+ntRPoSYAkIY9qhGGgJwEoIA9vBW2baTkmWH/Qflf6v8EIImzixX2eZnZr1pMP7SaPn+lr3qJsQLEa0zPlefbboCa2tHeUvHA5Nv/eAJ4jTgyL9Y3MQBHbeph6gBAWvJS8zIfUgEgZK0HxEhEyCiFV0vUGrWtD9K0balNUwRM0zRFQgE=)}
+.mtg .mtg-i-r_bone_sea{background-image:url(data:image/webp;base64,UklGRrgAAABXRUJQVlA4TKwAAAAvD8ADELU4jWRbVvL6EZACGo3HrTmQBQqJJBgkIax/j+CIU7za7uW9//0tNQGANOwRh59g1KGBAXwNYCMFjSQ15+H/6VUsQjDZIen/BGCM61OW1y+ePuZ1zjX586Rrtd1WPujne4wNQOr4P3X/VZ+yZbvYWylqwHm+AdwWUWh1Lj8BdAAK1ddYLgAgyrpsddbALACEpjUQo4jQ6FGnpBpVG+C9KtV7tPTee4wU)}
+.mtg .mtg-i-r_bone_nether_star{background-image:url(data:image/webp;base64,UklGRqwAAABXRUJQVlA4TKAAAAAvD8ADELW4TkC3jYa9Je6vLpBdboTbIQNc7zdCTZ/gYQRCGIm0b6GgjSTlGPxbOyvPEEVtIznm/18QS7Bdkfo/Aag0KWXi/YqrvMycF7fT+2favOi37SlqCjQjno+w/RFi662v7U3UH5KSNmHcAJ6hjjyL2/NBDKAjkwxvOwBQo6zWszyHWgWg5JYBdVJVchJkGZE5meVAxIxMBAVFRNBQ)}
+.mtg .mtg-i-r_copper_empty{background-image:url(data:image/webp;base64,UklGRogAAABXRUJQVlA4THwAAAAvD8ADEA5GbSNJIrUEzu8CWCxDZPjOngiqVKUuw2wkEa/IMYzM0YzEPNS0jSRh2TLlPndQAmiQ938C8NP5IHmHbFp1/icvmF6qmlZ2mFYXvdRBS3RGbNqLBYDeQYM0FQa+yCgXDgEw2WEAxiQTC6OynZgXkMq2hJuShJ8C)}
+.mtg .mtg-i-r_copper_glowstone{background-image:url(data:image/webp;base64,UklGRqYAAABXRUJQVlA4TJkAAAAvD8ADELW4jSTZVZIiAelS2MSCTQ6kRhRkIL+OYOvW+2q3DuWqCQA0FUQDMvDyzwq4vAvgoiaSJOX8SzhRl2OEjx76PwHo5F7wMCzDIiucLF3xXAi37McvcdhGFg3/G4D7c98RuW25ML+gH4Z+V0Ois4jxswDQHxVkCAUuyaIscRIAMz8FYJpkpoWij+1MswTSx7aEipKEjgIA)}
+.mtg .mtg-i-r_copper_redstone{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ4AAAAvD8ADELU4jiTJUdDwwxkckF8MOA/wAUfw97QFHdP7Q3THIN5qItlqdH0JCVr6nFq0ZEeYQm0kqQ39l8iQeeSljFHS/wlAn+te7MDJh+195B6DbLF59Xgs7b81jCrRHoMNj+tQl7vLiCrR2cgOZk0hy0WztMdw1jH+FgD6q5oMocYNWZcNTgJg5rcGTJPMtFD3tZ1pNkD62pbQUpIwUg==)}
+.mtg .mtg-i-r_copper_quartz{background-image:url(data:image/webp;base64,UklGRqYAAABXRUJQVlA4TJkAAAAvD8ADEBo3sW27iikMxBYBaMFIEoEffNDGnxWc9pg4rzsV4T36O08hZCsQcSKfIYcYTpWSuBTFtkFlsXxL3ygCKSCCPsqIoP8TgAmec2rFHCDZ4TrHutXYdeaYA2y51N7+3yfp/VTOsWbMiBqYUtowS3S05L8FgC5qiCw0uCWaosVBAIwoDWCYZISFpmI7wmyBVGxL6ChJmCgA)}
+.mtg .mtg-i-r_copper_amethyst{background-image:url(data:image/webp;base64,UklGRr4AAABXRUJQVlA4TLEAAAAvD8ADELW4jW1bVbphKMBDTd1dy2DogzLo8XsFZ96JfnTuXCRmGgBAWkGHEDWRXA/wCl2maiLZalwhAAHZQmqxQIWF5Iyhy9FD/ycAmbYZrwCQQs9k7zOVnbTIOM2MeUe0iK58/Dls70JGlcfku1RfuXit/Q/BB6PV7I9AFcI24/9hrzX7RfMohr8JAO2rCA9ChMV4lMeYEwDdvxGgG0l3E6K+ZuZujIH0NTMJCSUJBQUA)}
+.mtg .mtg-i-r_copper_prismarine_crystal{background-image:url(data:image/webp;base64,UklGRqQAAABXRUJQVlA4TJgAAAAvD8ADELW4aQBZVkxh4GwRQI0MjNBjBQ9YwMe/FUzetD+ZyfyzImoi24l0RcLdRkDCbZVBAS0WqNW2kaT03+LpMn5mCPs/ARjk++zxiE6ywfi987Pnc0Ep94Zk1fj767+/Iqyl5Op8gFLxeH/f15uRRKeKZbUA0LMqUoQK16QqNQ4BMJkrwJhkYqFqtp2YNZBm2xIaShIGCg==)}
+.mtg .mtg-i-r_copper_obsidian{background-image:url(data:image/webp;base64,UklGRqYAAABXRUJQVlA4TJkAAAAvD8ADELW4jSRJUs4PJBxAItBfFQOwBUfw934LOrYN6I7mvUdQEgBoG8fjaEAMIny7AP+oiWTV0YKC3OIA/wXzuxw99H8C0OsGYO4wb9FcAR51kU3zjvzAsU6Pn+W+C9m0enr2XUqure3l10zTNN2qSnTqWL4WAPqtmhShxg2pS4NDAEzeNWBMMrFQ97admA2Q3rYltJQkjBQA)}
+.mtg .mtg-i-r_copper_ender{background-image:url(data:image/webp;base64,UklGRrQAAABXRUJQVlA4TKgAAAAvD8ADEBqnkSS7ThY/B3EPLZQCsJEIKomfr/8RLN0Q5BYu/hZelaJIkpoL5GwCB9jCCBrWDGowwUNNZDuRiChIul8m3JQ4uJWggArZ/Z8ANPGU23umMm0PyLxpH+rG6Tther7TXm4kc9L1X/M+Ru/S/9o2jsB8c0bCNE3dGSrRkcW2twDQR0AZ0QoZzomsyHEQACO6DDBMMsJCVmc7wsyB1NmWUFCS0FA=)}
+.mtg .mtg-i-r_copper_emerald{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ4AAAAvD8ADEBK3jSQ5TlJMQLraYyq8RD44pkFXvo5gMAR+MPdiDUO28i2iTKJjDE8mjgC+xD+oiSRFQgYp4Ya8UlYAUvBzys5E/ycAfbxL53leL8iq+VH7nDdcJcmcbjdkxev/8M9FLplT7MGqrSTPcz7gEh1lTGaRswDQe6CSSKZQ4oooiwoHATBiD0rAMMkIC2WT7QizAtJkW0JNSUJPAQ==)}
+.mtg .mtg-i-r_copper_diamond{background-image:url(data:image/webp;base64,UklGRqQAAABXRUJQVlA4TJcAAAAvD8ADELW4jSTZVZIiAekSAGFgkwQmQRKBFl9HsPUW5e3W8RHPUxMASEMtIuyXi8utUQzhZ041kaQwlODfHUOXo4f+TwA6ubqU85CKrLDJ2/5/Lx4uD6f5ELIov48Av9e6dEoxDRvgF7xyfs1cJTqKmL4WALpXQSShwCVRFCUOAmBEXwCGSUZYKOptR5glkHrbEipKEjoKAA==)}
+.mtg .mtg-i-r_copper_echo_shard{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ0AAAAvD8ADELU4jW3bVQqhA3SW0TJoaqEKHNXRzE9QwZl3FPGcOUSpJpKtRteXkFsE5CyQEgEYwAe14kiSkjvcIf/QKH6uOfR/AnCO02tumOEiWXfb7LRftP/UrudStrmQVb4cyc1OPPj9LSUr1wbwK9D74u+1VYlOFcvXAkC/VZEiVLgmValxCIDJuwKMSSYWqt62E7MG0tu2hIaShDMFAA==)}
+.mtg .mtg-i-r_copper_sea{background-image:url(data:image/webp;base64,UklGRrQAAABXRUJQVlA4TKcAAAAvD8ADELW4jSTZVZLCwtNg4UMOZCCjUEEQAel9HcHW24+ydut4ha0mkq1G0y+TAWKLgBwMYAcHCKBFAI4URZLUiLgjZ7EIwRbFL0cP/Z8AdHF7/Pqq5WMjtUiWfe/LPiCeduh3M6dNLWRRr7Ok1/DDLe6UYhbaAH8B+t9v5atERxHT3wJAZxVEEgpcEkVR4iAARuQCMEwywkJRth1hlkDKtiVUlCR0FAA=)}
+.mtg .mtg-i-r_copper_nether_star{background-image:url(data:image/webp;base64,UklGRrYAAABXRUJQVlA4TKkAAAAvD8ADEJW4CQDJUUy9gUSLALScCFqMvYCvSB7iZwU7pJm5SlVkW0muF0GAXwK41KWK26hpI8kZ/v2BWEqr6+5z4NB/hW3bIO0Y/4hZ3Fcm9Xr5lbgAjGg3uX21jVQM7EIOgt/xcPvqfuB3MPspG90K+H1pG7evvFVFlrjkPpCKjwfx9UB9B6diRg8awIMHA8jonRsOwgJgq6+BLMkWBggyS+JLRwIy1mEAAA==)}
+.mtg .mtg-i-r_iron_empty{background-image:url(data:image/webp;base64,UklGRmoAAABXRUJQVlA4TF0AAAAvD8ADEAWjAGjjYBEvvCICCaiJpEjotSmImP8JgJ+qqp6o9t5TdaM55+w9K2/mdGb1XGmfzgCgXnmRnWHhm1zlxlMBQDPrAjRdVTOdYVXdPdN1A8zV3ZnhkJkZfgoA)}
+.mtg .mtg-i-r_iron_glowstone{background-image:url(data:image/webp;base64,UklGRpwAAABXRUJQVlA4TJAAAAAvD8ADENW4iWRbVtT9/OOFCAGESEANKlCx5uvfFZyj4LC9epeQqpMTvdwsI8nJMTiGa69/hVfMSBJU/ggLtf9TYCn6PwGYZH2V8xy7w/Jzl982qt2GtMZuyv8zv8+JlGLBjIZPzp8VkhlNTl8KgFnUEEloYEs0RQvDABxRGuCg7QgKTYVkBN0CqZCU0FGSMFE=)}
+.mtg .mtg-i-r_iron_redstone{background-image:url(data:image/webp;base64,UklGRp4AAABXRUJQVlA4TJIAAAAvD8ADENW4ia29UpY3HdqQQb8VIpCAGiQhYd8Kvq/KpPqqZD5KZn4L6RUykiQV6zIsy3dndFJHJm0T/z5nYN/Y0/8JwJKXXJqRuu92m1JPxITrW62n+IfyJmKkPir//KUUP7kzkFPKL6QeeijKjwIQbBpwEQY44iGP0AEg7DaAMCPCpjDUSNqMEUiNpISJkoSNAg==)}
+.mtg .mtg-i-r_iron_quartz{background-image:url(data:image/webp;base64,UklGRpQAAABXRUJQVlA4TIcAAAAvD8ADEHU4aiNJkoricJnXgigEo8awIJbF0hjt95wbQWZlqqW2bRs2xil1DGK0bRv//2y7DY3N/wTggvdPIDDS9oZXfKLxwZK98tx809PdmVWNNw5cGDndBZKkoZWamWQAcLJzobGIBaxoSStJOQBY6guwkrYlMLDUk4AEr4DsSYAMbCRJXBQA)}
+.mtg .mtg-i-r_iron_amethyst{background-image:url(data:image/webp;base64,UklGRroAAABXRUJQVlA4TK4AAAAvD8ADENW4iW3bVdwwWKDFQWwzEn5FkoAEPOABSUj4WcE5Cg7pzdxXka6F16uJbCcW9HykTICK6j4FxAGKIklqRtUJOAEBsJC+WOCFhWS2/xOAWnu5dEQqvA++1v8/MnAveo/mPD+bvP24QDhBBp73mPrpp7Es9QoxBNvAAHLQVX3HI0hOy/MQKQDOpBwLQg4LLM8KaA7AzVIO3OjuZhTyEkkzegGkRFJCSUlCSwE=)}
+.mtg .mtg-i-r_iron_prismarine_crystal{background-image:url(data:image/webp;base64,UklGRp4AAABXRUJQVlA4TJEAAAAvD8ADEDUwqm01jkY8VEJWEYEEVpVCPNRC9zEAGToo+N9M2zbmjy0agr2jsFtt2zYM/z/XqWP/FbZt2yg73T0Dv8g5jQLJnV2bVhzAiGSx+4utdODAqAgTx30r7CgCCooxQ6ejCOMAJcKE4cQBE1jAcoCynGJw2m5MXPYlaYw4U1EAA0pBWD5CwEiEYZsks38EAA==)}
+.mtg .mtg-i-r_iron_obsidian{background-image:url(data:image/webp;base64,UklGRp4AAABXRUJQVlA4TJIAAAAvD8ADEDWwiW0rzveRCgMp4+N7oULEl/DVICkG2BcF7xFp26bKx+7giiFJknOpMgT3dw22/wrbtm2Une6egS15BFcWOoqMkBN7975/iszAKckIQyfyJwMnoXSIJGkoiBhODzM/htIOMErocDLlgA4MYDjAGE5x2G3XJg77knRa7EkYgAMjogw/oaAlSrNJUrM7Ag==)}
+.mtg .mtg-i-r_iron_ender{background-image:url(data:image/webp;base64,UklGRqYAAABXRUJQVlA4TJkAAAAvD8ADENU4bW1bVrr4PVACGj02QBUoNBo/V0NJlPDnCs5Jnj/qJRd/7FM/z5upbeP2r2BSQQCbUQEVlFDYtm2j/5/NTjqB/k8A5rjtWla30xl2V9rMrHctzf8v8gd2xz3kmnqqKD/kHBcc0VJSKjdIZrQ5/ykAZlVLZKGFHdEWHQwDcERtgYO2Iyi0VZIRdAekSlJCT0nCTAEA)}
+.mtg .mtg-i-r_iron_emerald{background-image:url(data:image/webp;base64,UklGRqQAAABXRUJQVlA4TJcAAAAvD8ADEDUwaiPJEcbRUtnXHoeBMGiWxrE43TdNuICg2zAbSeVav/2dyhodjGE2kiq/GIuw75M6iP4rbNu2UXa6ewb+kKUl2SELW5P9Dm2bwLiSxPG/361J2zYmMAZCoG1LSygCOooR4WRDEfwA5QoBY3IdEEAC6QAlnWIwbOcT074kDY+RgQIYUDpC+gkBnghuRXJn/wgAAA==)}
+.mtg .mtg-i-r_iron_diamond{background-image:url(data:image/webp;base64,UklGRpQAAABXRUJQVlA4TIcAAAAvD8ADENW4jSTZVWIkFQqLIFQCREM6eHhafB3BbgSLelWHv/VNxAd8MmGIFZVICJ+cZMIQO+lfkw79nwA0ctp23QC7wCJb/W1/mZNm2Fldu+N5WZJSDOmRcem6ywjJjCynBwXA/CsjkpDBnMiKHIYBOOKfAQdtR1DI+pOMoHMg/UlKKChJaCgA)}
+.mtg .mtg-i-r_iron_echo_shard{background-image:url(data:image/webp;base64,UklGRqYAAABXRUJQVlA4TJkAAAAvD8ADEJW4aiRbVvCBAxzwiQPwwhci3ibgqsEHJp6E/SnoZDgnb1gSM22kVN+LQSAjAjCAD2aFbRup2M8M868waQMmnbewhc47B3fansi1/67S0/VPRhSODvv7lf0yb8+MKHzwRgA4fv3bK0omhzh6VtQB4IrDcWGIAYzIITmiYnqQ/IvhVLSdowX/K0ImHoH0rwgaBUCS2EgA)}
+.mtg .mtg-i-r_iron_sea{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ4AAAAvD8ADEHWwiSTZCrpQQEqICDIiIhRcSPgcoIAUSUg4vgp277ZeGYpsYyu5C6aOBgK4CqARg7aRHJnD9X4H9oE80/lXmLQBk85b8IfGuYcduysnSroSW+17fJd+eTAKr4dLv2v+x7nbD09GFM7sebFk7MmJSI/ipJENABn9qDAIBy6kJy8YUy5ZCT9GSXlZQNUIZEIXQFYjwGsAkCR+Eg==)}
+.mtg .mtg-i-r_iron_nether_star{background-image:url(data:image/webp;base64,UklGRqAAAABXRUJQVlA4TJQAAAAvD8ADEDWwiW0rjsbvhQoRf6Lgq0EDAqiylenZsyl4T0HbRo754zsq66fEgsn8/yCy7L/Ctm0bZae7Z+CVLOHRzgsOkjeWRv7HFACMmoy2HvmffliPiwAMjzBqTPlPRYBDMUYYWA9F6AcoNQwYgXrAACYwHaBMpxgctusTp31JGj2OeBTAgOIQpp8Q0BOh203Ssn8E)}
+.mtg .mtg-i-r_gold_empty{background-image:url(data:image/webp;base64,UklGRoQAAABXRUJQVlA4THcAAAAvD8ADENWwqYBQSh2DmckelrGJo9ttAkL8ixQsPGZCDczwdi9BhJDAD6IBi2eXZNVJHlI90v8JwE/nV9IdaZd632zpQjz4GL1zaabtYow12ArP1EcMQCk+YTdOcsEzXoQCILKcQIwkMsZZSUJGF7BLEhs3bRs/BQA=)}
+.mtg .mtg-i-r_gold_glowstone{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ4AAAAvD8ADEBZHra3NiR2MsK8ItCABH5gZVczLmc4KXsq+eS9/5xcS1ZCtUMh9hXCE4gghgRTeSiJZoWZo8C2Ae1XQeEqQFkUT+j8BKGUEgIWxnWLpdfw99MwlbtthU2nHReD3/P/X978QmlXoTCmmjgDqdbpkNnEOIwXArBTTBCGGCU1ck8DGANw0VQzc0HbTUIirSDYNnQCpIikhpSShpA==)}
+.mtg .mtg-i-r_gold_redstone{background-image:url(data:image/webp;base64,UklGRqwAAABXRUJQVlA4TJ8AAAAvD8ADEBbHjSS7Ch5upEFgPiHyIBky4fhv/kewesdvZ/S+HyGpaSQFknsKqHBEiRRqDGDhPQVtpDAPDqapaQHrSOn/BFiaR0WRoFgRZ6OiuLpIMU5BZbkHfnf+2ylFlC/ufw743nfvtItwyB4oivlTQQpdmHzAB81McAzpPC0EEV1YF4FOZqaucyGmDpK6DrQwB6DroAgjHQDSYpKk5RQA)}
+.mtg .mtg-i-r_gold_quartz{background-image:url(data:image/webp;base64,UklGRqQAAABXRUJQVlA4TJcAAAAvD8ADEBY3sW27ip0vDE1UiAAzWQd0mZ8VHEL/z5l3iYegqJEkRfXqIg/rYt9kge4URLJBzbwGz6eUEiKJoI8UGoig/xOAFg61/3/0hLZLrPau/3HH8jKFXbDw2f6/D7DWf1OKvmkGyHHXdaNyyYyC9KIAmGflRBJyWBB5UcAwAEecc+Cg7QgKeWeSEXQBpDNJCSUlCS0FAA==)}
+.mtg .mtg-i-r_gold_amethyst{background-image:url(data:image/webp;base64,UklGRrwAAABXRUJQVlA4TLAAAAAvD8ADEI+gJgCQhgZ0Iys9qLBcn+fWHGoCAE1+KlONGFTgYu4+RbFtJV8aYFv6NyCNu6wIwMx/vB+zt2AbOX9Nr1IBNGHXZmj354DAlItxiy7eb48Qs3sQOnAYAG3buLglO4D+PzezF0T0fwLq0XW/sX5/O8mzdfqMu2TyaB+WuTXJPQe1rQ0J4SOqIVVF9BxYqQOc+MgnMKuKdj8oGiRtpI46ABs8qaQDSOpiktSfAg==)}
+.mtg .mtg-i-r_gold_prismarine_crystal{background-image:url(data:image/webp;base64,UklGRqgAAABXRUJQVlA4TJsAAAAvD8ADENU4isBATuxUWDWhoAYQgYUOFhDAk19vBRGx2zYqwpHJjxkzbaQkP72QF4ECNlBOXgErFpiVRLJClX0K/SyRKISlwR/Z/wnAJjs32zZJE3jfvE0+KcfRi9JQ5358/T8vxHkcvXhJbcoH2vvP57wGbIVDOs4YgFI8wMMYyAiHOBIKgMgyADGSyBhDJQkZjcAuSWxMtG1sFAA=)}
+.mtg .mtg-i-r_gold_obsidian{background-image:url(data:image/webp;base64,UklGRqYAAABXRUJQVlA4TJoAAAAvD8ADENU4qW3bVuiBwqGQJCITPShDEyTu/RPsEO+35Uuwxdljj/GcmkhS2PgPVepwkESggA7UBADBZJFgvxqI4XJ7RVLIq0j/JwCDXgHu4ZvZcQG+fqU2P9yfEWf9uLZvt9R2HvWn3za+d+53DVVVn0lbYZO2PQagzG7gZjSkhU1sCQVA5NwAMZLIGE1zEjJqgT0nsdHRtjFR)}
+.mtg .mtg-i-r_gold_ender{background-image:url(data:image/webp;base64,UklGRroAAABXRUJQVlA4TK0AAAAvD8ADEBo3kWzLiouvASQQE2OBCClo2GRgBieEZH9X8N5fRPzs1Ale1Qn/dmIFjSQ1/0/vmMAB1jCGHgxgoauprQM7R4PfAhpYjUabBEoIIaYo/Z+A0MaLy+nIbL91tIv2s46T9ClD/t1J31V2wbvevew19/z/n5Iegw8NcuZ9nz9TSUN5TisYQjBG5igx5KBAeSqAHEKwNOYEC7YlMOSNACS4IJAjADKUJMnQUgA=)}
+.mtg .mtg-i-r_gold_emerald{background-image:url(data:image/webp;base64,UklGRqgAAABXRUJQVlA4TJsAAAAvD8ADEBZHkSTLih38YOG5+D7wgRluyIDbzt8VNOvtR3THm8fWF4WQrFDPItIEQno6JZDCX1EkqRGFgxs0YeKIv3jKPyb6PwEYY4W0nUh2U4Vcy9naneaAzXZeVSWSGw7+p1fZ/cs5FiEzxZpil2WalEiMOucfBcC8qSayUMOGqIsGhgE44lYDB21HUKi7kYygGyDdSEpoKUkYKQA=)}
+.mtg .mtg-i-r_gold_diamond{background-image:url(data:image/webp;base64,UklGRqYAAABXRUJQVlA4TJoAAAAvD8ADEBZHkSQ5Dp0DJgRi4nmIjFjcUy9vziNomf13x45sf1RDtkIx3P+Irk9AKcSTQApvRbFtUDOvgV8pJfQQRbO3s9RC/ycAg5zIpDRysRuU5NbuM0ZvtvK60q5Kn+N/Sb73vznHMqxQVLxTeq8yJDOqnH8UAPOuishCBWuiKmoYBuCIewUctB1BoepOMoKugXQnKaGhJGGg)}
+.mtg .mtg-i-r_gold_echo_shard{background-image:url(data:image/webp;base64,UklGRrIAAABXRUJQVlA4TKUAAAAvD8ADEBY3sW27ihAMMDigxAEiUBR9YIYWFb+k+xEFh5zhnHmXeBpFkSQ1l+/ghwwEYgw9GMBCVhTbBjWjwTeACirYWWlAKf3slej/BGAVux5vDDraLnr38wxhO+rZ7ZTmK+2842NRv8e1/PfLbqeYDm43yEGr2Pk4myqZkef0owCYG+VEEnJYEHlRwDAAR2xy4KDtCAp5G5IRdAGkDUkJJSUJKwoA)}
+.mtg .mtg-i-r_gold_sea{background-image:url(data:image/webp;base64,UklGRroAAABXRUJQVlA4TK4AAAAvD8ADEBY3kWzLip2vAQXfAjnp94CK54ItxgdOCMn+ruDUS9nOqXdZT6KmttVGAIeREdIlxlikZMZAioKuKLaVaoYG3yxsWYNmeCWsQQjzWMIo/Z8AzLHhWdKpEavCtruum/SOM9fu5vNFOa2y2/I71Wh4FrAv/5cSSbXK1IIa8X4fmktmtLn8KABmUlVLFKGFHdEWHQwDcERugYO2Iyi0ZZIRdAekTFJCT0nCTAE=)}
+.mtg .mtg-i-r_gold_nether_star{background-image:url(data:image/webp;base64,UklGRq4AAABXRUJQVlA4TKIAAAAvD8ADENW4qbXtTewgDEGZ8IGZCMhEWxk76QpemoM/5ZOQ6V3e886KIklxqnghBBEo4AfqsZIvlJJIVqgLi0JjiUGIbyEsRfo/AWg1c5qMp8u4tiVZNRbN7WcenFGnKScjS8bd4V/8+I8X+GmKjfhK7wWZs/yXLYtERxmn3cECQCeVxCSUuCLKosJBAIxIJWCYZISFsmQ7wqyAlGxLqClJ6Ck=)}
+.mtg .mtg-i-r_light_gold_empty{background-image:url(data:image/webp;base64,UklGRoQAAABXRUJQVlA4THgAAAAvD8ADEB4mARhbaUgzEhGCKDgk6k+CzUyuybsGs5dLQQAyTGrF5FFABXbIAky8BpRFZ2IJRJJD/ycAP52pJHeSfVa1pclFdPy7q7TIE7joXh071FmqaQDh8InKOOGFznRBBUCkcYKISSQaZ4OkxFzAHiRt3LRt/BQ=)}
+.mtg .mtg-i-r_light_gold_glowstone{background-image:url(data:image/webp;base64,UklGRqgAAABXRUJQVlA4TJsAAAAvD8ADEB4ntW3bSrpn3yAVjkSEwFMCFPL//gn2Ntuxm9xb4I5tiYRWzEgShDyvQRih5ViEFViF20xtG13+9iv8HDJIYDUqpoBdBxn0fwKwyZ1IHsyTCXu36++5owNuM/VSnQzx+/j/t/tfrTpG9tRAI9spyw41lPqjAYTFA6rGAEc0pBEqACKVAURMItEYKiQlZgR2IWljom1jowA=)}
+.mtg .mtg-i-r_light_gold_redstone{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ4AAAAvD8ADEB43ASA5Chk6nOEDMShCBFLoKKk+K5hpphwfHx1Mi5RXgAA1jaRAck/BVTiiRAo1BrDwm4Zk5Z7Wg3gYWfSZWAKR5ND/CUCTZ6Gv0W+eq6rvH1ZJhYtrmo7gM7e8a5OS6f75r9//ZdEz+kYXrH2/vnLsUEVZfjSAcHaBFqOAJSpSCRUAkeYCREwi0SiaSUpMCeyZpI2Kto2OAg==)}
+.mtg .mtg-i-r_light_gold_quartz{background-image:url(data:image/webp;base64,UklGRqAAAABXRUJQVlA4TJQAAAAvD8ADEPW4CQDJURziDAeIoEcEAhBB9yXxs4KZlhzGBidgHCBg3HyhRpKkNHmGhw6Zo6aRFOj8C0IAFqjOAz8VXf8nACNc5no8ML9M0qLS/35sg1WaxUnDJtQe8F/E22GV4tXU2feaXC6X9RAyckP5iQCiiTUuRI0aXOcGOQBiTzWIlcQWUTdJspUGkJMkEi1JEiMF)}
+.mtg .mtg-i-r_light_gold_amethyst{background-image:url(data:image/webp;base64,UklGRr4AAABXRUJQVlA4TLEAAAAvD8ADEI+gJADQJgI16EVjEqBQX+0vh9pIUpucnE5ojj416kCR996wjiQpFZJ/AMRDkYa765PP+Y//23m19Q7xlOUfy6SR0Aps/Rna+zMAwEQY4xqpuN82JI6YgcMAaNvGApNO15T/z82+IKL/E5BTxzwwlseUtDXe/9esgrQ2n99Pa1XoXslvNNoi1lSNTiJ2r6CcFW5gDRuEkgjoKxEoCaCz1kkC1EbsTtLOTtvOTQEA)}
+.mtg .mtg-i-r_light_gold_prismarine_crystal{background-image:url(data:image/webp;base64,UklGRqgAAABXRUJQVlA4TJsAAAAvD8ADEB4nASDZSkNSUIcWtECjsVRA4ZCo908wY0YOfwKcv2sw9uVSFEmKow87SQhWKOSkNxYuqgkAgukli1sLpw6a+J27gAo69H8CsMg9atkZJRlQzh5HtdvZ1q7Lk65y6ft/7v/X1nQI3gh0bAE/n/U0YofqSltpAGF1h5rRwR51qYcKgEi1AxGTSDS6KkmJ6YFdSdoYaNtYKAA=)}
+.mtg .mtg-i-r_light_gold_obsidian{background-image:url(data:image/webp;base64,UklGRqgAAABXRUJQVlA4TJsAAAAvD8ADEPU4CQDJVl4PFAWQxKAZiQhBFBwS9f4JZjpMDS7AyNdhMtzpp0+obSSpTb53ZIRkHkUBQEZZJLi/GsgrgApeOrBV6P8EYNULQFvQrs2OAfB5J5lqt+73GWf92pRP62TqPOoPfyl+zXr8Ham11vdIMvJYyl8EEHWOuBAjmvCYJ+QAiN1HECuJLWKsS7KVCZBdEomZJImdAgA=)}
+.mtg .mtg-i-r_light_gold_ender{background-image:url(data:image/webp;base64,UklGRrYAAABXRUJQVlA4TKkAAAAvD8ADEB4nASDZSgs6EAGNhgikwRKALIQgCg6Jev8EM2bkNHlfP5YgT14KBY0kNf9P75jAAdYwhh4MYKGrCQCCCaGBBl6nBkpI4HWuXApIokP/JwBDvDjZjgzLo1tSV86aT5K2A8L33PRZm9Q869yL37Luv//TpNeIa+OKvZT9PdMOVZXpTwMIR1doMipYoyrVUAEQaaxAxCQSjaqRpMTUwB5J2mho2xgoAA==)}
+.mtg .mtg-i-r_light_gold_emerald{background-image:url(data:image/webp;base64,UklGRqgAAABXRUJQVlA4TJwAAAAvD8ADEB43ARhJikNeOWhAESJQgAa6K3nvV5A0U8YAGna7K9Oi4HyMBYWQrFDP4pEmEFI6JZDCX1VkG9SNIYs4zxY+xVFCAUGMDv2fAMzxBMrMs4XdlTdKo70cgWa23mvsjqff8lsf/7XGJXIj3LJmrtcsyYw21z8FwCxqiSq0sCPaooNhAI4oLXDQdgSFtkIygu6AVEhK6ClJmCk=)}
+.mtg .mtg-i-r_light_gold_diamond{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ0AAAAvD8ADEPW4iWRbVhwiBh+rHkSghCLbd/i7gnM8HAc/5gm4HghPRvpcvEBRJEnN5SM44JdRhSJE8EOnmgBIGE7o34UAVvCig6NC/ycAg1xd5TybsRtsz1z+/qaPe0va5bar8u8B+I93/JRiXWuyp2LMedwUk1ZUOX1FAFZhRSSiQjVRFTUKA3BEqYBDtiNEVBVJEXINyCKJREOSxEABAA==)}
+.mtg .mtg-i-r_light_gold_echo_shard{background-image:url(data:image/webp;base64,UklGRrQAAABXRUJQVlA4TKcAAAAvD8ADEPW4iQBJUoTgAAeEGKAw9ttBBBKQQEZIdL+Cbg9tgfBGQEdnog2g4wI1kWw1P5Ed0GW8IAaBlAjAAD6oFUWS1FwkJ/9CEIAFXueBYKH/E4Ap7m4qnJolaavjHvfF2xc+2qreYSdNy+81y/70L/65yo+0DuM0YPPdf3nGSUZuSs0igGhlg4toUIub3CIHQOy1AbGS2CKaVkm20gJylUSiI0liogA=)}
+.mtg .mtg-i-r_light_gold_sea{background-image:url(data:image/webp;base64,UklGRrwAAABXRUJQVlA4TLAAAAAvD8ADEB43ARhJii8UUNEjAg8YoMUFCk4EUugoqe5XkDT3X5zsOEiLiN+Kmki2GgF/fvnLQJSIMaRQYyApyEoCAG1icRQFyIAjARaJJMSqzN4k69D/CUAbD9x7ii3aKbvtorjElU052jHdz4vbmnbe9DoX+G9AH/9HdFnNXeIcTO/3tZVkdnmOJwXATMrpQshhQZfXFbAzAHddyoE72u46CnmJZNfRBZASSQklJQktBQ==)}
+.mtg .mtg-i-r_light_gold_nether_star{background-image:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4TKMAAAAvD8ADEPW4iSRJchgeMz18BEKeAJylX57M/34E3e7ZDWNjAQyMi2g2ayiOJCnBNQN+Tv65XCq4lJpGUqD1358IDCAAC1TngcdC/ycAg26BPul6Sats222pnrx/HBpP4Zwftu2GdDzM9decXvhzjp2vqs4ftsAyL3uXpBVNzseDCMAqbIhMNKglmqJFYQCOKA1wyHaEiKYiKUJuAVkkkehIkpgoAA==)}
+.mtg .mtg-i-r_rose_gold_empty{background-image:url(data:image/webp;base64,UklGRowAAABXRUJQVlA4TH8AAAAvD8ADEBpGkSRJ8YMfzOABT+jABhZuFOzRY6Cfo6Df/d8IBQHIMKkVk0cBFdghCzBxmkcIfXlFkVIc/Z+A8tOZsn3H3ncRW2pfGMc/MwKLPIGLzNWRTJw5kiqlmEMnCJUTXuAMF4RLKQbGSTFoG6DK2SAJ0BdFGiSlclOSyk8BAA==)}
+.mtg .mtg-i-r_rose_gold_glowstone{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ4AAAAvD8ADEBo3sW27ih980GczCKDDEzq+CoKA+CMKTnEeAk5J6E99WubPqIZshULuK4QjFEcICaTwNlPbRhfbW/WwWW0i6COFMgKoof8TgKecAbA2S1ps3Q+/VddUpNop++qkbgavy///d/4rhZuIiWrNbwb47TLtiHUpbxlANLqGxahRA+vYIAZAyLEGoZKQMupGSaTSAHuUZKOlbeNJAQ==)}
+.mtg .mtg-i-r_rose_gold_redstone{background-image:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4TKQAAAAvD8ADEBpHkSTLymfnhg/8IAILeMATOrCBhb8reO/9fgY62BX0uf+NJUJNIymQ3FNwFY4okUKNASz8piFZuaf0PF4G/eUVRUpx9H8CQpsr4drgWjwb1fW6s9g11q77fQHOe/lUa1fc91+f8fKfMw7RW7pkvF7HY45kosz5TYUQzL9KkBVKWIEyVBAOIRj4lwSDtgEqlP1JAnRFkP4kpVBTkkJPAQ==)}
+.mtg .mtg-i-r_rose_gold_quartz{background-image:url(data:image/webp;base64,UklGRqQAAABXRUJQVlA4TJgAAAAvD8ADEBJXkSTJih/8YAYPOEAEElbHIuP6Pd+Jgm6iuZqOWEUBQEap5bo6aOHNVsGJmLYVOeURQrt8QngUTyKQtoMw/Z8APOBWaQ1LySQDTv2erSR1ZEmSnp3v+f5/g7O/qyNLsrJaQHTk8/msf9sRe+r4lgFEzR0lqaPRoR52sUcMgJCtA6GSkDK6miRS6YHdJNkYaNt4UA==)}
+.mtg .mtg-i-r_rose_gold_amethyst{background-image:url(data:image/webp;base64,UklGRrwAAABXRUJQVlA4TLAAAAAvD8ADEI+gJACABOu6gcT/GXwgQXS3HUoj2Wr8D42gsfTfQC4A9S05Kg0AkLFV3XM+1sS9xV3nP8qv/dPcnVJRTAJcBbZ8Q6o/GwqYtcm4ScjWbwvRhjaSUoJkDg4DoG0bi3S7BsP/52ZfENH/CcipfRzoj+eQtNU/y3tUQVobr9+3tSpMruTfm0kZa6pmJpEnV1DMijewhg1DSQTMlQiWBJhZm7YBayPktE1mJ0nmpg==)}
+.mtg .mtg-i-r_rose_gold_prismarine_crystal{background-image:url(data:image/webp;base64,UklGRqoAAABXRUJQVlA4TJ4AAAAvD8ADEBJHDSBJip/1gwNU4AEXK4TTAxkHvLGwt4KqSXFVKhlFkaQ4+rCThGCFQk56Y+Gimdo2OumhAZtQf/sp/vkdZDDL0f8JwCZ7hHaWSSbo4XtXlyvytJgM9YhnX72rX/8/5YqnxUN0JzGwh6r1c5yxIw6lXH1kAFHzwGmxXBkDGuEQR8QACNkGECoJKWOoSSKVEdhNko2Jto2NAg==)}
+.mtg .mtg-i-r_rose_gold_obsidian{background-image:url(data:image/webp;base64,UklGRq4AAABXRUJQVlA4TKEAAAAvD8ADEBo3kWzLyvdBRLqGOMEMHvCEDmxg4e8KTv26z8AJWfLDEp0bvyqFkKxQzyOFILKIJLF4Ekjhb6a2jUj/M6tgNNpsWigihUpy9H8CMOqK7D/gv+ZYGuDkbnf9D9JHnXfe9sq11u56L3n/LyXOkRvTlszMS5ZkRpvLgwJgVrVEEVrYEW3RwTAAR9QWOGg7gkJbJRlBd0CqJCX0lCTMFAA=)}
+.mtg .mtg-i-r_rose_gold_ender{background-image:url(data:image/webp;base64,UklGRroAAABXRUJQVlA4TK0AAAAvD8ADEH+gJgDQhJefFvQPwy9zlyxqIklhEEWVXCERQwzlExRHkpRcHkb+0ZCFu8Nv/gMInDfDab6BiFcqwWxaf8rLQPf3+XfN7dp1FAo7AtzatpZFu4KvAzR3S/8GaMIJtQZyclqgEe2AyDOXCGbCmRIi+p/+nsw/vzCbZoq/qI1j6VFgvTn+VAO5etA7EW3pHYl2REd6D9fSiWvzN2oGrt1O6R1w7nbO4Hz2DwA=)}
+.mtg .mtg-i-r_rose_gold_emerald{background-image:url(data:image/webp;base64,UklGRqwAAABXRUJQVlA4TJ8AAAAvD8ADEBo3kSS7Dp9PRyUyEgZxEg6HwqX2ewRuXyi34Uew9cNNXvSqFEKyQj2LR5pASOmUQAp/xQCARmHEkUcId/MawZ5TuiX6PwFdG9fAGOPS2C6KR+ZVx7QA7HaGbXW74OZ/es+nXyFgFZIJ5cwxzptskok8h4nqus5MykFQl8MC5KGAcNd1BlJOZ9A2QHV5iSRAF3RSIil1JSWpaykA)}
+.mtg .mtg-i-r_rose_gold_diamond{background-image:url(data:image/webp;base64,UklGRqwAAABXRUJQVlA4TJ8AAAAvD8ADEBo3sW27ih/8YIQSD9EROvBARZnDjyg4zNzXvPKUKDhkOP2fUQ3ZCsVw/y9RPgGlEE8CKbxVRbZBddJDBH9SiPJOIYwCRgv9nwBc5Iyac9/RrrCUWdt9B5DFdppX2UX5u/+/vla/KcUwqKdQ8Mr5NUqWzChyulEAzE4FkYQClkRRlDAMwBFdARy0HUGhqCMZQZdA6khKqChJuFAA)}
+.mtg .mtg-i-r_rose_gold_echo_shard{background-image:url(data:image/webp;base64,UklGRrQAAABXRUJQVlA4TKgAAAAvD8ADEBJXkSS7DRAxEAN/mkEmIw6OiB4ORxCmoIxgt7ROp62SokiSmssH/JCBQIyh5wxgISuKJKnRchbOAu9kIIMl3qtiLRFN9H8C0MeZmxHbYW1XjYtSzjBz1cslmRbssuH7bH/O4fXX53LJtFBEzLuWIKuiYTdHhMUyXy4/CgBWETFK0sLlMlCiCpaxQjQAk1MJTNkmFSibJJFyBSImSRGoGRGBngI=)}
+.mtg .mtg-i-r_rose_gold_sea{background-image:url(data:image/webp;base64,UklGRsAAAABXRUJQVlA4TLMAAAAvD8ADENW4CQDJUfy8BBS8AZIIDFBhgBYXKMg63sZbyK9g2iEP/VBSfrXXK4ptpSpAi5eALUMDKvzUFNaxgQHcEsBGbAIASPPyu0tYgpDKZRLBz/5PAIa4um75ZN50Gr+kuu9+mwOHzfEs0MarLKmKv53G5+TDkq4CbYz1OjMDFcib/v9bT5kBylGlsaTLBCAnVkSBRlS4JqqixiEAikgVUFhShImqZDvCqgGZbJNoSJIYKAA=)}
+.mtg .mtg-i-r_rose_gold_nether_star{background-image:url(data:image/webp;base64,UklGRrQAAABXRUJQVlA4TKcAAAAvD8ADENU4qbbtWfrQhzJ0WJFIMeWvWI4A858keNg88jGfewOwPvV+XkEkqY0BXOACC1ioiWaspJdRE0mSMuH5rzoRr4j5JXDY/wlArYOkSlhfQlu/pKKQTbbfjBozjDEOqUo5YX64Z1/vYQNrhjF6p84WyxEGyfv+7oolZZ6nOD8YAcgSczwSOVbgeV5gLgByTzmQmyR3I/KSmbmbCkAmMyNRkiRxogA=)}
+.mtg .mtg-i-r_netherite_empty{background-image:url(data:image/webp;base64,UklGRnoAAABXRUJQVlA4TG0AAAAvD8ADELU4jcA2kmoI3yqWLXzuakj/vexfgQwjIKwRIhugTBUbCgEEQEHT/wnAR6cr6Yr071Xrk07E3pMqzqPBSe9ZUoPIPFL17gYA5JEDVnDgEx7xxBQAkeMAoiWRDo6GbdI6QTJsJ7iYJPgoAA==)}
+.mtg .mtg-i-r_netherite_glowstone{background-image:url(data:image/webp;base64,UklGRqQAAABXRUJQVlA4TJgAAAAvD8ADENW4iWRbVjT8HBVkhGtO9h0hEhU4WP+u4NST8OqdetFhUcAJrgA1jaTA4Tvofg209FhAMSRJzAZ/gYO6fxQ4iv5PABZ5uqp15ZQGnD+v/ZeJ495RnbYuqav+b8CvtOqUuDY0QEeptWxEETK7lFq1GwCAnKODKdDhHnaxxxQAkbkDoiWRDnRl26TVg4hsOwIDIyKwUA==)}
+.mtg .mtg-i-r_netherite_redstone{background-image:url(data:image/webp;base64,UklGRqIAAABXRUJQVlA4TJUAAAAvD8ADELW4bW3tTcjQIfdMQUcZZ/AM7L+C8wTvlxM8S0+UT1+lJgAIxvhoKYMsu5FSzDRMU8C/TAzsI3v6PwFo8ujra/Sr57zX9xeVVOF0W5a9/ZuT7mqpZPlE/0POSYlXIQMKhr4fbuQImUVKOccZAED+RQFToMAlLGKJKQAifwUQLYl0oOhnm7RKEPGzHYGKERHoKAA=)}
+.mtg .mtg-i-r_netherite_quartz{background-image:url(data:image/webp;base64,UklGRpoAAABXRUJQVlA4TI4AAAAvD8ADELW4iW3bVTT8HhV0lFHDN4cI/OCDNv6s4AXSO8UhVGdOpbZtGzZnp5cxiNq2bRjZ/v/WtClb/ycgTHD/lXOYrUh2OMbf83K91USQLYetE/jv7mpNjJgPFWhgSmkhtim0xFqjCoQQqOIGRIcGtaAJLQJDCARKQyBEEpBDU5EEiC3BLpLs0NG2w0QB)}
+.mtg .mtg-i-r_netherite_amethyst{background-image:url(data:image/webp;base64,UklGRrIAAABXRUJQVlA4TKYAAAAvD8ADEI+gIJKt5H/c3WvQPwNhKKM2AJAEcMOpc+v/r/KJYhAAYNnYbFvn/EdWsfXGcJX8klICO1TRydsIYSeXnxaXXJfI2L+Ndotw0pHAXQAcBmCbNlJkaMbT/+eWL4jo/wT41NkH5u/bJLfm8//uzCDX+vN4VWXGwIqXWQKoWGOWYJsaWImEV7QRa7GhoG1GjBUzRDJC8NqQFCFuGBiSAO8EAN8U)}
+.mtg .mtg-i-r_netherite_prismarine_crystal{background-image:url(data:image/webp;base64,UklGRqAAAABXRUJQVlA4TJMAAAAvD8ADELW4aW07cjC4HxTpUq4YTCDQQiUcQiE8ZkfwXPrJevWT7RmpaSQFuqfj/LsiKKDFArXatm0Yl/+fderY/wnALj/TZQglzSi/zbfzslO6RdJY+X+djnZNiZdCAEbe93a0r1IAqswxpWg7AADkXEeYKkY8wTFOmAIgMo9AtCTSFWPZNmlNoNZsu1bMrLVW7BQA)}
+.mtg .mtg-i-r_netherite_obsidian{background-image:url(data:image/webp;base64,UklGRpoAAABXRUJQVlA4TI4AAAAvD8ADELW4jW1bqWiB+HsD7qHWQP+9OBXcFwqcITzvDIGZtm2T0fIt3xhMMSNJcHRmlmQJ7u8abP8nwFpd4GqgXTtlxDICVdrf3f/n9NfcOwFV85QKzblwXuSgJKWUXiMJDGVwhcYcmBnoVRKcrIQVoSxUMMDMEIIvMQQCCIGyMk8yBKLCJE9SspqSZD0F)}
+.mtg .mtg-i-r_netherite_ender{background-image:url(data:image/webp;base64,UklGRqwAAABXRUJQVlA4TKAAAAAvD8ADENW4bW3tTWawCRUL0NK5JJXU7piGJdjXeYLnMMEvvfKN8EtP8jeAmdo2/mej/2RSQQCbUQEVlFDYtpFysP+sDI9S/ycAU/x07dfb28VRatueM9Wu/fz/rbzcnaSWf8gv9VuRa+Vl4c2gADTkbcuVUITMJi21sgsAADlFA5dAg1vYxBZTAESmBoiWRDrQlGyTVgsiku0IdIyIwEQB)}
+.mtg .mtg-i-r_netherite_emerald{background-image:url(data:image/webp;base64,UklGRqIAAABXRUJQVlA4TJYAAAAvD8ADELW4bW3tTWZwzxR0lHGCOIxnZQ3a6MgE7yf7SX7lr6evUtNICnRPxznCHx1WcIQYxQDQQB3sYYTQe1KD6P8E4BHLac55Ekp1+dg57b03t7Wd5pFUc/5//8eDnRKnhQKoGMtpHmdShMwqpYPtAgAgD1HBFKhwDatYYwqAyKECoiWRDlQNtkmrBhGD7Qg0jIjAgwI=)}
+.mtg .mtg-i-r_netherite_diamond{background-image:url(data:image/webp;base64,UklGRqIAAABXRUJQVlA4TJUAAAAvD8ADELW4qbXtTTRkjwo2xqohPnCCUBT0kq7g/bf/T3np8P7fpKZtI6jP1mI8RAfitsOpoG0bpmeXP82NQ/8nAK3c7MaYlmSJ7dzu/72+WdluVpF58X0C/j6znesmQQLk+Bj9VDKjujy6zFYCAKCC5XTOkKOCLq8rUEcA7LqQA3Yi2XUy5AVJXScWwCxIMkNJMzO0FAA=)}
+.mtg .mtg-i-r_netherite_echo_shard{background-image:url(data:image/webp;base64,UklGRp4AAABXRUJQVlA4TJIAAAAvD8ADELU4jW3bTmqIhgqQuEh+Hpe+aJBm8q/gXPlOZs5EnjnKTG0b/38bzYQR0CiAAnqYFbZt26ayd9L2fwKwx37rwDVQ0tTx7f8rvl18jKseQdLY2f45j3mDcap4d+gAI7i8+exFHSAyx1SDsTsAALllhBWMeIJjnDAFQGQbgWhJpIOxZpu0JpA02wlmJgl2Cg==)}
+.mtg .mtg-i-r_netherite_sea{background-image:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4TKQAAAAvD8ADELU4iiRZVjT8Oyq4wW0HBz8QgQdU4AIF2Pu7gn7s773/mx065mSmto3/2UhjF0wdDQSwCqCRgkaSmi8S+tMRixCc9n8C0MT1nNX25UXPkWSe39Xax9v0Pc2U3ciJzDrdt/kvw5dU2bnQN0gAGTi93wMhMypk0aXKSgAAKG8ZwRkylBOyQo4CATAEnwEGkQxBhiwvKQQxB2ZekhkKmpmhoQ==)}
+.mtg .mtg-i-r_netherite_nether_star{background-image:url(data:image/webp;base64,UklGRqIAAABXRUJQVlA4TJYAAAAvD8ADELW4jSTJbWKgzyjo0ZQxMC1EhwBgUeUgoSPYh4f7qrUottZS3EhqQ/hB/53RSgZbZtq2cVv+50CMZf8nAL0Wpku+nbzUkGzKVbn/L92Bl9JGS9bk05qqf1M+8lKKlViANxSmdNNnTbWpqGM6LRkANbsmklGjhqiLBgUBMGKuAUMkI2TUzZIixAbYsyQbLW0bIwU=)}
+.mtg .mtg-i-r_light_netherite_empty{background-image:url(data:image/webp;base64,UklGRngAAABXRUJQVlA4TGsAAAAvD8ADENUwCcA2kr07DYdn4VycgPnd7lOQqSgPDQ4KUdq2EZxEfe4OtvBGoP8TgJ9uP8md5FpVZyaTqB+ySkfuMCFb2aFGqX5aGUC4PFAZA0400oQKgEhrgIhJJBqjRVJiJrAXSRs3bRs/BQA=)}
+.mtg .mtg-i-r_light_netherite_glowstone{background-image:url(data:image/webp;base64,UklGRqgAAABXRUJQVlA4TJsAAAAvD8ADEJW4jSRJUqzj09YJdCQkZLRzECvw4L3fgg7ejaZ7Rm0kW2kYd4fQ05//FlAMSZKUMf4EAzX/awWWov8TgFkW7M9nPSOix/HXOf/TywW8g/Xc94hoK9j/C1EX8Brn+eR22EgtC3gF+7OAtzPsSLbFs3HSACKrW/g0WrKDbexIBoAgawuCGRFkGm01M8mMDtg1M230tG3MFAA=)}
+.mtg .mtg-i-r_light_netherite_redstone{background-image:url(data:image/webp;base64,UklGRqIAAABXRUJQVlA4TJUAAAAvD8ADEJU4jiTJUQ7ND7fAEPnjxWtdwOvTFvQsaqJjhJrIVqOKs4USdV8DWnI6iqmYadvGKn+aI7Cv6tP/CcCYu64MkOY73Bc5ViJ67F+/3w1WTH1GIjq+93G6wV6umMpzOpGWDSZSH8o9km1RzDcdQKR6C6ujJTvYxo5kAAhSWxDMiCDT0aaZSWZ0wF0z0x093d0xUwA=)}
+.mtg .mtg-i-r_light_netherite_quartz{background-image:url(data:image/webp;base64,UklGRpAAAABXRUJQVlA4TIMAAAAvD8ADEJW4iW3bVeyBEHoqKizgABH4wQdt/FnBeY/0ODNBbdtIaOoZS+hebds2DOH/f02bsvV/ArDA01UpWH1sD7jY17Kb7FOl3XPuuoL/ce5QauVmrVWHSynbIDnsqZ8IgNPUwSp0pIdd7AkNwGTrgBnbZISuloSMeyC1JBIGShIWCgA=)}
+.mtg .mtg-i-r_light_netherite_amethyst{background-image:url(data:image/webp;base64,UklGRr4AAABXRUJQVlA4TLEAAAAvD8ADENU4jW1tTrrJpAUsCjSD2tcWkHSQAlIGPWav4P0tsMp/5tlPP/WM0ki2WkmKLP934KJC5VgAHaAmkiRlakWdgBfAFih9Cx+9BTLb/wnAoLNUCm098uOt6/+vhZHdlldjPq9f3/2qJP87yG567d+Zx3HOtVbw/48NaEloQGld5g2RzGhyJakVN0QAzKSG+AsNbImmaGEYgCNSAxy0HUGhKZGMoFsgJZISOkoSJgoA)}
+.mtg .mtg-i-r_light_netherite_prismarine_crystal{background-image:url(data:image/webp;base64,UklGRqAAAABXRUJQVlA4TJMAAAAvD8ADENW4iQBJUuwdGkg5C7hAwOZYwQMW8HG/gl4VW5t22hFPR11UKYlkhVL85UPSPw1DAiwV0Irbto0I7z9trvbZ/wnAIe8zfagkWdCfW4+um2vtiiRT/fX9f5fA1nRGTmTicv/9LmFMdqiptBLGZABh9YSaMcEZTWmGCoBIdQIRk0g0pipJiZmBXUnaWGjbOCgA)}
+.mtg .mtg-i-r_light_netherite_obsidian{background-image:url(data:image/webp;base64,UklGRpgAAABXRUJQVlA4TIwAAAAvD8ADEJW4jSRJUs4PJBxAxIbFEHQkJFzA6/st6OCd6NjuVttGkho7ps8gZMWQJMnJijIZgvu7Btv/CcCqBwgt0LFdDZBtaU/p1N/5f/dH8roP29JTrv4sXi9eJxdlpPfeb4HUluGYX98IgFMa4UsYyQTHOBEagMkagRnbZISxSkLGE5AqiYSZkoSdAg==)}
+.mtg .mtg-i-r_light_netherite_ender{background-image:url(data:image/webp;base64,UklGRq4AAABXRUJQVlA4TKEAAAAvD8ADEJW4jSRbTrJQDgpBNveVAh4+FhYmLgGQr+4IVp/r12rfe0oDgJCStxJtLlnBANrFW8AKllDYtm0j5P9fd7oL9H8CMMbTtMrd0zbEvWlavFn9dZou7t+FdDNxb3ilPsrOncX9p5ISL84OqJnL3dN8Zcw8WOfpGwbAI1sNk6EmGljHhqADcDLXwBnuToahLkcEGd4AsxwRZmhpZoaRAgA=)}
+.mtg .mtg-i-r_light_netherite_emerald{background-image:url(data:image/webp;base64,UklGRqIAAABXRUJQVlA4TJYAAAAvD8ADEJU4jiTJUdyDNzbw56VxARNx476o0xb06aO3Z0ZJJCuU4mtBkoR+z70qNCKMmbZtrHIfjELYPVID0f8JQBtvaEppM3EvSs+djNfvbu+hP1bcC17/GW+cH+keeu7bVuTMNzTNB2fmwTzvpzAAHqvlsDfkRAHzWBB0AE6uOXCGu5NhyFsjggwvgNkaEWYoaWaGlgI=)}
+.mtg .mtg-i-r_light_netherite_diamond{background-image:url(data:image/webp;base64,UklGRpgAAABXRUJQVlA4TIsAAAAvD8ADEJU4rm3bSdrDQpxnR7YQC6UCs5IreGR469971QQA0rDXC6fVSGQIP3OaadvG6tXxp9lx6P8EWCVv90KITsgM8e7+f968HlNz6JBJYX6DeNedStP4cixUQhdCtwoA5UlsesHMqAkJ3sASlOJJniKnmdF9SjC6SLoLljRJchdTDJgkAZYRAKyiAA==)}
+.mtg .mtg-i-r_light_netherite_echo_shard{background-image:url(data:image/webp;base64,UklGRqYAAABXRUJQVlA4TJoAAAAvD8ADENU4jWRbVgIhAzJA4sDh0T8Fstjdj45k/h7BeSmwXUsdexXLUceoCQBCmvwjo0TCCGgUQIHrcbPCtm3blLLT3f5PAKa4uBlYpdpui838S9v89V6J2LnaTe/btfZyX20wIreua6ABs5+fdxVIZjY5aqMKBMAsasgQGtiSTdnCNABnlgY4aTuTQlMhmUm3QCokJXSUJEwU)}
+.mtg .mtg-i-r_light_netherite_sea{background-image:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4TKMAAAAvD8ADEHW4qW1bTnxFQZDASp0yLTUGaCcRKMDez6jg5nEHNZHsVFX+5UsZE/QIww4OIoAWAXGksG3bRvALSbrnsT2kn/ZfYdo2jNL5Co7I1Of6ev9zX0oyV9+zfuvd7z0fTt2g+XH+n/tPfbqxT1ClAboQs+rGOCZ2qFbqE4yJAYTtispocEYtzVABEKl9EDGJZhvIAJGUmBnYA0TS8wZg2zgoAA==)}
+.mtg .mtg-i-r_light_netherite_nether_star{background-image:url(data:image/webp;base64,UklGRqQAAABXRUJQVlA4TJcAAAAvD8ADENW4iSTZdeh9YVAsCmLhUhETgB/JcbDfI9gnQ+G9fLNfF2+0idpGUpwIH0JI/xXRynsjMmmbUP/vRMxl/ycAg+5Ln3y7cpXZbsv1dP8/NhtVytqzG/Lp+Nd//3wwpcTSW4A37Mv8n1dBMqPJ5XRQAMykhihCA1uiKVoYBuCI1AAHbUdQaEokI+gWSImkhI6ShIkCAA==)}
+.mtg .mtg-i-broken_ring{background-image:url(data:image/webp;base64,UklGRuYAAABXRUJQVlA4TNkAAAAvD8ADEN/AMJJkU8/vM7iff5Vt4zkNtZFsJR+3HuiH/iMKICJyh2EcyVaiTwAkQMQEQzDuct2Tu+/8x5R48anqtY5yO/JFmeAuv7t+HgQM6bUNyLhziBDjJ/pH9F8sOLsaHl6lXttCZfvE3JO0DBYI4gALkDgMDCNJUvIucIfLy+afKE4EEf2fALw6r09is9KdeZyHTRKIz9Z2nYSgokM+wbIJWwDWZySFLQDY1XSiZMHB+xOQyofOnJHVDKAzpp6AtWPujPE7zoLz3iTfXyCn6hP2HTdTSvgrAA==)}
+.mtg .mtg-i-gold_ingot{background-image:url(data:image/webp;base64,UklGRkwAAABXRUJQVlA4TD8AAAAvD8ADEAYFjaRGFpGGNNRgAPpXwK2QgLhtoE0qIQHRDfDGYSv7PwH6ssGwiyK/l4GafFDbETV2ZZPrZDddXgcA)}
+.mtg .mtg-i-iron_ingot{background-image:url(data:image/webp;base64,UklGRjoAAABXRUJQVlA4TC4AAAAvD8ADEDUohCTJsVvEQzudu88RYDei/xPAL2PYc0WfYCckdnvysWGTTfamm9cB)}
+.mtg .mtg-i-copper_ingot{background-image:url(data:image/webp;base64,UklGRkwAAABXRUJQVlA4TEAAAAAvD8ADEAaFkCQ5OktyREd1mukjwK6QgPhpmG2eqAIBokOEE1HS+z8B/DKgrbwUXxPAIl5iWcmrNwVsMh1W4/Q6)}
+.mtg .mtg-i-netherite_ingot{background-image:url(data:image/webp;base64,UklGRk4AAABXRUJQVlA4TEEAAAAvD8ADEFUoaNtGIlEQwzE840/g/gdAW6lp24CFV3cVtG3Dwv6t/xPALwMZ9rIDUv++qI5tdXtANA6PmzzZm25eBwA=)}
+.mtg .mtg-i-stick{background-image:url(data:image/webp;base64,UklGRkAAAABXRUJQVlA4TDQAAAAvD8ADEFATAEhDKmKQg/4R9tRbIEDYc6JFtUCATElx4MD8KwgIABFnAOyKOp0q/z8MQB4U)}
+.mtg .mtg-i-planks{background-image:url(data:image/webp;base64,UklGRkgAAABXRUJQVlA4TDwAAAAvD8ADAAoEbdsG5BkdwxlveyhMjUAg0Y1rivEEAmnIKZAV7v8EvMe32oP0J3ix35GW4MVqpCB4sXOkQzA=)}
+.mtg .mtg-i-bone{background-image:url(data:image/webp;base64,UklGRk4AAABXRUJQVlA4TEIAAAAvD8ADEIViSJKk9qcZiEGZZznsfS/AEBht2yb/39p2QcPzrzZtAyZ9zRuCi6RpQfJXoFe1RFyfv5qmyz77b7PiIgU=)}
+.mtg .mtg-i-cake{background-image:url(data:image/webp;base64,UklGRkoAAABXRUJQVlA4TD4AAAAvD8ADEDUohCTJcTqig3nmF8gJYEZNAAKMlcktrKBCAsL/dQZYIvV/AvhwzcZRUbQ3e0eZgiBIZ/qObNPNaQ==)}
+.mtg .mtg-i-dye_yellow{background-image:url(data:image/webp;base64,UklGRk4AAABXRUJQVlA4TEIAAAAvD8ADEDUoaNtG4i8N2OCMwf3/AWgEAineYI0Utm2D4n9Lw/5PgD7pAEzRnYBUNQwghkN/NL5F5nvmNaYxr1kAXQo=)}
+.mtg .mtg-i-dye_white{background-image:url(data:image/webp;base64,UklGRjwAAABXRUJQVlA4TC8AAAAvD8ADEDUohCTJ8fdZsDP4nB9gJ6L/E+BPBjBFdwJSwwBS9EfjW6yePKaRZwF8KQA=)}
+.mtg .mtg-i-dye_pink{background-image:url(data:image/webp;base64,UklGRkoAAABXRUJQVlA4TD4AAAAvD8ADEHUoaCSp8Ymwl4MILH2jCTjKJQKBNEQ0xBrVo/8TgE2Kc07omIFzWuo459SF7fmzoLAIn4qIkiQmBQ==)}
+.mtg .mtg-i-dye_green{background-image:url(data:image/webp;base64,UklGRkIAAABXRUJQVlA4TDUAAAAvD8ADEFUoaCMpcocw5CACc3f8CNidFPumuv2fAH2yAqZIJ6ALDKAhH41vUZlZYwdr1rZ1KQA=)}
+.mtg .mtg-i-dye_brown{background-image:url(data:image/webp;base64,UklGRkAAAABXRUJQVlA4TDMAAAAvD8ADEDUohCTJkTiwx3mIt770CWCnKBdn7/8E6JMDUCIswOJIYCLO8ltkI6scZ1UF0KUA)}
+.mtg .mtg-i-dye_black{background-image:url(data:image/webp;base64,UklGRkAAAABXRUJQVlA4TDQAAAAvD8ADEIVCSJKcwRmch3h/iQsfAWIK5n8C4JPu7i1PG+7z4IX72POqvgUwQ6gxIHQREeFS)}
+.mtg .mtg-i-dye_purple{background-image:url(data:image/webp;base64,UklGRkAAAABXRUJQVlA4TDQAAAAvD8ADEJWoiSQpQhhyEIH/O34E7KYT1ahu/Z8AfbICU6QT0AMDaOSj8S0qmTV2sGZtW5cC)}
+.mtg .mtg-i-dye_blue{background-image:url(data:image/webp;base64,UklGRkIAAABXRUJQVlA4TDUAAAAvD8ADEFUoattI+g+whbMglvpcewFopLPbl6z/E6BPDkCJsACLI4GJOMtvkY2scpxVFUCXAgA=)}
+.mtg .mtg-i-dye_light_blue{background-image:url(data:image/webp;base64,UklGRkoAAABXRUJQVlA4TD0AAAAvD8ADEDUwhCRJkvaCDc5CLMR7D0B2YQUCaQhhiA3qv4KAABBxxk8sOGyJ6dG+og9LFOBFNDOZnzpMknhJAA==)}
+.mtg .mtg-i-gem_glowstone{background-image:url(data:image/webp;base64,UklGRkQAAABXRUJQVlA4TDgAAAAvD8ADEDUoCIC0aUxOW+0PNAEOyiVr+28gbZu9MXAZLjtERYgZrpheEacv0gff2+sf4n/IzW3xDA==)}
+.mtg .mtg-i-gem_redstone{background-image:url(data:image/webp;base64,UklGRkgAAABXRUJQVlA4TDwAAAAvD8ADEIWCtlGgk4NOnL93gAKBAKHYgRepYz//BJM0Wz4DeDtUsmc13qzOntSxoB2NW6xHVULFrQYI2wM=)}
+.mtg .mtg-i-gem_quartz{background-image:url(data:image/webp;base64,UklGRkIAAABXRUJQVlA4TDYAAAAvD8ADEDUoaNtG4i8dzqPx33UbgnQMxr7/BJM0Wz5D2dtS38pgpbASTl+iD703BayAt9wwwQM=)}
+.mtg .mtg-i-gem_amethyst{background-image:url(data:image/webp;base64,UklGRkQAAABXRUJQVlA4TDgAAAAvD8ADEDUoCIC06UDO5VwxD2oC6MtzuvpvIG2bvTFwGTo7pF5kPiNjIxG1SA2+WtWH/A+7yRqeAA==)}
+.mtg .mtg-i-gem_prismarine_crystal{background-image:url(data:image/webp;base64,UklGRkQAAABXRUJQVlA4TDgAAAAvD8ADEDUwaBvJEfLgPDj9fwuC6L/xw95/gkmaNp+xbRgaYmQmRhQjir+C/4j7PqIYUTxqGdI3AQ==)}
+.mtg .mtg-i-gem_obsidian{background-image:url(data:image/webp;base64,UklGRkQAAABXRUJQVlA4TDgAAAAvD8ADEDUoaNtGGqbDeaT/dkOQDcUVZPpvIG2bvTFwGZRdII1R5iulG+H0JfrQe3v9Q/8hNyS4Bw==)}
+.mtg .mtg-i-gem_ender{background-image:url(data:image/webp;base64,UklGRkYAAABXRUJQVlA4TDkAAAAvD8ADEDUoaNtG4lSch/N4/O2GIDqnc+P7bzZtGzca+whtp9agzrTmgDqgX2Yfvv/MowO61cKCOwAA)}
+.mtg .mtg-i-gem_emerald{background-image:url(data:image/webp;base64,UklGRkoAAABXRUJQVlA4TD4AAAAvD8ADEDUoaNtGIns4j9p/120IUgVpGzDOa2NX7Dlr+08wSbPlM5S9ndRhZehKASvgL9GH3psCVsBbbpjgAQ==)}
+.mtg .mtg-i-gem_diamond{background-image:url(data:image/webp;base64,UklGRkIAAABXRUJQVlA4TDYAAAAvD8ADEDUoCIC0iU9Ok+wPNQG8MTn6byBtm70xcBlqO6ACMKOBsYE4fZE++N5e/4D/oTZZyRM=)}
+.mtg .mtg-i-gem_echo_shard{background-image:url(data:image/webp;base64,UklGRkQAAABXRUJQVlA4TDcAAAAvD8ADEDUoaNtGOoiH83Du0yHwxvkFD/0nmKTZ8hnffmjdq4J3VbQpoqqNymqDxWpsA1sbDC0AAA==)}
+.mtg .mtg-i-gem_sea{background-image:url(data:image/webp;base64,UklGRkYAAABXRUJQVlA4TDoAAAAvD8ADEDUoaNtGYlKch/MY/e2GIDqx+Fug+m82bZvUGvsIbaetoXYmKwe0cfoyffj9M48O6K02LLgH)}
+.mtg .mtg-i-gem_nether_star{background-image:url(data:image/webp;base64,UklGRkIAAABXRUJQVlA4TDUAAAAvD8ADEDUoahvJ4Y9hce77+m1BkIlh7z/BJM2Wz9B2G/KKDNgI2MDpK+gj3lsEFAFttSGSBwA=)}
+.mtg .mtg-i-jeweller_board{background-image:url(data:image/webp;base64,UklGRlQAAABXRUJQVlA4TEcAAAAvD8ADEHWwiWQrkj1CYlSgBWVEWDpXQO9NJm2bq5DRs0xNAAKMwoo6/StK/yfAoSYzqsbneTSARcrVSc6dA4S9E9H+AP9vAQA=)}
+.mtg .mtg-i-cutting_board{background-image:url(data:image/webp;base64,UklGRlQAAABXRUJQVlA4TEgAAAAvD8ADEHWwiSSrkj1CYlSgBXHowMX3Lm+iRyZtm+w9DaPnmJIACBD+TyPSbQW5/xPgP4s28vdAB2BdOyep0+QCqZtENgEQ4QA=)}
+.mtg .mtg-i-string{background-image:url(data:image/webp;base64,UklGRjIAAABXRUJQVlA4TCUAAAAvD8ADEDUoaNtG4o/1cPxHwIno/wT4e9zKvL2QedQOmWd3K18DAA==)}
+.mtg .mtg-i-paper{background-image:url(data:image/webp;base64,UklGRjwAAABXRUJQVlA4TC8AAAAvD8ADEAaFkCQ5/hYHeBb5A8DOVeHPKN5/IQFBlczQNY2wbX2g4gMf8F84j9JSAQA=)}
+.mtg .mtg-i-book{background-image:url(data:image/webp;base64,UklGRkQAAABXRUJQVlA4TDcAAAAvD8ADEAbFkCQxdgtxYEd5GDn9rwQCxLsSOXIkCASIHQFq5Cvp/wR8R4DTIDXl+3CpHvMOpxYEAA==)}
+.mtg .mtg-i-anvil{background-image:url(data:image/webp;base64,UklGRjIAAABXRUJQVlA4TCYAAAAvD8ADEIWatpGYA3bzwXn+ey8EIuZ/AuChLTst3/DMzFA+psUryw==)}
+.mtg .mtg-i-emerald{background-image:url(data:image/webp;base64,UklGRkoAAABXRUJQVlA4TD4AAAAvD8ADEDUoaNtGIns4j9p/120IUgVpGzDOa2NX7Dlr+08wSbPlM5S9ndRhZehKASvgL9GH3psCVsBbbpjgAQ==)}
+</style>
+
+<header class="mtg-hero" data-hero>
+  <div class="mtg-hrow">
+    <i class="mtg-ic mtg-xl mtg-i-r_gold_diamond" role="img" aria-label="Anillo de oro con diamante"></i>
+    <div>
+      <span class="mtg-tag">Guía para jugadores</span><span class="mtg-tag">Interactiva</span>
+      <h1>Matrimonios</h1>
+      <p>Fabrica un anillo, pide matrimonio a otro jugador y, si te dice que sí, ganan poderes cuando están juntos. Aquí tienes todo: anillos, gemas, reglas de pareja y lo que hace falta para la boda.</p>
+    </div>
+  </div>
+</header>
+
+<nav class="mtg-nav" aria-label="Secciones de la guía">
+  <a href="#mtg-inicio"><i class="mtg-ic mtg-i-guide"></i>Inicio</a>
+  <a href="#mtg-fabricar"><i class="mtg-ic mtg-i-jeweller_board"></i>Fabricar</a>
+  <a href="#mtg-taller"><i class="mtg-ic mtg-i-new_ring"></i>Diseña tu anillo</a>
+  <a href="#mtg-pedir"><i class="mtg-ic mtg-i-ui_who"></i>Pedir matrimonio</a>
+  <a href="#mtg-poderes"><i class="mtg-ic mtg-i-ui_effects"></i>Poderes</a>
+  <a href="#mtg-reglas"><i class="mtg-ic mtg-i-certificate_wedding"></i>Una sola pareja</a>
+  <a href="#mtg-joyero"><i class="mtg-ic mtg-i-egg_jeweller"></i>Joyero</a>
+  <a href="#mtg-pareja"><i class="mtg-ic mtg-i-ui_rings"></i>Vida en pareja</a>
+  <a href="#mtg-registro"><i class="mtg-ic mtg-i-registry"></i>Registro</a>
+  <a href="#mtg-fin"><i class="mtg-ic mtg-i-separation_application"></i>Separación</a>
+  <a href="#mtg-boda"><i class="mtg-ic mtg-i-cake_piece_a"></i>La boda</a>
+  <a href="#mtg-faq"><i class="mtg-ic mtg-i-bouquet"></i>Dudas</a>
+</nav>
+
+<!-- INICIO -->
+<section class="mtg-sec" id="mtg-inicio">
+  <h2><i class="mtg-ic mtg-i-guide"></i>¿Cómo funciona?</h2>
+  <p class="mtg-lead">Casarse lleva cuatro pasos. Toca cualquiera para ir directo a esa parte.</p>
+  <div class="mtg-quick">
+    <a class="mtg-q" href="#mtg-fabricar"><span class="mtg-qn">1</span><i class="mtg-ic mtg-lg mtg-i-jeweller_board"></i><span><b>Mesa de joyería</b><small>Ahí se hace todo lo de los anillos.</small></span></a>
+    <a class="mtg-q" href="#mtg-fabricar"><span class="mtg-qn">2</span><i class="mtg-ic mtg-lg mtg-i-blob_gold"></i><span><b>Metal de joyería</b><small>Convierte un lingote o un hueso.</small></span></a>
+    <a class="mtg-q" href="#mtg-taller"><span class="mtg-qn">3</span><i class="mtg-ic mtg-lg mtg-i-new_ring"></i><span><b>Fabrica el anillo</b><small>4 metales y, si quieres, una gema.</small></span></a>
+    <a class="mtg-q" href="#mtg-pedir"><span class="mtg-qn">4</span><i class="mtg-ic mtg-lg mtg-i-ui_who"></i><span><b>Pide matrimonio</b><small>Usa el anillo sobre otro jugador.</small></span></a>
+  </div>
+  <div class="mtg-tip mtg-info">💍 Solo puedes casarte con <b>otro jugador</b> y solo puedes tener <b>una pareja</b>. La otra persona siempre tiene que aceptar.</div>
+  <div class="mtg-tip">📖 En el juego tienes la <b>Guía de Matrimonios</b> (el libro) con esta misma información. Desde ahí también puedes abrir <b>Mi pareja</b>.</div>
+</section>
+
+<!-- FABRICAR -->
+<section class="mtg-sec" id="mtg-fabricar">
+  <h2><i class="mtg-ic mtg-i-jeweller_board"></i>Fabricar el anillo</h2>
+  <p class="mtg-lead">Toca cada paso para ver la receta. La Mesa de joyería se hace en la mesa de crafteo normal; todo lo demás se hace en la propia <b>Mesa de joyería</b>.</p>
+  <div class="mtg-tabs" role="tablist" data-rtabs>
+    <button type="button" role="tab" class="mtg-tab" data-r="board" aria-selected="true"><i class="mtg-ic mtg-i-jeweller_board"></i>1. Mesa de joyería</button>
+    <button type="button" role="tab" class="mtg-tab" data-r="blob" aria-selected="false"><i class="mtg-ic mtg-i-blob_gold"></i>2. Metal de joyería</button>
+    <button type="button" role="tab" class="mtg-tab" data-r="mix" aria-selected="false"><i class="mtg-ic mtg-i-blob_rose_gold"></i>Mezclas</button>
+    <button type="button" role="tab" class="mtg-tab" data-r="ring" aria-selected="false"><i class="mtg-ic mtg-i-r_gold_empty"></i>3. Anillo</button>
+    <button type="button" role="tab" class="mtg-tab" data-r="gem" aria-selected="false"><i class="mtg-ic mtg-i-r_gold_diamond"></i>Anillo con gema</button>
+  </div>
+  <div class="mtg-craftwrap">
+    <div class="mtg-table">
+      <h4 data-cttl></h4>
+      <div class="mtg-craft">
+        <div class="mtg-cgrid" role="group" aria-label="Cuadrícula de 3 por 3" data-cgrid></div>
+        <span class="mtg-arrow" aria-hidden="true"></span>
+        <div class="mtg-slot mtg-out" data-out></div>
+      </div>
+    </div>
+    <div class="mtg-craftside">
+      <div class="mtg-subchips" data-sub></div>
+      <ul class="mtg-legend" data-legend></ul>
+      <p class="mtg-hint" data-cnote></p>
+    </div>
+  </div>
+  <div class="mtg-tip">🛒 ¿No tienes los materiales? El <b>Joyero</b> de la tienda de bodas vende la mesa y varios metales ya listos. Míralo en <a href="#mtg-boda">La boda</a>.</div>
+</section>
+
+<!-- TALLER -->
+<section class="mtg-sec" id="mtg-taller">
+  <h2><i class="mtg-ic mtg-i-new_ring"></i>Diseña tu anillo</h2>
+  <p class="mtg-lead">Elige un metal y una gema para ver cómo queda tu anillo y qué hace. El <b>metal</b> decide hasta qué distancia funciona y la <b>gema</b> decide el poder extra.</p>
+  <div class="mtg-lab">
+    <div class="mtg-pickers">
+      <span class="mtg-label">Metal</span>
+      <div class="mtg-pick" role="group" aria-label="Metal" data-metals></div>
+      <span class="mtg-label">Gema</span>
+      <div class="mtg-pick" role="group" aria-label="Gema" data-gems></div>
+    </div>
+      <div class="mtg-near">
+        <b>¿Qué tan cerca está tu pareja?</b>
+        <div class="mtg-pair" aria-hidden="true"><div class="mtg-aura" data-aura></div><span class="mtg-ppl" style="left:12px">🧑</span><span class="mtg-ppl" data-partner>👩</span></div>
+        <label for="mtg-dist" class="mtg-hint" style="display:block">Distancia: <b data-distv>10</b> bloques</label>
+        <input id="mtg-dist" class="mtg-range" type="range" min="1" max="50" value="10" data-dist>
+        <label class="mtg-check"><input type="checkbox" checked data-inhand> Llevo el anillo en la mano o en la segunda mano</label>
+        <label class="mtg-check"><input type="checkbox" checked data-match> Mi pareja tiene la misma gema</label>
+        <div data-nearres></div>
+      </div>
+    <div class="mtg-show" aria-live="polite">
+      <div class="mtg-glow"><i class="mtg-ic mtg-big" data-bigring></i></div>
+      <span class="mtg-rname" data-rname></span>
+      <div class="mtg-badges" data-rbadges></div>
+      <div class="mtg-effect" data-reffect></div>
+      <div class="mtg-meter"><span class="mtg-hint">Alcance del anillo: <b data-rrange></b></span><div class="mtg-bar"><i data-rbar></i></div></div>
+      <div class="mtg-effect" data-rcost></div>
+    </div>
+  </div>
+</section>
+
+<!-- PEDIR -->
+<section class="mtg-sec" id="mtg-pedir">
+  <h2><i class="mtg-ic mtg-i-ui_who"></i>Pedir matrimonio</h2>
+  <p class="mtg-lead">Ten el anillo nuevo en la mano y úsalo sobre el otro jugador. Pruébalo aquí: eres <b>Alex</b> y le vas a pedir matrimonio a <b>Sam</b>.</p>
+  <div class="mtg-two">
+    <div>
+      <div class="mtg-who"><span class="mtg-avatar"><span>🧑</span>Alex (tú)</span><span>💍 →</span><span class="mtg-avatar"><span>👩</span>Sam</span></div>
+      <b>1. Elige qué decirle:</b>
+      <div class="mtg-presets" role="group" aria-label="Frases" data-presets></div>
+      <label class="mtg-check"><input type="checkbox" data-already> Alex ya está casado con Robin</label>
+      <div class="mtg-row" style="margin-top:6px">
+        <button type="button" class="mtg-btn mtg-rosebtn" data-propose>💍 Usar el anillo sobre Sam</button>
+        <button type="button" class="mtg-btn mtg-ghost" data-preset-reset>↺ Reiniciar</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div data-pform><div class="mtg-fempty">Aquí aparecerán los menús del juego.</div></div>
+      <div class="mtg-chat" aria-live="polite" aria-label="Chat del juego" data-pchat></div>
+    </div>
+  </div>
+  <div class="mtg-cards">
+    <div class="mtg-card"><span class="mtg-emo">💞</span><div><h4>Si dice que sí</h4><p>Todo el servidor se entera, suenan trompetas y los dos reciben el <b>mismo anillo de boda</b> y un <b>Certificado de matrimonio</b>.</p></div></div>
+    <div class="mtg-card"><span class="mtg-emo">🙅</span><div><h4>Si dice que no</h4><p>No pasa nada. Puedes volver a intentarlo más adelante.</p></div></div>
+    <div class="mtg-card"><span class="mtg-emo">⛔</span><div><h4>«No. Nunca.»</h4><p>Esa persona te bloquea y ya no puedes volver a pedirle matrimonio. Solo ella puede desbloquearte.</p></div></div>
+  </div>
+  <div class="mtg-tip mtg-ojo">⚠️ No sueltes ni guardes el anillo mientras esperas la respuesta. Si ya no lo tienes cuando te responden, la propuesta se cancela.</div>
+</section>
+
+<!-- PODERES -->
+<section class="mtg-sec" id="mtg-poderes">
+  <h2><i class="mtg-ic mtg-i-ui_effects"></i>Los poderes del anillo</h2>
+  <p class="mtg-lead">Mientras estés cerca de tu pareja, el anillo te va <b>curando poco a poco</b>. Además, la gema te da un poder extra. Toca una gema para verla en el taller.</p>
+  <div class="mtg-cards">
+    <div class="mtg-card"><i class="mtg-ic mtg-lg mtg-i-r_rose_gold_empty"></i><div><h4>Llévalo en la mano</h4><p>El poder de la gema y el alcance del metal solo funcionan con el anillo en la <b>mano</b> o en la <b>segunda mano</b>.</p></div></div>
+    <div class="mtg-card"><i class="mtg-ic mtg-lg mtg-i-r_iron_amethyst"></i><div><h4>Las gemas tienen que coincidir</h4><p>Si tu anillo y el de tu pareja tienen gemas distintas, <b>ninguno de los dos</b> tiene poderes, ni siquiera la curación.</p></div></div>
+    <div class="mtg-card"><span class="mtg-emo">✨</span><div><h4>Dos tipos de poder</h4><p><b>Automático:</b> funciona solo mientras están cerca.<br><b>Al usar el anillo:</b> haz clic con el anillo en la mano cerca de tu pareja.</p></div></div>
+  </div>
+  <div class="mtg-gems" data-gemlist></div>
+</section>
+
+<!-- REGLAS -->
+<section class="mtg-sec" id="mtg-reglas">
+  <h2><i class="mtg-ic mtg-i-certificate_wedding"></i>Una sola pareja</h2>
+  <p class="mtg-lead">En Arcoloria solo puedes tener una pareja. Si alguien casado intenta pedirle matrimonio a otra persona, la propuesta <b>no se envía</b> y <b>todo el servidor se entera</b> de la infidelidad.</p>
+  <div class="mtg-two">
+    <div class="mtg-box">
+      <b>Pruébalo: eres Robin, casado con Alex.</b>
+      <p class="mtg-hint" style="margin-top:2px">Toca el botón para que Alex sea infiel y luego decide qué hacer.</p>
+      <div class="mtg-strikes" aria-label="Infidelidades" data-strikes><span class="mtg-strike">1</span><span class="mtg-strike">2</span><span class="mtg-strike">3</span></div>
+      <p class="mtg-status" aria-live="polite" data-istatus>Todo va bien en el matrimonio. 💞</p>
+      <div class="mtg-row">
+        <button type="button" class="mtg-btn mtg-ghost" data-icheat>😳 Alex intenta proponerle a otra persona</button>
+      </div>
+      <div class="mtg-row" style="margin-top:8px" data-ichoices hidden>
+        <button type="button" class="mtg-btn" data-ich="forgive">💚 Perdonar</button>
+        <button type="button" class="mtg-btn mtg-rosebtn" data-ich="punish">🟠 Castigar</button>
+        <button type="button" class="mtg-btn mtg-ghost" data-ich="sep">💔 Separarme</button>
+      </div>
+      <button type="button" class="mtg-btn mtg-ghost" style="margin-top:8px" data-ireset hidden>↺ Volver a empezar</button>
+    </div>
+    <div class="mtg-chat" aria-live="polite" aria-label="Chat del juego" data-ichat></div>
+  </div>
+  <div class="mtg-cards">
+    <div class="mtg-card"><span class="mtg-emo">💚</span><div><h4>Perdonar</h4><p>Todo sigue igual, pero la infidelidad <b>sigue contando</b>.</p></div></div>
+    <div class="mtg-card"><span class="mtg-emo">🟠</span><div><h4>Castigar</h4><p>Tu pareja <b>pierde los poderes</b> de su anillo y tú conservas los tuyos, hasta que le perdones.</p></div></div>
+    <div class="mtg-card"><span class="mtg-emo">💔</span><div><h4>Separarte</h4><p>El matrimonio termina en ese momento. No se puede deshacer.</p></div></div>
+    <div class="mtg-card"><span class="mtg-emo">3️⃣</span><div><h4>A la tercera</h4><p>Con <b>3 infidelidades</b>, el matrimonio termina solo.</p></div></div>
+  </div>
+  <div class="mtg-tip mtg-info">🗓️ No tienes que decidir en el momento. Te llega un aviso y puedes elegir más tarde desde <b>Mi pareja</b> (en la guía) o con el comando <code>/arco:pareja</code>.</div>
+</section>
+
+<!-- JOYERO -->
+<section class="mtg-sec" id="mtg-joyero">
+  <h2><i class="mtg-ic mtg-i-egg_jeweller"></i>El Joyero</h2>
+  <p class="mtg-lead">El Joyero de la tienda de bodas hace dos cosas especiales. Haz clic sobre él con tu <b>anillo de boda en la mano</b> o <b>agachado</b>. Si haces clic normal, te muestra lo que vende.</p>
+  <div class="mtg-cards">
+    <div class="mtg-card"><i class="mtg-ic mtg-lg mtg-i-r_light_gold_emerald"></i><div><h4>Cambiar la gema</h4><p>Cambia solo la gema; el metal se queda igual. La gema vieja se pierde. Puedes hacerlo <b>una vez cada 24 horas</b>.</p></div></div>
+    <div class="mtg-card"><i class="mtg-ic mtg-lg mtg-i-broken_ring"></i><div><h4>Reponer un anillo perdido</h4><p>Te hace uno igual al que tenías por <b>5 diamantes y 16 fragmentos de amatista</b>. El anillo anterior deja de funcionar.</p></div></div>
+  </div>
+  <h3>¿Cuánto cuesta cambiar la gema?</h3>
+  <p>Pagas <b>la gema nueva</b> más esto, según lo valiosa que sea:</p>
+  <div class="mtg-tblwrap"><table class="mtg-tbl">
+    <thead><tr><th>Tipo de gema</th><th>Amatista</th><th>Oro</th><th>Esmeraldas</th><th>Niveles</th></tr></thead>
+    <tbody>
+      <tr><td><span class="mtg-bdg mtg-t-common">Común</span><br><small class="mtg-hint">Sin gema, piedra luminosa, redstone, cuarzo, amatista, prismarina</small></td><td>8</td><td>8</td><td>5</td><td>5</td></tr>
+      <tr><td><span class="mtg-bdg mtg-t-valuable">Valiosa</span><br><small class="mtg-hint">Obsidiana, perla de Ender, esmeralda, diamante</small></td><td>16</td><td>16</td><td>10</td><td>10</td></tr>
+      <tr><td><span class="mtg-bdg mtg-t-rare">Rara</span><br><small class="mtg-hint">Fragmento de eco, corazón del mar</small></td><td>32</td><td>32</td><td>20</td><td>20</td></tr>
+      <tr><td><span class="mtg-bdg mtg-t-legendary">Legendaria</span><br><small class="mtg-hint">Estrella del Nether</small></td><td>64</td><td>64</td><td>32</td><td>30</td></tr>
+    </tbody>
+  </table></div>
+  <div class="mtg-tip mtg-ojo">💡 Si cambias tu gema, avísale a tu pareja: tiene que ponerse la <b>misma</b> para que los dos sigan teniendo poderes. El juego le manda un aviso.</div>
+</section>
+
+<!-- VIDA EN PAREJA -->
+<section class="mtg-sec" id="mtg-pareja">
+  <h2><i class="mtg-ic mtg-i-ui_rings"></i>Vida en pareja</h2>
+  <div class="mtg-two">
+    <div>
+      <div class="mtg-card" style="margin-bottom:10px"><i class="mtg-ic mtg-lg mtg-i-certificate_wedding"></i><div><h4>Certificado de matrimonio</h4><p>Prueba que están casados. Úsalo para ver la fecha de la boda y para mandarle un mensaje de cariño a tu pareja. ¡No lo pierdas!</p></div></div>
+      <div class="mtg-card" style="margin-bottom:10px"><span class="mtg-emo">💞</span><div><h4>Mi pareja</h4><p>Ábrelo desde la guía o con <code>/arco:pareja</code>. Te muestra con quién estás casado, desde cuándo, las dos gemas y si los poderes están activos.</p></div></div>
+      <div class="mtg-card"><span class="mtg-emo">💌</span><div><h4>Mensajes de cariño</h4><p>Le mandas a tu pareja un mensaje bonito al azar. Puedes enviar <b>uno cada 10 minutos</b>. Si no está conectada, le llega cuando entre.</p></div></div>
+    </div>
+    <div>
+      <div class="mtg-letter" aria-live="polite" data-letter><small>Toca el botón para enviar un mensaje de cariño.</small></div>
+      <div class="mtg-row" style="margin-top:12px"><button type="button" class="mtg-btn mtg-rosebtn" data-love>💌 Enviar un mensaje de cariño</button></div>
+      <p class="mtg-hint" data-lovenote>Aquí puedes enviar todos los que quieras; en el juego es uno cada 10 minutos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTRO -->
+<section class="mtg-sec" id="mtg-registro">
+  <h2><i class="mtg-ic mtg-i-registry"></i>Registro de matrimonios</h2>
+  <div class="mtg-two">
+    <div>
+      <p class="mtg-lead" style="margin-top:0">Es un libro que muestra los matrimonios de todo el servidor.</p>
+      <ul class="mtg-legend">
+        <li><span class="mtg-emo">💍</span><span><b>Matrimonios actuales:</b> quién está casado con quién.</span></li>
+        <li><span class="mtg-emo">📜</span><span><b>Historial del mundo:</b> bodas, separaciones e infidelidades.</span></li>
+        <li><span class="mtg-emo">🧑</span><span><b>Mi historial:</b> tus propios matrimonios.</span></li>
+        <li><span class="mtg-emo">⛔</span><span><b>Mi lista de bloqueos:</b> a quién le dijiste «No. Nunca.». Desde aquí puedes desbloquearlo.</span></li>
+      </ul>
+    </div>
+    <div class="mtg-box">
+      <b>Cómo conseguirlo</b>
+      <ul class="mtg-legend">
+        <li><i class="mtg-ic mtg-i-egg_jigllager"></i><span>Cómpralo a un <b>Planificador de bodas</b> por <b>20 esmeraldas</b>.</span></li>
+        <li><i class="mtg-ic mtg-i-anvil"></i><span>O ponle de nombre <code>Registro</code> a un <b>libro</b> en el yunque.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FIN -->
+<section class="mtg-sec" id="mtg-fin">
+  <h2><i class="mtg-ic mtg-i-separation_application"></i>Cuando un matrimonio termina</h2>
+  <h3><i class="mtg-ic mtg-sm mtg-i-separation_application"></i>Separarse</h3>
+  <ol class="mtg-steps">
+    <li><span>Consigue una <b>Solicitud de separación</b>: cuesta <b>1 esmeralda</b> con un Planificador, o ponle de nombre <code>Separación</code> a un <b>papel</b> en el yunque.</span></li>
+    <li><span>Úsala, elige a tu pareja y confirma. <b>No se puede deshacer.</b></span></li>
+    <li><span>Los anillos de boda se <b>rompen</b> y pierden sus poderes. Los dos reciben un <b>Certificado de separación</b>.</span></li>
+  </ol>
+  <div class="mtg-cards">
+    <div class="mtg-card"><i class="mtg-ic mtg-lg mtg-i-broken_ring"></i><div><h4>Anillo roto</h4><p>Fúndelo en un <b>horno</b> para recuperar 2 metales de joyería y empezar de nuevo.</p></div></div>
+    <div class="mtg-card"><i class="mtg-ic mtg-lg mtg-i-widow_certificate"></i><div><h4>Si tu pareja muere</h4><p>El matrimonio termina y recibes un <b>Certificado de recuerdo</b> en su memoria.</p></div></div>
+    <div class="mtg-card"><i class="mtg-ic mtg-lg mtg-i-burnt_memory"></i><div><h4>Quemar recuerdos</h4><p>Cualquier certificado se puede quemar en un horno o una fogata y se convierte en un <b>Recuerdo quemado</b>. Con 4 haces 1 carbón.</p></div></div>
+  </div>
+</section>
+
+<!-- BODA -->
+<section class="mtg-sec" id="mtg-boda">
+  <h2><i class="mtg-ic mtg-i-cake_piece_a"></i>La boda</h2>
+  <p class="mtg-lead">En la <b>tienda de bodas</b> del servidor hay cuatro comerciantes. Todo se paga con esmeraldas. Toca uno para ver lo que vende:</p>
+  <div class="mtg-tabs" role="tablist" data-shoptabs>
+    <button type="button" role="tab" class="mtg-tab" data-s="planner" aria-selected="true"><i class="mtg-ic mtg-i-egg_jigllager"></i>Planificador</button>
+    <button type="button" role="tab" class="mtg-tab" data-s="jeweller" aria-selected="false"><i class="mtg-ic mtg-i-egg_jeweller"></i>Joyero</button>
+    <button type="button" role="tab" class="mtg-tab" data-s="chef" aria-selected="false"><i class="mtg-ic mtg-i-egg_chef"></i>Chef de bodas</button>
+    <button type="button" role="tab" class="mtg-tab" data-s="tailor" aria-selected="false"><i class="mtg-ic mtg-i-eq_grooms_suit"></i>Sastre</button>
+  </div>
+  <p class="mtg-hint" data-shopnote></p>
+  <div class="mtg-shop" data-shop></div>
+
+  <h3><i class="mtg-ic mtg-sm mtg-i-cake_piece_b"></i>Pasteles de boda: 5 estilos</h3>
+  <div class="mtg-styles">
+    <div class="mtg-style"><i class="mtg-ic mtg-i-cake_piece_b"></i><b>Chic</b><small>Elegante, blanco y dorado.</small></div>
+    <div class="mtg-style"><i class="mtg-ic mtg-i-cake_piece_a"></i><b>Cute</b><small>Rosa y con corazones.</small></div>
+    <div class="mtg-style"><i class="mtg-ic mtg-i-cake_piece_c"></i><b>Garden</b><small>Flores y plantas.</small></div>
+    <div class="mtg-style"><i class="mtg-ic mtg-i-cake_piece_e"></i><b>Goth</b><small>Morado y misterioso.</small></div>
+    <div class="mtg-style"><i class="mtg-ic mtg-i-cake_piece_d"></i><b>Ice</b><small>Celeste y helado.</small></div>
+  </div>
+  <div class="mtg-cards">
+    <div class="mtg-card"><span class="mtg-emo">🍰</span><div><h4>Comer pastel</h4><p>Haz clic en el pastel para sacar una porción. Siempre se puede comer, aunque no tengas hambre.</p></div></div>
+    <div class="mtg-card"><span class="mtg-emo">🎵</span><div><h4>Música de boda</h4><p><b>Agáchate y toca el pastel</b> para que suene la música de la ceremonia. Se repite sola hasta que alguien lo vuelva a tocar agachado.</p></div></div>
+    <div class="mtg-card"><i class="mtg-ic mtg-lg mtg-i-cutting_board"></i><div><h4>Hazlo tú</h4><p>En la <b>Tabla de cortar</b>: 3 pasteles normales en la columna del medio y 2 tintes abajo, a los lados. Abajo tienes la receta.</p></div></div>
+  </div>
+  <details><summary>Ver recetas de la Tabla de cortar y de los pasteles</summary><div>
+    <div class="mtg-tabs" role="tablist" data-caketabs></div>
+    <div class="mtg-craftwrap">
+      <div class="mtg-table"><h4 data-cakettl></h4><div class="mtg-craft"><div class="mtg-cgrid" data-cakegrid></div><span class="mtg-arrow" aria-hidden="true"></span><div class="mtg-slot mtg-out" data-cakeout></div></div></div>
+      <div class="mtg-craftside"><ul class="mtg-legend" data-cakelegend></ul></div>
+    </div>
+  </div></details>
+
+  <h3><i class="mtg-ic mtg-sm mtg-i-bouquet"></i>Ramo de novia</h3>
+  <div class="mtg-two">
+    <div class="mtg-card"><i class="mtg-ic mtg-lg mtg-i-bouquet"></i><div><p>Se puede <b>lanzar</b> como una bola de nieve. ¡Que lo atrape alguien! Lo venden los Planificadores por 8 esmeraldas, o lo puedes fabricar en la mesa de crafteo.</p></div></div>
+    <div class="mtg-box"><b>Receta (en cualquier orden):</b>
+      <p style="font-size:15px">🌼 Flores silvestres · 🌹 Rosal · 🤍 Margarita · 🌻 Diente de león · 🌸 Peonía · <i class="mtg-ic mtg-sm mtg-i-string"></i> Hilo</p></div>
+  </div>
+
+  <h3><i class="mtg-ic mtg-sm mtg-i-eq_veil"></i>Trajes</h3>
+  <p>Los vende el Sastre. Son solo de estilo, no protegen. El traje de boda y el clásico se pueden <b>teñir</b> de otro color.</p>
+  <div class="mtg-outfits">
+    <div class="mtg-outfit"><h4>Traje de boda</h4><div class="mtg-pieces"><i class="mtg-ic mtg-i-eq_veil" title="Velo de novia"></i><i class="mtg-ic mtg-i-eq_bride_chest" title="Vestido de novia"></i><i class="mtg-ic mtg-i-eq_bride_leggings" title="Falda de novia"></i><i class="mtg-ic mtg-i-eq_bride_boots" title="Tacones de novia"></i></div></div>
+    <div class="mtg-outfit"><h4>Traje de ceremonia</h4><div class="mtg-pieces"><i class="mtg-ic mtg-i-eq_bridemaid_veil" title="Velo de ceremonia"></i><i class="mtg-ic mtg-i-eq_bridemaid_chest" title="Vestido de ceremonia"></i><i class="mtg-ic mtg-i-eq_bridemaid_leggings" title="Falda de ceremonia"></i><i class="mtg-ic mtg-i-eq_bridemaid_boots" title="Tacones de ceremonia"></i></div></div>
+    <div class="mtg-outfit"><h4>Traje formal</h4><div class="mtg-pieces"><i class="mtg-ic mtg-i-eq_grooms_hat" title="Chistera formal"></i><i class="mtg-ic mtg-i-eq_grooms_suit" title="Chaqueta formal"></i><i class="mtg-ic mtg-i-eq_grooms_legs" title="Pantalones formales"></i><i class="mtg-ic mtg-i-eq_grooms_boots" title="Zapatos formales"></i></div></div>
+    <div class="mtg-outfit"><h4>Traje clásico</h4><div class="mtg-pieces"><i class="mtg-ic mtg-i-eq_suit_hat" title="Chistera clásica"></i><i class="mtg-ic mtg-i-eq_suit" title="Chaqueta clásica"></i><i class="mtg-ic mtg-i-eq_suit_legs" title="Pantalones clásicos"></i><i class="mtg-ic mtg-i-eq_suit_boots" title="Zapatos clásicos"></i></div></div>
+  </div>
+  <div class="mtg-tip">🎺 Cuando alguien acepta una propuesta, <b>suenan trompetas</b> para todos y sale un anuncio en el chat. ¡Buen momento para lanzar el ramo!</div>
+</section>
+
+<!-- FAQ -->
+<section class="mtg-sec" id="mtg-faq">
+  <h2><i class="mtg-ic mtg-i-bouquet"></i>¿Qué pasa si…?</h2>
+  <p class="mtg-lead">Toca cada tarjeta para ver la respuesta.</p>
+  <div class="mtg-flips" data-flips></div>
+</section>
+
+<footer class="mtg-foot">Addon <b>Matrimonios</b> de Jigarbov Productions · Edición Arcoloria. Algunos iconos de objetos normales de Minecraft se dibujaron para esta guía.</footer>
+
+<script>
+(function(){
+var root=(document.currentScript&&document.currentScript.closest('.mtg'))||document.querySelector('.mtg');
+if(!root)return;
+function $(s,el){return (el||root).querySelector(s);}
+function $$(s,el){return [].slice.call((el||root).querySelectorAll(s));}
+function ic(name,extra){return '<i class="mtg-ic mtg-i-'+name+(extra?' '+extra:'')+'" aria-hidden="true"></i>';}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function mc(s){var out='',open=false,parts=String(s).split('§');out+=esc(parts[0]);
+  for(var i=1;i<parts.length;i++){var c=parts[i].charAt(0),t=parts[i].slice(1);if(open){out+='</span>';open=false;}
+    if('6edc9ab78f'.indexOf(c)>-1){out+='<span class="mtg-c'+c+'">';open=true;}out+=esc(t);}
+  if(open)out+='</span>';return out;}
+function chatTo(box,text,sys){var p=document.createElement('p');p.innerHTML=sys?'<span class="mtg-sys">'+esc(text)+'</span>':mc(text);box.appendChild(p);box.scrollTop=box.scrollHeight;}
+
+/* Pétalos de la portada */
+(function(){var h=$('[data-hero]');if(!h||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  ['🌸','💗','🌸','✨','🌸','💜'].forEach(function(e,i){var s=document.createElement('span');s.className='mtg-petal';s.textContent=e;s.style.left=(8+i*16)+'%';s.style.animationDuration=(7+i*1.3)+'s';s.style.animationDelay=(-i*1.7)+'s';h.appendChild(s);});})();
+
+/* ---------- Datos ---------- */
+var METALS=[
+  {k:'bone',n:'hueso',r:10,c:'#e8e2cc',from:'1 hueso'},
+  {k:'copper',n:'cobre',r:12,c:'#d8744c',from:'1 lingote de cobre'},
+  {k:'iron',n:'hierro',r:16,c:'#cfcfcf',from:'1 lingote de hierro'},
+  {k:'gold',n:'oro',r:24,c:'#f2c94c',from:'1 lingote de oro'},
+  {k:'light_gold',n:'oro blanco',r:28,c:'#f3e3b0',from:'oro + hierro de joyería'},
+  {k:'rose_gold',n:'oro rosa',r:32,c:'#e8968a',from:'oro + cobre de joyería'},
+  {k:'netherite',n:'netherita',r:36,c:'#4c4248',from:'1 lingote de netherita'},
+  {k:'light_netherite',n:'aleación de netherita',r:40,c:'#8a7a80',from:'oro + netherita de joyería'}];
+var TIERS={common:{n:'Común',a:8,g:8,e:5,l:5},valuable:{n:'Valiosa',a:16,g:16,e:10,l:10},rare:{n:'Rara',a:32,g:32,e:20,l:20},legendary:{n:'Legendaria',a:64,g:64,e:32,l:30}};
+var GEMS=[
+  {k:'empty',n:'Sin gema',w:'',p:'Regeneración reforzada',t:'auto',tier:'common',d:'Te curas todavía más rápido cuando estás cerca de tu pareja.'},
+  {k:'glowstone',n:'Piedra luminosa',w:'con piedra luminosa',p:'Luz del corazón',t:'use',tier:'common',d:'Usa el anillo y aparece una luz a tus pies por un momento. Muy útil en cuevas.'},
+  {k:'redstone',n:'Redstone',w:'con redstone',p:'Energía del corazón',t:'use',tier:'common',d:'Usa el anillo y el lugar donde estás da energía de redstone por un momento: abre puertas o activa mecanismos.'},
+  {k:'quartz',n:'Cuarzo',w:'con cuarzo',p:'Resistencia al fuego',t:'auto',tier:'common',d:'El fuego y la lava no te hacen daño.'},
+  {k:'amethyst',n:'Amatista',w:'con amatista',p:'Melodía del amor',t:'use',tier:'common',d:'Usa el anillo y sale un camino de notas musicales hasta tu pareja. Así sabes hacia dónde está.'},
+  {k:'prismarine_crystal',n:'Cristales de prismarina',w:'con cristales de prismarina',p:'Respiración acuática',t:'auto',tier:'common',d:'Puedes respirar bajo el agua.'},
+  {k:'obsidian',n:'Obsidiana',w:'con obsidiana',p:'Resistencia',t:'auto',tier:'valuable',d:'Recibes menos daño de los golpes.'},
+  {k:'ender',n:'Perla de Ender',w:'con perla de Ender',p:'Teletransporte a tu pareja',t:'use',tier:'valuable',d:'Usa el anillo y apareces al lado de tu pareja. Tiene que estar en tu misma dimensión y dentro del alcance.'},
+  {k:'emerald',n:'Esmeralda',w:'con esmeralda',p:'Buscatesoros',t:'auto',tier:'valuable',d:'A veces, al romper bloques, sale un premio extra: pepitas, cobre, esmeraldas y, muy de vez en cuando, un diamante.'},
+  {k:'diamond',n:'Diamante',w:'con diamante',p:'Prisa minera',t:'auto',tier:'valuable',d:'Picas y rompes bloques más rápido.'},
+  {k:'echo_shard',n:'Fragmento de eco',w:'con fragmento de eco',p:'Inmunidad a la oscuridad',t:'auto',tier:'rare',d:'La oscuridad del Warden se te quita al instante.'},
+  {k:'sea',n:'Corazón del mar',w:'con corazón del mar',p:'Poder del conducto',t:'auto',tier:'rare',d:'Bajo el agua respiras, ves mejor y picas más rápido.'},
+  {k:'nether_star',n:'Estrella del Nether',w:'con estrella del Nether',p:'Inmunidad a explosiones',t:'auto',tier:'legendary',d:'Las explosiones de creepers y TNT no te hacen daño.'}];
+var GEMITEM={glowstone:'Polvo de piedra luminosa',redstone:'Polvo de redstone',quartz:'Cuarzo del Nether',amethyst:'Fragmento de amatista',prismarine_crystal:'Cristales de prismarina',obsidian:'Obsidiana',ender:'Perla de Ender',emerald:'Esmeralda',diamond:'Diamante',echo_shard:'Fragmento de eco',sea:'Corazón del mar',nether_star:'Estrella del Nether'};
+
+/* ---------- Recetas ---------- */
+(function(){
+  var NAMES={gold_ingot:'Lingote de oro',iron_ingot:'Lingote de hierro',copper_ingot:'Lingote de cobre',netherite_ingot:'Lingote de netherita',stick:'Palo',planks:'Tablas de madera',bone:'Hueso',jeweller_board:'Mesa de joyería'};
+  METALS.forEach(function(m){NAMES['blob_'+m.k]=(m.k==='light_netherite'?'Aleación de netherita':m.n.charAt(0).toUpperCase()+m.n.slice(1))+' de joyería';});
+  var BASE={bone:'bone',copper:'copper_ingot',iron:'iron_ingot',gold:'gold_ingot',netherite:'netherite_ingot'};
+  var MIX={rose_gold:'copper',light_gold:'iron',light_netherite:'netherite'};
+  var state={r:'board',sub:null};
+  var grid=$('[data-cgrid]'),out=$('[data-out]'),leg=$('[data-legend]'),ttl=$('[data-cttl]'),note=$('[data-cnote]'),sub=$('[data-sub]');
+  var slots=[];for(var i=0;i<9;i++){var s=document.createElement('div');s.className='mtg-slot';grid.appendChild(s);slots.push(s);}
+  function draw(g,o,qty,title,legend,n){
+    ttl.innerHTML=title;
+    slots.forEach(function(s,i){s.innerHTML=g[i]?ic(g[i]):'';s.title=g[i]?(NAMES[g[i]]||''):'';});
+    out.innerHTML=ic(o)+(qty>1?'<span class="mtg-cnt">'+qty+'</span>':'');
+    leg.innerHTML=legend.map(function(l){return '<li>'+ic(l[0])+'<span>'+l[1]+'</span></li>';}).join('');
+    note.innerHTML=n||'';
+  }
+  function chips(list,cur){sub.innerHTML=list.map(function(x){return '<button type="button" class="mtg-chip" data-sv="'+x[0]+'" aria-pressed="'+(x[0]===cur)+'">'+ic(x[1])+x[2]+'</button>';}).join('');}
+  var JT=ic('jeweller_board','mtg-sm')+'Mesa de joyería';
+  function render(){
+    var r=state.r;sub.innerHTML='';
+    if(r==='board'){
+      draw(['gold_ingot','iron_ingot','stick','planks','planks','planks',null,null,null],'jeweller_board',1,ic('jeweller_board','mtg-sm')+'Mesa de crafteo',
+        [['gold_ingot','<b>1 lingote de oro</b>, <b>1 lingote de hierro</b> y <b>1 palo</b> arriba'],['planks','<b>3 tablas de madera</b> (de cualquier árbol) abajo'],['jeweller_board','Resultado: <b>Mesa de joyería</b>']],
+        'Se fabrica en la mesa de crafteo normal. Colócala en el suelo y úsala para todo lo demás.');
+    }else if(r==='blob'){
+      var m=state.sub&&BASE[state.sub]?state.sub:'gold';state.sub=m;
+      chips([['bone','bone','Hueso'],['copper','copper_ingot','Cobre'],['iron','iron_ingot','Hierro'],['gold','gold_ingot','Oro'],['netherite','netherite_ingot','Netherita']],m);
+      var g=[null,null,null,null,BASE[m],null,null,null,null];
+      draw(g,'blob_'+m,1,JT,[[BASE[m],'<b>1 '+NAMES[BASE[m]].toLowerCase()+'</b> en cualquier casilla'],['blob_'+m,'Resultado: <b>'+NAMES['blob_'+m]+'</b>']],'Un material = un metal de joyería. Para un anillo necesitas 4.');
+    }else if(r==='mix'){
+      var x=state.sub&&MIX[state.sub]?state.sub:'rose_gold';state.sub=x;
+      chips([['rose_gold','blob_rose_gold','Oro rosa'],['light_gold','blob_light_gold','Oro blanco'],['light_netherite','blob_light_netherite','Aleación de netherita']],x);
+      draw([null,null,null,'blob_gold',null,'blob_'+MIX[x],null,null,null],'blob_'+x,2,JT,
+        [['blob_gold','<b>1 oro de joyería</b>'],['blob_'+MIX[x],'<b>1 '+NAMES['blob_'+MIX[x]].toLowerCase()+'</b>'],['blob_'+x,'Resultado: <b>2 × '+NAMES['blob_'+x]+'</b>']],'Mezclar metales da bases más bonitas y con más alcance. ¡Y te dan 2!');
+    }else if(r==='ring'){
+      var mm=state.sub&&METALS.some(function(q){return q.k===state.sub;})?state.sub:'gold';state.sub=mm;
+      chips(METALS.map(function(q){return [q.k,'blob_'+q.k,q.n.charAt(0).toUpperCase()+q.n.slice(1)];}),mm);
+      var b='blob_'+mm;
+      draw([null,b,null,b,null,b,null,b,null],'r_'+mm+'_empty',1,JT,[[b,'<b>4 × '+NAMES[b].toLowerCase()+'</b> en forma de anillo (arriba, abajo, izquierda y derecha)'],['r_'+mm+'_empty','Resultado: <b>Anillo de '+METALS.filter(function(q){return q.k===mm;})[0].n+'</b>']],'Los 4 metales tienen que ser iguales.');
+    }else{
+      var gg=state.sub&&GEMITEM[state.sub]?state.sub:'diamond';state.sub=gg;
+      chips(GEMS.filter(function(q){return q.k!=='empty';}).map(function(q){return [q.k,'gem_'+q.k,q.n];}),gg);
+      var gd=GEMS.filter(function(q){return q.k===gg;})[0];
+      NAMES['gem_'+gg]=GEMITEM[gg];
+      draw(['gem_'+gg,'blob_gold',null,'blob_gold',null,'blob_gold',null,'blob_gold',null],'r_gold_'+gg,1,JT,[['gem_'+gg,'<b>1 × '+GEMITEM[gg].toLowerCase()+'</b> en la esquina de arriba a la izquierda'],['blob_gold','<b>4 metales iguales</b> en forma de anillo'],['r_gold_'+gg,'Resultado: <b>Anillo de oro '+gd.w+'</b>']],'La gema es opcional. Cambia el aspecto del anillo y le da un poder extra. Mira todos en <a href="#mtg-poderes">Poderes</a>.');
+    }
+  }
+  $('[data-rtabs]').addEventListener('click',function(e){var b=e.target.closest('[data-r]');if(!b)return;state.r=b.dataset.r;state.sub=null;$$('[data-r]').forEach(function(x){x.setAttribute('aria-selected',String(x===b));});render();});
+  sub.addEventListener('click',function(e){var b=e.target.closest('[data-sv]');if(!b)return;state.sub=b.dataset.sv;render();});
+  render();
+})();
+
+/* ---------- Taller de anillos ---------- */
+var setRing;
+(function(){
+  var st={m:'gold',g:'diamond'};
+  var mBox=$('[data-metals]'),gBox=$('[data-gems]'),dist=$('[data-dist]'),inhand=$('[data-inhand]'),match=$('[data-match]');
+  mBox.innerHTML=METALS.map(function(m){return '<button type="button" class="mtg-pk" data-m="'+m.k+'" aria-label="'+m.n+'" title="'+m.n+'">'+ic('blob_'+m.k)+'</button>';}).join('');
+  function gemsHTML(){gBox.innerHTML=GEMS.map(function(g){return '<button type="button" class="mtg-pk" data-g="'+g.k+'" aria-label="'+g.n+'" title="'+g.n+'">'+ic('r_'+st.m+'_'+g.k)+'</button>';}).join('');}
+  function M(){return METALS.filter(function(m){return m.k===st.m;})[0];}
+  function G(){return GEMS.filter(function(g){return g.k===st.g;})[0];}
+  function near(){
+    var m=M(),g=G(),d=+dist.value,hand=inhand.checked,ok=match.checked;
+    $('[data-distv]').textContent=d;
+    var range=hand?m.r:8;
+    var pw=$('.mtg-pair').clientWidth||300,max=50,x=function(b){return 12+(pw-60)*(b/max);};
+    $('[data-partner]').style.left=x(d)+'px';
+    var aura=$('[data-aura]'),rp=(pw-60)*(range/max);aura.style.left=(27-rp)+'px';aura.style.width=(2*rp)+'px';
+    var res=$('[data-nearres]'),h='';
+    if(!ok)h='<span class="mtg-pill mtg-off">✗ Sin poderes</span><p class="mtg-hint">Las gemas no coinciden, así que no hay poderes para ninguno de los dos, ni siquiera la curación.</p>';
+    else if(d>range)h='<span class="mtg-pill mtg-off">✗ Muy lejos</span><p class="mtg-hint">Tu pareja está fuera del alcance ('+range+' bloques). Acérquense.</p>';
+    else if(!hand)h='<span class="mtg-pill mtg-on">✓ Solo curación</span><p class="mtg-hint">Te curas poco a poco, pero sin el anillo en la mano no hay poder de gema y el alcance baja a 8 bloques.</p>';
+    else h='<span class="mtg-pill mtg-on">✓ Poderes activos</span><p class="mtg-hint">Curación + <b>'+g.p+'</b>'+(g.t==='use'?' (haz clic con el anillo para usarlo)':'')+'.</p>';
+    res.innerHTML=h;
+  }
+  function render(pop){
+    var m=M(),g=G();
+    $$('[data-m]',mBox).forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.m===st.m));});
+    $$('[data-g]',gBox).forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.g===st.g));});
+    var big=$('[data-bigring]');big.className='mtg-ic mtg-big mtg-i-r_'+st.m+'_'+st.g;if(pop){big.style.animation='none';void big.offsetWidth;big.style.animation='';}
+    $('[data-rname]').textContent='Anillo de '+m.n+(g.w?' '+g.w:'');
+    var T=TIERS[g.tier];
+    $('[data-rbadges]').innerHTML='<span class="mtg-bdg '+(g.t==='auto'?'mtg-auto">⚡ Automático':'mtg-use">👆 Al usar el anillo')+'</span><span class="mtg-bdg mtg-t-'+g.tier+'">Gema '+T.n.toLowerCase()+'</span>';
+    $('[data-reffect]').innerHTML='<b>'+g.p+':</b> '+g.d+(g.k!=='empty'?' <br><span class="mtg-hint">Además, como todos los anillos, te cura poco a poco cerca de tu pareja.</span>':'');
+    $('[data-rrange]').textContent='unos '+m.r+' bloques ('+m.from+')';
+    $('[data-rbar]').style.width=(m.r/40*100)+'%';
+    var c='<span class="mtg-hint">Si ya estás casado, cambiar a esta gema en el Joyero cuesta:</span><ul class="mtg-cost">'+
+      (g.k!=='empty'?'<li>'+ic('gem_'+g.k,'mtg-sm')+'1 × '+GEMITEM[g.k]+'</li>':'')+
+      '<li>'+ic('gem_amethyst','mtg-sm')+T.a+' × fragmentos de amatista</li><li>'+ic('gold_ingot','mtg-sm')+T.g+' × lingotes de oro</li><li>'+ic('emerald','mtg-sm')+T.e+' × esmeraldas</li><li><span class="mtg-emo" style="font-size:16px;width:22px">🟢</span>'+T.l+' niveles de experiencia</li></ul>';
+    $('[data-rcost]').innerHTML=c;
+    near();
+  }
+  mBox.addEventListener('click',function(e){var b=e.target.closest('[data-m]');if(!b)return;st.m=b.dataset.m;gemsHTML();render(true);});
+  gBox.addEventListener('click',function(e){var b=e.target.closest('[data-g]');if(!b)return;st.g=b.dataset.g;render(true);});
+  [dist,inhand,match].forEach(function(el){el.addEventListener('input',near);el.addEventListener('change',near);});
+  window.addEventListener('resize',near);
+  setRing=function(g){st.g=g;render(true);var t=$('#mtg-taller');if(t)t.scrollIntoView({behavior:'smooth',block:'start'});};
+  gemsHTML();render();
+})();
+
+/* ---------- Lista de gemas ---------- */
+(function(){
+  var box=$('[data-gemlist]');
+  box.innerHTML=GEMS.map(function(g){return '<button type="button" class="mtg-gem" data-gl="'+g.k+'">'+ic('r_gold_'+g.k)+'<span><b>'+g.n+' · '+g.p+'</b><small>'+g.d+'</small><span class="mtg-bdg '+(g.t==='auto'?'mtg-auto">⚡ Automático':'mtg-use">👆 Al usar el anillo')+'</span></span></button>';}).join('');
+  box.addEventListener('click',function(e){var b=e.target.closest('[data-gl]');if(b&&setRing)setRing(b.dataset.gl);});
+})();
+
+/* ---------- Propuesta ---------- */
+(function(){
+  var P=['¿Quieres casarte conmigo? Eres mi mundo entero, bloque a bloque.','El diamante que buscaba no estaba bajo tierra: eras tú. ¿Te casas conmigo?','Iría al Nether y volvería solo por ti. ¿Te casas conmigo?','Quiero que nuestro punto de reaparición sea el mismo para siempre. ¿Te casas conmigo?','¿Quieres ser mi jugador dos para siempre?'];
+  var box=$('[data-presets]'),form=$('[data-pform]'),chat=$('[data-pchat]'),already=$('[data-already]'),btn=$('[data-propose]');
+  var sel=0,busy=false,blocked=false,married=false;
+  box.innerHTML=P.map(function(p,i){return '<button type="button" class="mtg-preset" data-pi="'+i+'" aria-pressed="'+(i===0)+'">«'+esc(p)+'»</button>';}).join('');
+  box.addEventListener('click',function(e){var b=e.target.closest('[data-pi]');if(!b||busy)return;sel=+b.dataset.pi;$$('[data-pi]',box).forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});});
+  function empty(){form.innerHTML='<div class="mtg-fempty">Aquí aparecerán los menús del juego.</div>';}
+  function f(title,body,btns,cb){
+    form.innerHTML='<div class="mtg-form" role="dialog" aria-label="'+esc(title)+'"><div class="mtg-ftitle">'+esc(title)+'</div><div class="mtg-fbody">'+body+'</div><div class="mtg-fbtns">'+btns.map(function(b,i){return '<button type="button" class="mtg-fbtn '+(b[1]||'')+'" data-fb="'+i+'">'+mc(b[0])+'</button>';}).join('')+'</div></div>';
+    $$('[data-fb]',form).forEach(function(b){b.addEventListener('click',function(){cb(+b.dataset.fb);});});
+    if(window.innerWidth<760){try{form.scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}}
+  }
+  function confetti(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;for(var i=0;i<18;i++){var s=document.createElement('span');s.className='mtg-confetti';s.textContent=['💗','🌸','💍','✨','💜'][i%5];s.style.left=(Math.random()*100)+'vw';s.style.animationDelay=(Math.random()*.6)+'s';root.appendChild(s);setTimeout(function(x){return function(){x.remove();};}(s),2600);}}
+  function reset(){busy=false;blocked=false;married=false;btn.disabled=false;chat.innerHTML='';empty();chatTo(chat,'Elige una frase y usa el anillo sobre Sam.',true);}
+  btn.addEventListener('click',function(){
+    if(busy)return;
+    if(married){chatTo(chat,'§cYa tienes pareja: §fSam§c.');return;}
+    if(blocked){chatTo(chat,'§cYa te dijo que no, y no va a cambiar de opinión.');return;}
+    var phrase=P[sel];busy=true;
+    if(already.checked){
+      f('§c¿Seguro?','Ya tienes pareja: <b>Robin</b>.<br><br>Si sigues, la propuesta a <b>Sam</b> no se enviará y <span class="mtg-cc">todo el servidor sabrá que le estás siendo infiel a Robin</span>.',[['§cSeguir igualmente'],['§2No, me arrepiento','mtg-yes']],function(i){
+        busy=false;empty();
+        if(i===0){chatTo(chat,'§c¡Escándalo! §fAlex §cle está siendo infiel a §fRobin§c.');chatTo(chat,'A Robin le llega un aviso y decide si perdonar, castigar o separarse.',true);}
+        else chatTo(chat,'Te arrepentiste. No pasó nada.',true);
+      });
+      return;
+    }
+    chatTo(chat,'§7Tu propuesta se ha enviado a §fSam§7. Esperando su respuesta...');
+    chatTo(chat,'§dAlex le ha pedido matrimonio a Sam... «'+phrase+'»');
+    setTimeout(function(){
+      chatTo(chat,'— Así lo ve Sam —',true);
+      f('¡Propuesta de matrimonio!','<b>Alex</b> te ha pedido matrimonio.<span class="mtg-quote">«'+esc(phrase)+'»</span>¿Aceptas su propuesta?',[['§b¡Sí, quiero!','mtg-yes'],['§4No','mtg-no'],['§4No. Nunca.','mtg-no']],function(i){
+        busy=false;empty();
+        if(i===0){married=true;btn.disabled=true;chatTo(chat,'§dAlex le pidió matrimonio a Sam: §e«'+phrase+'»§d ... ¡y dijo que sí! §6¡Enhorabuena a los recién casados!');chatTo(chat,'§a¡Te has casado con §fSam§a! ¡Enhorabuena!');chatTo(chat,'🎺 Suenan trompetas. Los dos reciben el anillo de boda y el Certificado de matrimonio.',true);confetti();}
+        else if(i===1){chatTo(chat,'§9Sam rechazó la propuesta de Alex.');chatTo(chat,'§cSam ha rechazado tu propuesta.');chatTo(chat,'Puedes volver a intentarlo más adelante.',true);}
+        else{blocked=true;chatTo(chat,'§9Sam rechazó la propuesta de Alex.');chatTo(chat,'Sam te bloqueó. Prueba a usar el anillo otra vez…',true);}
+      });
+    },700);
+  });
+  $('[data-preset-reset]').addEventListener('click',reset);
+  reset();
+})();
+
+/* ---------- Infidelidad ---------- */
+(function(){
+  var n=0,pending=false,punished=false,ended=false;
+  var chat=$('[data-ichat]'),status=$('[data-istatus]'),choices=$('[data-ichoices]'),cheat=$('[data-icheat]'),rst=$('[data-ireset]');
+  function draw(){$$('.mtg-strike',$('[data-strikes]')).forEach(function(s,i){s.classList.toggle('mtg-hit',i<n);s.textContent=i<n?'💔':String(i+1);});
+    choices.hidden=!pending||ended;cheat.disabled=pending||ended;rst.hidden=!ended;
+    var pb=$('[data-ich="punish"]');pb.innerHTML=punished?'💚 Perdonar y quitar el castigo':'🟠 Castigar';}
+  function setStatus(t){status.textContent=t;}
+  cheat.addEventListener('click',function(){
+    if(pending||ended)return;n++;
+    chatTo(chat,'§c§l¡Escándalo!§r §fAlex §cle está siendo infiel a §fRobin§c.');
+    if(n>=3){ended=true;pending=false;chatTo(chat,'§c§l¡Tercera infidelidad!§r §fAlex §cle ha sido infiel a §fRobin §cpor tercera vez. Su matrimonio ha terminado.');setStatus('El matrimonio terminó solo. Los anillos se rompieron.');draw();return;}
+    pending=true;chatTo(chat,'§c§l¡Atención!§r §fAlex §cintentó pedirle matrimonio a §fSam§c.');
+    setStatus('Infidelidades: '+n+' de 3. ¿Qué quieres hacer?');draw();
+  });
+  choices.addEventListener('click',function(e){var b=e.target.closest('[data-ich]');if(!b)return;var k=b.dataset.ich;
+    if(k==='forgive'||(k==='punish'&&punished)){var was=punished;punished=false;pending=false;chatTo(chat,'§dRobin §7ha perdonado a §fAlex§7.');setStatus(was?'Perdonaste a Alex y le quitaste el castigo. La infidelidad sigue contando.':'Perdonaste a Alex. La infidelidad sigue contando: '+n+' de 3.');}
+    else if(k==='punish'){punished=true;chatTo(chat,'§6Robin §7ha castigado a §fAlex§7: se queda sin efectos de anillo.');setStatus('Alex está castigado: no tiene poderes de anillo hasta que le perdones. Tú sigues con los tuyos.');}
+    else{ended=true;pending=false;chatTo(chat,'§9Robin §7se ha separado de §fAlex §7por infidelidad.');setStatus('Te separaste de Alex. Los anillos se rompieron.');}
+    draw();});
+  rst.addEventListener('click',function(){n=0;pending=false;punished=false;ended=false;chat.innerHTML='';chatTo(chat,'Robin y Alex están casados.',true);setStatus('Todo va bien en el matrimonio. 💞');draw();});
+  chatTo(chat,'Robin y Alex están casados.',true);draw();
+})();
+
+/* ---------- Mensajes de cariño ---------- */
+(function(){
+  var L=['Hoy te he echado de menos en la mina.','Cada diamante que encuentro me recuerda a ti.','¿Sabes qué es lo mejor de este servidor? Tú.','Hoy vi un atardecer cuadrado y pensé en ti.','Te quiero más que a mi pico encantado. Y eso es muchísimo.','Aunque estés lejos, mi brújula siempre apunta hacia ti.','Gracias por quedarte a mi lado en cada aventura.','Contigo hasta las noches de zombis son bonitas.','Te he guardado la mejor manzana dorada del cofre.','Contigo me siento en casa, aunque estemos en el Nether.','Hoy planté flores pensando en ti.','Mi parte favorita del día es cuando te conectas.','Te quiero en modo supervivencia y en modo creativo.','Cada vez que miro el anillo, sonrío.'];
+  var last=-1,letter=$('[data-letter]');
+  $('[data-love]').addEventListener('click',function(){var i;do{i=Math.floor(Math.random()*L.length);}while(i===last&&L.length>1);last=i;
+    letter.innerHTML='<small>❤ Alex te dice:</small><p>«'+esc(L[i])+'»</p><small>Así le llega a tu pareja en el chat.</small>';letter.style.animation='none';void letter.offsetWidth;letter.style.animation='mtg-pop .25s ease-out';});
+})();
+
+/* ---------- Tienda ---------- */
+(function(){
+  var S={
+    planner:{note:'Hay un Planificador por cada estilo (Chic, Cute, Garden, Goth e Ice). Todos venden lo mismo, menos el cartel, que es de su estilo.',items:[
+      ['separation_application','Solicitud de separación',1],['registry','Registro de matrimonios',20],['bouquet','Ramo de novia',8],['ui_furniture','Cartel de bienvenida (de su estilo)',6]]},
+    jeweller:{note:'Haz clic normal para comprar. Con el anillo de boda en la mano o agachado, abre sus servicios especiales.',items:[
+      ['jeweller_board','Mesa de joyería',5],['blob_bone','Hueso de joyería',8],['blob_copper','Cobre de joyería',8],['blob_iron','Hierro de joyería',16],['blob_gold','Oro de joyería',16],['blob_rose_gold','Oro rosa de joyería',32],['blob_light_gold','Oro blanco de joyería',32],['eq_jeweller_glasses','Gafas de joyero',8]]},
+    chef:{note:'Los pasteles también se pueden hacer en la Tabla de cortar.',items:[
+      ['cutting_board','Tabla de cortar',5],['eq_chef_hat','Gorro de chef',8],['cake_piece_b','Pastel de boda Chic',20],['cake_piece_a','Pastel de boda Cute',20],['cake_piece_c','Pastel de boda Garden',20],['cake_piece_e','Pastel de boda Goth',20],['cake_piece_d','Pastel de boda Ice',20]]},
+    tailor:{note:'Cada pieza se compra por separado.',items:[
+      ['eq_veil','Velo de novia',14],['eq_bride_chest','Vestido de novia',17],['eq_bride_leggings','Falda de novia',14],['eq_bride_boots','Tacones de novia',12],
+      ['eq_bridemaid_veil','Velo de ceremonia',10],['eq_bridemaid_chest','Vestido de ceremonia',13],['eq_bridemaid_leggings','Falda de ceremonia',10],['eq_bridemaid_boots','Tacones de ceremonia',8],
+      ['eq_grooms_hat','Chistera formal',8],['eq_grooms_suit','Chaqueta formal',11],['eq_grooms_legs','Pantalones formales',8],['eq_grooms_boots','Zapatos formales',6],
+      ['eq_suit_hat','Chistera clásica',12],['eq_suit','Chaqueta clásica',15],['eq_suit_legs','Pantalones clásicos',12],['eq_suit_boots','Zapatos clásicos',10]]}};
+  var box=$('[data-shop]'),note=$('[data-shopnote]');
+  function show(k){var s=S[k];note.textContent=s.note;box.innerHTML=s.items.map(function(it){return '<div class="mtg-offer">'+ic(it[0])+'<span><b>'+esc(it[1])+'</b><span class="mtg-price">'+ic('emerald')+it[2]+' esmeralda'+(it[2]>1?'s':'')+'</span></span></div>';}).join('');}
+  $('[data-shoptabs]').addEventListener('click',function(e){var b=e.target.closest('[data-s]');if(!b)return;$$('[data-s]').forEach(function(x){x.setAttribute('aria-selected',String(x===b));});show(b.dataset.s);});
+  show('planner');
+})();
+
+/* ---------- Recetas de pastel ---------- */
+(function(){
+  var C=[['board','cutting_board','Tabla de cortar'],['chic','cake_piece_b','Chic','yellow','white','amarillo','blanco'],['cute','cake_piece_a','Cute','white','pink','blanco','rosa'],['garden','cake_piece_c','Garden','green','brown','verde','marrón'],['goth','cake_piece_e','Goth','black','purple','negro','morado'],['ice','cake_piece_d','Ice','blue','light_blue','azul','celeste']];
+  var tabs=$('[data-caketabs]'),grid=$('[data-cakegrid]'),outS=$('[data-cakeout]'),leg=$('[data-cakelegend]'),ttl=$('[data-cakettl]');
+  tabs.innerHTML=C.map(function(c,i){return '<button type="button" role="tab" class="mtg-tab" data-ck="'+i+'" aria-selected="'+(i===0)+'">'+ic(c[1])+c[2]+'</button>';}).join('');
+  var slots=[];for(var i=0;i<9;i++){var s=document.createElement('div');s.className='mtg-slot';grid.appendChild(s);slots.push(s);}
+  function show(i){var c=C[i],g,l;
+    if(c[0]==='board'){g=['iron_ingot','stick',null,'planks','planks','planks',null,null,null];ttl.innerHTML=ic('cutting_board','mtg-sm')+'Mesa de crafteo';outS.innerHTML=ic('cutting_board');
+      l=[['iron_ingot','<b>1 lingote de hierro</b> y <b>1 palo</b> arriba'],['planks','<b>3 tablas de madera</b> abajo'],['cutting_board','Resultado: <b>Tabla de cortar</b>']];}
+    else{g=[null,'cake',null,null,'cake',null,'dye_'+c[3],'cake','dye_'+c[4]];ttl.innerHTML=ic('cutting_board','mtg-sm')+'Tabla de cortar';outS.innerHTML=ic(c[1]);
+      l=[['cake','<b>3 pasteles</b> normales en la columna del medio'],['dye_'+c[3],'<b>Tinte '+c[5]+'</b> abajo a la izquierda'],['dye_'+c[4],'<b>Tinte '+c[6]+'</b> abajo a la derecha'],[c[1],'Resultado: <b>Pastel de boda '+c[2]+'</b>']];}
+    slots.forEach(function(s,k){s.innerHTML=g[k]?ic(g[k]):'';});
+    leg.innerHTML=l.map(function(x){return '<li>'+ic(x[0])+'<span>'+x[1]+'</span></li>';}).join('');
+    $$('[data-ck]',tabs).forEach(function(b){b.setAttribute('aria-selected',String(+b.dataset.ck===i));});}
+  tabs.addEventListener('click',function(e){var b=e.target.closest('[data-ck]');if(b)show(+b.dataset.ck);});
+  show(0);
+})();
+
+/* ---------- ¿Qué pasa si…? ---------- */
+(function(){
+  var F=[
+    ['💍','Pierdo mi anillo de boda','Ve al Joyero y pide «Reponer un anillo perdido». Cuesta 5 diamantes y 16 fragmentos de amatista. Si encuentras el viejo, ya no funcionará.'],
+    ['🔄','Mi pareja cambia su gema','Te llega un aviso. Hasta que tengan la misma gema, ninguno de los dos tiene poderes.'],
+    ['📵','Mi pareja no está conectada','Los poderes solo funcionan cuando están cerca. Los mensajes de cariño sí le llegan cuando entre.'],
+    ['🌋','Estamos en dimensiones distintas','Los poderes no funcionan entre la Superficie, el Nether y el End. Tienen que estar en el mismo lugar.'],
+    ['🙋','Le pido matrimonio a alguien que ya está casado','No se puede: te avisa que esa persona ya tiene pareja.'],
+    ['🎁','Le doy mi anillo de boda a otra persona','No le sirve: cada anillo de boda solo funciona para su dueño.'],
+    ['💀','Mi pareja muere','El matrimonio termina y recibes un Certificado de recuerdo.'],
+    ['🧾','Pierdo el certificado','No pasa nada con el matrimonio: sigues casado. Puedes usar Mi pareja con /arco:pareja para mandar mensajes de cariño.'],
+    ['🎶','Quiero apagar la música del pastel','Agáchate y toca otra vez el pastel. Solo puede sonar un pastel a la vez.']];
+  var box=$('[data-flips]');
+  box.innerHTML=F.map(function(f){return '<button type="button" class="mtg-flip" aria-expanded="false"><span class="mtg-fq"><span class="mtg-emo" aria-hidden="true">'+f[0]+'</span><span>'+f[1]+'</span></span><span class="mtg-fa">'+f[2]+'</span><span class="mtg-fh">Toca para ver →</span></button>';}).join('');
+  box.addEventListener('click',function(e){var b=e.target.closest('.mtg-flip');if(!b)return;b.setAttribute('aria-expanded',String(b.getAttribute('aria-expanded')!=='true'));});
+})();
+})();
+</script>
+</div>
+<!-- ===== FIN GUÍA MATRIMONIOS ===== -->
+<!-- ===== Arcoloria: botón para volver ===== -->
+<style>
+.arc-back{position:fixed;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:8px;padding:10px 16px 10px 12px;border-radius:999px;background:rgba(48,26,40,.74);color:#FBE6CF;border:1px solid rgba(255,222,200,.3);-webkit-backdrop-filter:blur(12px) saturate(160%);backdrop-filter:blur(12px) saturate(160%);box-shadow:0 8px 24px rgba(0,0,0,.3),inset 2px 2px 5px -2px rgba(255,255,255,.35);font:700 15px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.34,1.56,.64,1),background .18s}
+.arc-back:hover{background:rgba(70,38,58,.84);transform:translateY(-1px)}
+.arc-back:active{transform:scale(.97)}
+.arc-back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media print{.arc-back{display:none}}
+</style>
+<a class="arc-back" href="../index.html#addons" aria-label="Volver a las guías de Arcoloria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Arcoloria</a>
+<script src="../sello.js" defer></script>
+</body></html>

@@ -21,7 +21,9 @@ const DEFAULT_DATA = {
         { name: "Backpacks & Stuff", desc: "Mochilas y accesorios", img: "img/addons/backpacks-stuff.jpg", link: "guias/guia-mochilas.html" },
         { name: "Simply Backpacks", desc: "Mochilas de varios tamaños", img: "img/addons/simply-backpacks.jpg", link: "guias/guia-simply-backpacks.html" },
         { name: "Animal Armor+", desc: "Armaduras con poderes", img: "img/addons/animal-armor.jpg", link: "guias/guia-animal-armor.html" },
-        { name: "Block Furniture", desc: "Muebles y decoración", img: "img/addons/block-furniture.jpg", link: "guias/guia-block-furniture.html" }
+        { name: "Block Furniture", desc: "Muebles y decoración", img: "img/addons/block-furniture.jpg", link: "guias/guia-block-furniture.html" },
+        { name: "Ribbits", desc: "Ranitas de los pantanos", img: "img/addons/ribbits.jpg", link: "guias/guia-ribbits.html" },
+        { name: "Matrimonios", desc: "Anillos, bodas y poderes en pareja", img: "img/addons/matrimonios.jpg", link: "guias/guia-matrimonios.html" }
       ],
       systems: [], kits: []
     },
@@ -37,7 +39,9 @@ const DEFAULT_DATA = {
         { name: "Backpacks & Stuff", desc: "Mochilas y accesorios", img: "img/addons/backpacks-stuff.jpg", link: "guias/guia-mochilas.html" },
         { name: "Simply Backpacks", desc: "Mochilas de varios tamaños", img: "img/addons/simply-backpacks.jpg", link: "guias/guia-simply-backpacks.html" },
         { name: "Animal Armor+", desc: "Armaduras con poderes", img: "img/addons/animal-armor.jpg", link: "guias/guia-animal-armor.html" },
-        { name: "Block Furniture", desc: "Muebles y decoración", img: "img/addons/block-furniture.jpg", link: "guias/guia-block-furniture.html" }
+        { name: "Block Furniture", desc: "Muebles y decoración", img: "img/addons/block-furniture.jpg", link: "guias/guia-block-furniture.html" },
+        { name: "Ribbits", desc: "Ranitas de los pantanos", img: "img/addons/ribbits.jpg", link: "guias/guia-ribbits.html" },
+        { name: "Matrimonios", desc: "Anillos, bodas y poderes en pareja", img: "img/addons/matrimonios.jpg", link: "guias/guia-matrimonios.html" }
       ],
       systems: [], kits: []
     }
