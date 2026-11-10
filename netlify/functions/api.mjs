@@ -1,5 +1,6 @@
 // API de Arcoloria: datos públicos, panel de administración, imágenes y estado de los servidores.
 import { openStores } from "../lib/store.mjs";
+import { listarServidores, cambiarEstado, avisar, PanelError } from "../lib/panel.mjs";
 
 export const config = { path: "/api/*" };
 
@@ -202,7 +203,7 @@ async function serverStatus(server) {
 export default async (req) => {
   const url = new URL(req.url);
   const parts = url.pathname.replace(/^\/api\/?/, "").split("/").filter(Boolean);
-  const [a, b] = parts;
+  const [a, b, c, d] = parts;
   const { data: store, img: imgStore } = await openStores();
 
   try {
@@ -265,6 +266,21 @@ export default async (req) => {
         return json({ ok: true, url: "/api/img/" + key });
       }
       if (req.method === "POST" && b === "check") return json({ ok: true });
+
+      // Encender, reiniciar y apagar los servidores (API del panel)
+      if (b === "control") {
+        try {
+          if (req.method === "GET" && !c) return json({ servers: await listarServidores() });
+          if (req.method === "POST" && c && (d === "power" || d === "aviso")) {
+            const body = await req.json().catch(() => ({}));
+            if (d === "power") return json(await cambiarEstado(c, String(body.senal || "")));
+            return json(await avisar(c, String(body.tipo || ""), body.segundos));
+          }
+        } catch (e) {
+          if (e instanceof PanelError) return err(e.message, e.status === 503 ? 424 : e.status);
+          throw e;
+        }
+      }
       return err("Acción no válida.", 404);
     }
     return err("No encontrado", 404);

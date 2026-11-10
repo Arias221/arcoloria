@@ -138,6 +138,27 @@ select option { background: #2A1D19; }
 .pv-cloud small { color: #B4497A; }
 .pv-cloud img { display: block; width: 100%; height: 110px; margin-top: 8px; object-fit: cover; border-radius: 14px; }
 .pv-cloud p { color: #5C3549; }
+
+/* ---- Encendido ---- */
+.ctl-list { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }
+.ctl { display: grid; gap: 12px; align-content: start; }
+.ctl-head { display: flex; align-items: flex-start; gap: 10px; }
+.ctl-head h3 { font-size: 1.25rem; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.ctl-head p { margin: 2px 0 0; font-family: var(--font-body); }
+.ctl-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; background: currentColor; }
+.pill.run { background: rgba(169, 219, 140, .18); color: var(--ok); }
+.pill.off { background: rgba(242, 160, 160, .16); color: var(--bad); }
+.pill.mid { background: rgba(244, 201, 162, .18); color: var(--accent); }
+.ctl-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.ctl-stats div { padding: 8px 10px; border-radius: 12px; background: rgba(0, 0, 0, .22); border: 1px solid var(--line2); }
+.ctl-stats b { display: block; font-size: 1.05rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ctl-stats span { font-size: .74rem; font-weight: 800; color: var(--muted); }
+.ctl-who { margin: 0; font-size: .86rem; color: var(--muted); overflow-wrap: anywhere; }
+.ctl-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ctl-actions select { width: auto; min-height: 36px; padding: 4px 10px; font-size: .86rem; }
+.ctl-count { padding: 10px 12px; border-radius: 12px; background: rgba(244, 201, 162, .12); border: 1px dashed rgba(244, 201, 162, .45); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 800; }
+.ctl-count b { font-size: 1.3rem; font-variant-numeric: tabular-nums; color: var(--accent); }
+@media (max-width: 640px) { .ctl-stats b { font-size: .95rem; } }
 </style>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -177,6 +198,7 @@ select option { background: #2A1D19; }
     <button class="btn sm" id="logout" type="button"><svg class="icon"><use href="#out"/></svg>Salir</button>
     <nav class="tabs" id="tabs">
       <button class="tab on" data-tab="servers">Servidores</button>
+      <button class="tab" data-tab="control">Encendido</button>
       <button class="tab" data-tab="events">Eventos</button>
       <button class="tab" data-tab="news">Novedades</button>
       <button class="tab" data-tab="team">Equipo</button>
@@ -376,6 +398,10 @@ select option { background: #2A1D19; }
         '<div class="group"><h3>Addons</h3><p class="muted small">Cada addon puede llevar a su guía.</p>' + listHtml('addons', s.addons, 'servers.' + srv + '.addons') + '</div>' +
         '<div class="group"><h3>Sistemas</h3><p class="muted small">Lo que ofrece el servidor: protección de terrenos, tienda, teletransporte…</p>' + listHtml('systems', s.systems, 'servers.' + srv + '.systems') + '</div>' +
         '<div class="group"><h3>Códigos de kits</h3><p class="muted small">El código que el jugador canjea para recibir su kit.</p>' + listHtml('kits', s.kits, 'servers.' + srv + '.kits') + '</div>';
+    } else if (tab === 'control') {
+      m.innerHTML = '<div class="sec-title"><div><h2>Encendido</h2><p class="muted small">Encender, reiniciar o apagar los servidores. Se actualiza solo cada 20 segundos.</p></div>' +
+        '<button class="btn sm" type="button" data-ctl-refresh>Actualizar</button></div><div id="ctl">' + (ctl.list ? '' : '<p class="muted">Cargando servidores…</p>') + '</div>';
+      paintCtl(); loadCtl(); return;
     } else if (tab === 'events') {
       html = '<div class="sec-title"><div><h2>Eventos</h2><p class="muted small">Se muestran hasta su fecha de fin y después se ocultan solos. En el inicio, un evento de un solo servidor aparece en el cuadro de ese servidor; uno de «Ambos» aparece como anuncio en la esquina.</p></div></div>' + listHtml('events', data.events, 'events');
     } else if (tab === 'news') {
@@ -425,6 +451,110 @@ select option { background: #2A1D19; }
     if (b.dataset.add) { var arr = get(b.dataset.path), sc = SCHEMAS[b.dataset.add]; arr.push(typeof sc.empty === 'function' ? sc.empty() : clone(sc.empty)); markDirty(b.dataset.path); render(); var items = main.querySelectorAll('.item'); var last = b.parentNode.querySelectorAll('.item'); last = last[last.length - 1]; if (last) { last.scrollIntoView({ block: 'center' }); var inp = last.querySelector('input[type=text]'); if (inp) inp.focus({ preventScroll: true }); } return; }
     if (b.hasAttribute('data-del')) { var a2 = get(b.dataset.path), i = +b.dataset.i; var it = a2[i]; var nm = it.name || it.title || it.gamertag || it.cmd || it.q || 'este elemento'; if (!window.confirm('¿Eliminar «' + nm + '»?')) return; a2.splice(i, 1); markDirty(b.dataset.path); render(); return; }
     if (b.dataset.move) { var a3 = get(b.dataset.path), j = +b.dataset.i, k = j + (+b.dataset.move); if (k < 0 || k >= a3.length) return; var tmp = a3[j]; a3[j] = a3[k]; a3[k] = tmp; markDirty(b.dataset.path); render(); return; }
+  });
+
+  /* ---------- encendido de los servidores ---------- */
+  var ctl = { list: null, err: '', timer: null, loading: false, busy: {}, aviso: {}, count: {} };
+  var ESTADOS = { running: ['Encendido', 'run'], offline: ['Apagado', 'off'], starting: ['Arrancando…', 'mid'], stopping: ['Apagándose…', 'mid'], suspendido: ['Suspendido', 'off'], instalando: ['Instalando…', 'mid'] };
+  var AVISOS = [[0, 'Sin aviso'], [30, 'Avisar 30 s antes'], [60, 'Avisar 1 min antes'], [300, 'Avisar 5 min antes']];
+  function bytes(b) { if (b == null) return '—'; return b >= 1073741824 ? (b / 1073741824).toFixed(1) + ' GB' : Math.round(b / 1048576) + ' MB'; }
+  function uptime(ms) {
+    if (!ms) return '—';
+    var m = Math.floor(ms / 60000), h = Math.floor(m / 60), d = Math.floor(h / 24);
+    if (d) return d + ' d ' + (h % 24) + ' h';
+    if (h) return h + ' h ' + (m % 60) + ' min';
+    return m ? m + ' min' : 'menos de 1 min';
+  }
+  function findSrv(id) { return (ctl.list || []).filter(function (s) { return s.id === id; })[0]; }
+
+  function loadCtl(force) {
+    clearTimeout(ctl.timer);
+    if (tab !== 'control' && !force) return;
+    var next = function () { clearTimeout(ctl.timer); if (tab === 'control') ctl.timer = setTimeout(loadCtl, 20000); };
+    if (document.hidden || ctl.loading) return next();
+    ctl.loading = true;
+    api('admin/control').then(function (r) { ctl.list = r.servers || []; ctl.err = ''; }, function (e) {
+      if (e.status === 401) { showLogin(e.message); return; }
+      ctl.err = e.message;
+    }).then(function () { ctl.loading = false; paintCtl(); next(); });
+  }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && tab === 'control') loadCtl(); });
+
+  function paintCtl() {
+    var box = $('#ctl'); if (!box) return;
+    if (!ctl.list) { box.innerHTML = ctl.err ? '<p class="note">' + esc(ctl.err) + '</p>' : '<p class="muted">Cargando servidores…</p>'; return; }
+    if (!ctl.list.length) { box.innerHTML = '<p class="note">La clave del panel no tiene servidores (o ninguno está en PTERO_SERVIDORES).</p>'; return; }
+    box.innerHTML = (ctl.err ? '<p class="note">No se pudo actualizar: ' + esc(ctl.err) + '</p><br>' : '') + '<div class="ctl-list">' + ctl.list.map(cardCtl).join('') + '</div>';
+  }
+  function cardCtl(s) {
+    var st = ESTADOS[s.estado] || ['Sin datos', 'mid'], busy = ctl.busy[s.id] ? ' disabled' : '', cnt = ctl.count[s.id];
+    var j = s.jugadores, av = ctl.aviso[s.id] != null ? ctl.aviso[s.id] : 60;
+    var info = [s.descripcion, s.direccion].filter(Boolean).map(esc).join(' · ');
+    var html = '<div class="card ctl"><div class="ctl-head"><div style="flex:1;min-width:0"><h3>' + esc(s.nombre) + '</h3>' + (info ? '<p class="muted small">' + info + '</p>' : '') + '</div>' +
+      '<span class="pill ' + st[1] + '"><span class="ctl-dot"></span>' + st[0] + '</span></div>' +
+      '<div class="ctl-stats"><div><b>' + (j ? j.online + (j.max ? '/' + j.max : '') : '—') + '</b><span>Jugadores</span></div>' +
+      '<div><b>' + bytes(s.ram.usada) + '</b><span>Memoria' + (s.ram.limite ? ' de ' + bytes(s.ram.limite) : '') + '</span></div>' +
+      '<div><b>' + (s.estado === 'running' ? uptime(s.encendidoDesde) : '—') + '</b><span>Encendido hace</span></div></div>';
+    if (j && j.nombres && j.nombres.length) html += '<p class="ctl-who">' + j.nombres.map(esc).join(', ') + '</p>';
+    else if (s.estado === 'running' && !j) html += '<p class="ctl-who">No se pudo leer la lista de jugadores (¿el servidor usa el script nuevo?).</p>';
+    if (cnt) {
+      html += '<div class="ctl-count">' + (cnt.tipo === 'apagado' ? 'Se apagará en' : 'Se reiniciará en') + ' <b data-left="' + s.id + '">' + Math.max(0, Math.ceil((cnt.fin - Date.now()) / 1000)) + '</b> s' +
+        '<button class="btn sm" type="button" data-ctl="cancelar" data-id="' + s.id + '" style="margin-left:auto">Cancelar</button></div>' +
+        '<p class="ctl-who">Deja esta página abierta hasta que termine la cuenta atrás.</p>';
+    } else if (s.estado === 'offline') {
+      html += '<div class="ctl-actions"><button class="btn primary" type="button" data-ctl="start" data-id="' + s.id + '"' + busy + '>Encender</button></div>';
+    } else if (s.estado === 'running') {
+      html += '<div class="ctl-actions"><button class="btn" type="button" data-ctl="restart" data-id="' + s.id + '"' + busy + '>Reiniciar</button>' +
+        '<button class="btn danger" type="button" data-ctl="stop" data-id="' + s.id + '"' + busy + '>Apagar</button>' +
+        '<select data-ctl-aviso="' + s.id + '" aria-label="Aviso a los jugadores">' + AVISOS.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === av ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>';
+    } else if (s.estado === 'starting' || s.estado === 'stopping') {
+      html += '<div class="ctl-actions"><span class="small muted">Espera unos segundos…</span><button class="btn sm danger" type="button" data-ctl="kill" data-id="' + s.id + '"' + busy + ' style="margin-left:auto">Forzar cierre</button></div>';
+    }
+    return html + '</div>';
+  }
+
+  function power(id, senal, msg) {
+    ctl.busy[id] = true; paintCtl();
+    return api('admin/control/' + id + '/power', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ senal: senal }) })
+      .then(function () { toast(msg); }, function (e) { toast(e.message, true); })
+      .then(function () { delete ctl.busy[id]; setTimeout(function () { loadCtl(true); }, 2500); paintCtl(); });
+  }
+  function aviso(id, tipo, seg) {
+    return api('admin/control/' + id + '/aviso', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ tipo: tipo, segundos: seg }) })
+      .catch(function (e) { toast('No se pudo avisar en el juego: ' + e.message, true); });
+  }
+  function cuentaAtras(s, tipo, seg) {
+    var senal = tipo === 'apagado' ? 'stop' : 'restart', id = s.id;
+    var c = ctl.count[id] = { tipo: tipo, fin: Date.now() + seg * 1000, diez: seg <= 10 };
+    aviso(id, tipo, seg); paintCtl();
+    c.t = setInterval(function () {
+      var left = Math.ceil((c.fin - Date.now()) / 1000), el = document.querySelector('[data-left="' + id + '"]');
+      if (el) el.textContent = Math.max(0, left);
+      if (!c.diez && left <= 10) { c.diez = true; aviso(id, tipo, 10); }
+      if (left <= 0) { clearInterval(c.t); delete ctl.count[id]; power(id, senal, (tipo === 'apagado' ? 'Apagando ' : 'Reiniciando ') + s.nombre + '…'); }
+    }, 1000);
+  }
+  window.addEventListener('beforeunload', function (e) { if (Object.keys(ctl.count).length) { e.preventDefault(); e.returnValue = ''; } });
+
+  main.addEventListener('change', function (e) { var t = e.target; if (t.dataset && t.dataset.ctlAviso) ctl.aviso[t.dataset.ctlAviso] = +t.value; });
+  main.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.hasAttribute('data-ctl-refresh')) { loadCtl(true); return; }
+    var act = b.dataset.ctl, id = b.dataset.id, s = id && findSrv(id); if (!act || !s) return;
+    if (act === 'start') { power(id, 'start', 'Encendiendo ' + s.nombre + '… tarda unos segundos.'); return; }
+    if (act === 'kill') { if (window.confirm('¿Forzar el cierre de ' + s.nombre + '?\nSolo úsalo si se quedó trabado: lo que no se haya guardado se puede perder.')) power(id, 'kill', 'Cierre forzado de ' + s.nombre + '.'); return; }
+    if (act === 'cancelar') {
+      var c = ctl.count[id]; if (!c) return;
+      clearInterval(c.t); delete ctl.count[id]; aviso(id, 'cancelado', 1); toast('Cancelado. ' + s.nombre + ' sigue encendido.'); paintCtl(); return;
+    }
+    if (act === 'restart' || act === 'stop') {
+      var tipo = act === 'stop' ? 'apagado' : 'reinicio', seg = ctl.aviso[id] != null ? ctl.aviso[id] : 60;
+      var nadie = s.jugadores && s.jugadores.online === 0;
+      var q = (act === 'stop' ? '¿Apagar ' : '¿Reiniciar ') + s.nombre + '?\n' + (nadie ? 'No hay jugadores conectados, se hará ahora mismo.' : seg ? 'Se avisará a los jugadores ' + (seg >= 60 ? seg / 60 + ' min' : seg + ' s') + ' antes.' : 'Sin aviso: los jugadores se desconectarán al instante.');
+      if (!window.confirm(q)) return;
+      if (nadie || !seg) power(id, act, (act === 'stop' ? 'Apagando ' : 'Reiniciando ') + s.nombre + '…');
+      else cuentaAtras(s, tipo, seg);
+    }
   });
 
   /* ---------- subir imagen (se achica antes de enviar) ---------- */
